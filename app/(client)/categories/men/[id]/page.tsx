@@ -16,6 +16,8 @@ import { IoMdHeart } from "react-icons/io";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductSlider from "@/components/carousel/productSlider";
+import { addToCart } from "@/actions/action";
+import { auth } from "@/auth";
 
 type Params = {
   params: {
@@ -46,6 +48,18 @@ const ProductById = async ({ params: { id } }: Params) => {
       isArchived: false,
     },
   });
+  const session = await auth();
+  async function handleAddToCart() {
+    "use server";
+    if (product)
+      await addToCart(
+        id,
+        product?.images[0],
+        product?.price,
+        product?.title,
+        session?.user.id as string
+      );
+  }
   // await new Promise((resolve) =>
   //   setTimeout((resolve) => {
   //     resolve;
@@ -95,14 +109,16 @@ const ProductById = async ({ params: { id } }: Params) => {
               </h1>
             )}
             <div className="flex flex-col gap-6">
-              <Button
-                aria-label="Button"
-                className="rounded-md"
-                variant={"outline"}
-              >
-                <IoCartOutline className="mr-3" size={27} />
-                Add to Cart
-              </Button>
+              <form action={handleAddToCart}>
+                <Button
+                  aria-label="Button"
+                  className="rounded-md w-full"
+                  variant={"outline"}
+                >
+                  <IoCartOutline className="mr-3" size={27} />
+                  Add to Cart
+                </Button>
+              </form>
               <Button
                 aria-label="Button"
                 className="rounded-md"

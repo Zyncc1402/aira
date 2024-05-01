@@ -9,13 +9,15 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import prisma from "@/lib/prisma";
+import { EmblaOptionsType } from "embla-carousel";
 import { Button } from "@/components/ui/button";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductSlider from "@/components/carousel/productSlider";
-import { EmblaOptionsType } from "embla-carousel";
+import { addToCart } from "@/actions/action";
+import { auth } from "@/auth";
 
 type Params = {
   params: {
@@ -39,8 +41,6 @@ interface Product {
   updatedAt?: Date;
 }
 
-const OPTIONS: EmblaOptionsType = {};
-
 const ProductById = async ({ params: { id } }: Params) => {
   const product = await prisma.product.findUnique({
     where: {
@@ -48,23 +48,40 @@ const ProductById = async ({ params: { id } }: Params) => {
       isArchived: false,
     },
   });
+  const session = await auth();
+  async function handleAddToCart() {
+    "use server";
+    if (product)
+      await addToCart(
+        id,
+        product?.images[0],
+        product?.price,
+        product?.title,
+        session?.user.id as string
+      );
+  }
+  await new Promise((resolve) =>
+    setTimeout((resolve) => {
+      resolve;
+    }, 600)
+  );
   if (product?.title) {
-    const { title, description, images, price, quantity, category, id } =
-      product;
+    const { title, description, images, price, quantity, id } = product;
     const formatted = new Intl.NumberFormat("en-us", {
       style: "currency",
       currency: "INR",
     }).format(price);
+    const OPTIONS: EmblaOptionsType = {};
     return (
-      <section className="py-[100px] container">
-        <Breadcrumb>
+      <section className="py-[100px]">
+        <Breadcrumb className="container">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/categories/women">Women</BreadcrumbLink>
+              <BreadcrumbLink href="/categories/men">Women</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -74,11 +91,11 @@ const ProductById = async ({ params: { id } }: Params) => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="flex mt-10 flex-wrap md:flex-nowrap gap-16">
+        <div className="flex mt-10 flex-wrap md:flex-nowrap gap-12 md:container">
           <div className="md:basis-1/2">
             <ProductSlider slides={images} options={OPTIONS} />
           </div>
-          <div className="md:basis-1/2 flex flex-col gap-4 w-[100%]">
+          <div className="md:basis-1/2 flex flex-col gap-4 w-[100%] container">
             <h1 className="text-3xl font-bold">{title}</h1>
             <h1>{description}</h1>
             <h1 className="text-xl font-semibold">{formatted}</h1>
@@ -92,17 +109,19 @@ const ProductById = async ({ params: { id } }: Params) => {
               </h1>
             )}
             <div className="flex flex-col gap-6">
+              <form action={handleAddToCart}>
+                <Button
+                  aria-label="Button"
+                  className="rounded-md w-full"
+                  variant={"outline"}
+                >
+                  <IoCartOutline className="mr-3" size={27} />
+                  Add to Cart
+                </Button>
+              </form>
               <Button
                 aria-label="Button"
-                className="rounded-full"
-                variant={"outline"}
-              >
-                <IoCartOutline className="mr-3" size={27} />
-                Add to Cart
-              </Button>
-              <Button
-                aria-label="Button"
-                className="rounded-full"
+                className="rounded-md"
                 variant={"secondary"}
               >
                 <IoMdHeart className="mr-3" size={23} />

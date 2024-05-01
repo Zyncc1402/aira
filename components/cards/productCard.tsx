@@ -48,7 +48,7 @@ const ProductCard = ({
 
   const [cartIconDisabled, setCartIconDisabled] = useState(false);
   const [heart, setHeart] = useState(false);
-  const [wishlistItems, setWishlistItems] = useState<object[]>([]);
+  const [wishlistItem, setWishlistItem] = useState<string[]>([]);
 
   const formatted = new Intl.NumberFormat("en-us", {
     style: "currency",
@@ -72,40 +72,24 @@ const ProductCard = ({
     }
   }
 
-  function handleAddToWishlist(
-    title: string,
-    id: string,
-    image: string,
-    price: number
-  ) {
-    const newItem = [
-      ...wishlistItems,
-      {
-        title,
-        id,
-        image,
-        price,
-      },
-    ];
-    setWishlistItems(newItem);
-
-    // localStorage.setItem("wishlist", `${JSON.stringify(wishlistItems)}`);
-
+  function handleAddToWishlist(id: string) {
     setHeart((prev) => !prev);
-
-    // toast(`Added ${title} to Wishlist`, {
-    //   description: `${formatted}`,
-    // });
+    const newArray = [...wishlistItem, id];
+    setWishlistItem(newArray);
+    console.log(...wishlistItem);
+    localStorage.setItem("wishlist", newArray.toString());
   }
 
   return (
     <div className="flex flex-col productCard rounded-[4px] relative overflow-hidden text-left">
       {showIcons && (
-        <button aria-label="Button">
+        <button
+          aria-label="Button"
+          onClick={() => {
+            handleAddToWishlist(id);
+          }}
+        >
           <IoMdHeart
-            onClick={() => {
-              handleAddToWishlist(title, id, image, price);
-            }}
             color={heart ? "#dc6e73" : "8a8a8a"}
             size={23}
             className="absolute top-2 right-2 cursor-pointer bg-red"
