@@ -45,6 +45,124 @@ export async function unarchiveProduct(id: string) {
   revalidatePath("/categories/women");
 }
 
-export async function addToCart(id: string, userId: string) {}
+export async function addToCart(
+  pid: string,
+  image: string,
+  price: number,
+  title: string,
+  userId: string
+) {
+  console.log(image);
+  const cartExists = await prisma.cart.findUnique({
+    where: {
+      userId,
+    },
+  });
 
-export async function deleteCartItem(id: string) {}
+  const itemExists = await prisma.cartItems.findFirst({
+    where: {
+      cart: {
+        userId,
+      },
+      pid,
+    },
+  });
+
+  if (itemExists) {
+    await prisma.cart.update({
+      include: {
+        items: true,
+      },
+      where: {
+        userId,
+      },
+      data: {
+        items: {
+          update: {
+            where: {
+              id: itemExists.id,
+            },
+            data: {
+              quantity: {
+                increment: 1,
+              },
+            },
+          },
+        },
+      },
+    });
+    revalidatePath("/cart");
+  }
+
+  if (cartExists) {
+    if (!itemExists) {
+      await prisma.cart.update({
+        include: {
+          items: true,
+        },
+        where: {
+          userId,
+        },
+        data: {
+          items: {
+            create: {
+              pid,
+              image,
+              price,
+              title,
+            },
+          },
+        },
+      });
+    }
+  } else {
+    await prisma.cart.create({
+      include: {
+        items: true,
+      },
+      data: {
+        userId,
+        items: {
+          create: {
+            title,
+            image,
+            pid,
+            price,
+          },
+        },
+      },
+    });
+  }
+  revalidatePath("/cart");
+}
+
+export async function deleteCartItem(id: string, userId: string) {
+  await prisma.cartItems.delete({
+    where: {
+      cart: {
+        userId,
+      },
+      id,
+    },
+  });
+  revalidatePath("/cart");
+}
+
+export async function updateCartItemQuantity(
+  userId: string,
+  quantity: number,
+  id: string
+) {
+  await prisma.cartItems.update({
+    where: {
+      cart: {
+        userId,
+      },
+      id,
+    },
+    data: {
+      quantity,
+    },
+  });
+  revalidatePath("/cart");
+}

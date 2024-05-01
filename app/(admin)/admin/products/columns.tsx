@@ -18,7 +18,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { BiArchiveIn } from "react-icons/bi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { archiveProduct, deleteProduct } from "@/actions/action";
+import {
+  archiveProduct,
+  deleteProduct,
+  unarchiveProduct,
+} from "@/actions/action";
 import Link from "next/link";
 
 export type Product = {
@@ -75,10 +79,6 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "quantity",
     header: "Stock",
-  },
-  {
-    accessorKey: "isArchived",
-    header: "isArchived",
   },
   {
     accessorKey: "category",
@@ -147,31 +147,59 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "Archive",
-    header: () => <div className="text-left">Archive</div>,
+    header: () => <div className="text-left">Archived</div>,
     cell: ({ row }) => {
       const id = row.original.id;
-      return (
-        <AlertDialog>
-          <AlertDialogTrigger className="font-bold text-white bg-slate-900 p-3 rounded-md">
-            Archive
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This product will be archived and will not be shown on the store
-                anymore
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => archiveProduct(id as string)}>
-                Archive
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      );
+      const archived = row.original.isArchived;
+      if (archived) {
+        return (
+          <AlertDialog>
+            <AlertDialogTrigger className="font-bold text-white bg-slate-900 p-3 rounded-md">
+              UnArchive
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This product will be UnArchived and will be shown on the
+                  store.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => unarchiveProduct(id as string)}
+                >
+                  UnArchive
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        );
+      } else {
+        return (
+          <AlertDialog>
+            <AlertDialogTrigger className="font-bold text-white bg-slate-900 p-3 rounded-md">
+              Archive
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This product will be archived and will not be shown on the
+                  store anymore.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => archiveProduct(id as string)}>
+                  Archive
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        );
+      }
     },
   },
   {

@@ -3,12 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import {
-  addToCart,
-  deleteCartItem,
-  deleteProduct,
-  unarchiveProduct,
-} from "@/actions/action";
+import { addToCart, deleteProduct, unarchiveProduct } from "@/actions/action";
 import { MdOutlineDelete } from "react-icons/md";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
 
@@ -39,13 +34,6 @@ type CardProps = {
   showAdminLinks?: boolean;
 };
 
-interface Item {
-  id: number | string;
-  title: string;
-  price: number;
-  image: string;
-}
-
 const ProductCard = ({
   image,
   title,
@@ -67,21 +55,19 @@ const ProductCard = ({
     currency: "INR",
   }).format(price);
 
-  function handleAddToCart(title: string, price: number, id: string) {
+  function handleAddToCart(
+    title: string,
+    price: number,
+    id: string,
+    image: string
+  ) {
     if (!session?.user) {
       toast.error("You must be logged in to add items to the Cart");
     } else {
-      addToCart(id, session.user.id as string);
+      addToCart(id, image, price, title, session.user.id as string);
       setCartIconDisabled((prev) => !prev);
       toast(`Added ${title} to Cart`, {
         description: `${formatted}`,
-        action: {
-          label: "Undo",
-          onClick: () => {
-            setCartIconDisabled(false);
-            deleteCartItem(id);
-          },
-        },
       });
     }
   }
@@ -165,7 +151,7 @@ const ProductCard = ({
           {showIcons && (
             <button
               aria-label="Button"
-              onClick={() => handleAddToCart(title, price, id)}
+              onClick={() => handleAddToCart(title, price, id, image)}
               disabled={cartIconDisabled}
               className="disabled:opacity-30"
             >

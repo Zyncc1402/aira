@@ -4,7 +4,6 @@ import { columns } from "./columns";
 
 import { FaPlus } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
-import { BiArchiveIn } from "react-icons/bi";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 
@@ -21,15 +20,7 @@ const Products = async () => {
             <Link
               aria-label="navigation-link"
               href={"/admin/products/archived"}
-            >
-              <Button
-                aria-label="Button"
-                className="flex items-center justify-center font-bold"
-              >
-                <BiArchiveIn size={20} className="mr-2" />
-                Archived
-              </Button>
-            </Link>
+            ></Link>
             <Link aria-label="navigation-link" href={"/admin/products/create"}>
               <Button
                 aria-label="Button"

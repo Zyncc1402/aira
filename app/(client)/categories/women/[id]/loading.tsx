@@ -24,12 +24,20 @@ const Loading = () => {
           <BreadcrumbItem>
             <BreadcrumbLink href="/categories/men">Women</BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex mt-10 flex-wrap md:flex-nowrap gap-16">
-        <div className="md:basis-1/2 w-screen">
-          <Skeleton className="w-[100%] h-[50vh] md:h-[60vh]" />
+        <div className="md:basis-1/2 w-screen container">
+          <div className="flex flex-col">
+            <Skeleton className="w-[100%] h-[50vh] md:h-[60vh]" />
+            <div className="flex gap-2 mt-3 overflow-hidden">
+              <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
+              <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
+              <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
+              <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
+              <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
+            </div>
+          </div>
         </div>
         <div className="md:basis-1/2 flex flex-col gap-4 w-screen">
           <Skeleton className="w-[100%] h-[40px]" />
@@ -37,20 +45,12 @@ const Loading = () => {
           <Skeleton className="w-[100%] h-[30px]" />
           <Skeleton className="w-[100%] h-[30px]" />
           <Skeleton className="w-[100%] h-[30px]" />
-          <div className="flex flex-col gap-6">
-            <Button
-              aria-label="Button"
-              className="rounded-full"
-              variant={"outline"}
-            >
+          <div className="flex flex-col md:flex-row gap-6">
+            <Button className="rounded-sm md:w-[50%]" variant={"secondary"}>
               <IoCartOutline className="mr-3" size={27} />
               Add to Cart
             </Button>
-            <Button
-              aria-label="Button"
-              className="rounded-full"
-              variant={"secondary"}
-            >
+            <Button className="rounded-sm md:w-[50%]" variant={"outline"}>
               <IoMdHeart className="mr-3" size={23} />
               Add to Wishlist
             </Button>

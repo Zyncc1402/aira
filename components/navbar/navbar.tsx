@@ -1,8 +1,5 @@
-"use client";
-
 import React from "react";
 import { Button } from "../ui/button";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { IoCartOutline } from "react-icons/io5";
 import { LuMenu, LuUser } from "react-icons/lu";
 import { PiShoppingBagOpen } from "react-icons/pi";
@@ -28,8 +25,10 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { auth, signIn, signOut } from "@/auth";
+import Image from "next/image";
 
-const Navbar = () => {
+const Navbar = async () => {
   const navlinks = [
     {
       label: "Home",
@@ -44,19 +43,17 @@ const Navbar = () => {
       href: "/categories/women",
     },
   ];
-  const { data: session } = useSession();
+  const session = await auth();
   return (
     <header className="z-10 header pb-4 pt-4 w-full fixed top-0 left-0 right-0 bg-white text-black">
       <nav className="container flex justify-between items-center ">
-        <Link aria-label="navigation-link" href={"/"}>
-          <h1 className="font-bold text-2xl">Aira</h1>
+        <Link href={"/"}>
+          <h1 className="font-semibold text-2xl">AIRA</h1>
         </Link>
         <ul className="items-center gap-8 hidden lg:flex">
           {navlinks.map((navlink) => (
             <li key={navlink.label} className="font-medium text-md">
-              <Link aria-label="navigation-link" href={navlink.href}>
-                {navlink.label}
-              </Link>
+              <Link href={navlink.href}>{navlink.label}</Link>
             </li>
           ))}
         </ul>
@@ -70,32 +67,24 @@ const Navbar = () => {
                 <ul className="items-start gap-8 flex flex-col">
                   {navlinks.map((navlink) => (
                     <li key={navlink.label} className="font-medium text-md">
-                      <Link aria-label="navigation-link" href={navlink.href}>
-                        {navlink.label}
-                      </Link>
+                      <Link href={navlink.href}>{navlink.label}</Link>
                     </li>
                   ))}
                   <Separator />
                   <li className="font-medium text-md">
-                    <Link aria-label="navigation-link" href={"/account"}>
-                      Account
-                    </Link>
+                    <Link href={"/account"}>Account</Link>
                   </li>
                   <li className="font-medium text-md">
-                    <Link aria-label="navigation-link" href={"/cart"}>
+                    <Link href={"/cart"} aria-label="cart">
                       Cart
                     </Link>
                   </li>
                   <li className="font-medium text-md">
-                    <Link aria-label="navigation-link" href={"/wishlist"}>
-                      Wishlist
-                    </Link>
+                    <Link href={"/wishlist"}>Wishlist</Link>
                   </li>
                   {session?.user?.role == "Admin" ? (
                     <li className="font-medium text-md">
-                      <Link aria-label="navigation-link" href={"/admin"}>
-                        Admin
-                      </Link>
+                      <Link href={"/admin"}>Admin</Link>
                     </li>
                   ) : (
                     <></>
@@ -103,51 +92,73 @@ const Navbar = () => {
                 </ul>
               </SheetHeader>
               {session?.user ? (
-                <Button
-                  aria-label="Button"
-                  onClick={() => signOut()}
-                  className="absolute bottom-5 right-5"
+                <form
+                  action={async () => {
+                    "use server";
+                    await signOut();
+                  }}
                 >
-                  Sign Out
-                </Button>
+                  <Button
+                    aria-label="button"
+                    type="submit"
+                    className="absolute bottom-5 right-5"
+                  >
+                    Sign Out
+                  </Button>
+                </form>
               ) : (
-                <Button
-                  aria-label="Button"
-                  className="absolute bottom-5 right-5"
-                  onClick={() => signIn("google")}
+                <form
+                  action={async () => {
+                    "use server";
+                    await signIn("google");
+                  }}
                 >
-                  Sign In
-                </Button>
+                  <Button
+                    aria-label="button"
+                    className="absolute bottom-5 right-5"
+                    type="submit"
+                  >
+                    Sign In
+                  </Button>
+                </form>
               )}
             </SheetContent>
           </Sheet>
         </div>
         <div className="items-center gap-4 hidden lg:flex">
-          <Link aria-label="navigation-link" href={"/cart"}>
+          <Link href={"/cart"}>
             <IoCartOutline size={32} className="lg:block hidden" />
           </Link>
           {session?.user ? (
             <Menubar className="hidden lg:flex items-center">
               <MenubarMenu>
-                <MenubarTrigger aria-label="account button">
-                  <VscAccount size={30} aria-label="account button" />
+                <MenubarTrigger>
+                  <Image
+                    src={session?.user?.image || ""}
+                    height={35}
+                    width={35}
+                    alt="profile-avatar"
+                    priority={true}
+                    quality={40}
+                    className="rounded-full"
+                  />
                 </MenubarTrigger>
                 <MenubarContent>
-                  <Link aria-label="navigation-link" href={"/account"}>
+                  <Link href={"/account"}>
                     <MenubarItem>
                       <LuUser size={18} className="mr-2" />
                       Account
                     </MenubarItem>
                   </Link>
                   <MenubarSeparator />
-                  <Link aria-label="navigation-link" href={"/orders"}>
+                  <Link href={"/orders"}>
                     <MenubarItem>
                       <PiShoppingBagOpen size={18} className="mr-2" />
                       Orders
                     </MenubarItem>
                   </Link>
                   <MenubarSeparator />
-                  <Link aria-label="navigation-link" href={"/wishlist"}>
+                  <Link href={"/wishlist"}>
                     <MenubarItem>
                       <FaRegHeart size={18} className="mr-2" />
                       Wishlist
@@ -156,7 +167,7 @@ const Navbar = () => {
                   <MenubarSeparator />
                   {session?.user?.role === "Admin" && (
                     <>
-                      <Link aria-label="navigation-link" href={"/admin"}>
+                      <Link href={"/admin"}>
                         <MenubarItem>
                           <MdLockOutline size={18} className="mr-2" />
                           Admin
@@ -165,35 +176,43 @@ const Navbar = () => {
                       <MenubarSeparator />
                     </>
                   )}
-                  <Button
-                    aria-label="Button"
-                    onClick={() => signOut()}
-                    className="w-[100%]"
+                  <form
+                    action={async () => {
+                      "use server";
+                      await signOut();
+                    }}
                   >
-                    Sign Out
-                  </Button>
+                    <Button aria-label="button" className="w-[100%]">
+                      Sign Out
+                    </Button>
+                  </form>
                 </MenubarContent>
               </MenubarMenu>
             </Menubar>
           ) : (
             <Menubar>
               <MenubarMenu>
-                <MenubarTrigger aria-label="account button">
-                  <VscAccount size={30} aria-label="account button" />
+                <MenubarTrigger>
+                  <VscAccount size={30} />
                 </MenubarTrigger>
                 <MenubarContent>
-                  <MenubarItem>
-                    <FaRegHeart size={18} className="mr-2" />
-                    Wishlist
-                  </MenubarItem>
+                  <Link href={"/wishlist"}>
+                    <MenubarItem>
+                      <FaRegHeart size={18} className="mr-2" />
+                      Wishlist
+                    </MenubarItem>
+                  </Link>
                   <MenubarSeparator />
-                  <Button
-                    aria-label="Button"
-                    onClick={() => signIn("google")}
-                    className="w-[100%]"
+                  <form
+                    action={async () => {
+                      "use server";
+                      await signIn("google");
+                    }}
                   >
-                    Sign In
-                  </Button>
+                    <Button aria-label="button" className="w-[100%]">
+                      Sign In
+                    </Button>
+                  </form>
                 </MenubarContent>
               </MenubarMenu>
             </Menubar>

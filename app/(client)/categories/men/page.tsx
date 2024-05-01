@@ -11,6 +11,11 @@ const Men = async () => {
       isArchived: false,
     },
   });
+  // await new Promise((resolve) =>
+  //   setTimeout((resolve) => {
+  //     resolve;
+  //   }, 600)
+  // );
   return (
     <div className="pt-[100px] md:container">
       <div className="flex justify-between title">

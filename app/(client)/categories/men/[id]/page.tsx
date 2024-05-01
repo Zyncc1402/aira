@@ -46,6 +46,11 @@ const ProductById = async ({ params: { id } }: Params) => {
       isArchived: false,
     },
   });
+  // await new Promise((resolve) =>
+  //   setTimeout((resolve) => {
+  //     resolve;
+  //   }, 600)
+  // );
   if (product?.title) {
     const { title, description, images, price, quantity, id } = product;
     const formatted = new Intl.NumberFormat("en-us", {
@@ -92,7 +97,7 @@ const ProductById = async ({ params: { id } }: Params) => {
             <div className="flex flex-col gap-6">
               <Button
                 aria-label="Button"
-                className="rounded-full"
+                className="rounded-md"
                 variant={"outline"}
               >
                 <IoCartOutline className="mr-3" size={27} />
@@ -100,7 +105,7 @@ const ProductById = async ({ params: { id } }: Params) => {
               </Button>
               <Button
                 aria-label="Button"
-                className="rounded-full"
+                className="rounded-md"
                 variant={"secondary"}
               >
                 <IoMdHeart className="mr-3" size={23} />
