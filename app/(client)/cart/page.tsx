@@ -31,6 +31,7 @@ const Cart = async () => {
               alt="empty cart"
               className="noSelectImage"
               priority={true}
+              quality={60}
             />
             <h1 className="font-medium">No items in cart</h1>
           </div>

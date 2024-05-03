@@ -60,11 +60,11 @@ const ProductById = async ({ params: { id } }: Params) => {
         session?.user.id as string
       );
   }
-  await new Promise((resolve) =>
-    setTimeout((resolve) => {
-      resolve;
-    }, 600)
-  );
+  // await new Promise((resolve) =>
+  //   setTimeout((resolve) => {
+  //     resolve;
+  //   }, 600)
+  // );
   if (product?.title) {
     const { title, description, images, price, quantity, id } = product;
     const formatted = new Intl.NumberFormat("en-us", {

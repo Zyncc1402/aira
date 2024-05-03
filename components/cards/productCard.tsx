@@ -46,7 +46,6 @@ const ProductCard = ({
 }: CardProps) => {
   const { data: session } = useSession();
 
-  const [cartIconDisabled, setCartIconDisabled] = useState(false);
   const [heart, setHeart] = useState(false);
   const [wishlistItem, setWishlistItem] = useState<string[]>([]);
 
@@ -55,7 +54,7 @@ const ProductCard = ({
     currency: "INR",
   }).format(price);
 
-  function handleAddToCart(
+  async function handleAddToCart(
     title: string,
     price: number,
     id: string,
@@ -64,11 +63,20 @@ const ProductCard = ({
     if (!session?.user) {
       toast.error("You must be logged in to add items to the Cart");
     } else {
-      addToCart(id, image, price, title, session.user.id as string);
-      setCartIconDisabled((prev) => !prev);
-      toast(`Added ${title} to Cart`, {
-        description: `${formatted}`,
-      });
+      const result = await addToCart(
+        id,
+        image,
+        price,
+        title,
+        session.user.id as string
+      );
+      if (result?.error) {
+        toast.error("Product already in cart");
+      } else {
+        toast(`Added ${title} to Cart`, {
+          description: `${formatted}`,
+        });
+      }
     }
   }
 
@@ -136,7 +144,6 @@ const ProductCard = ({
             <button
               aria-label="Button"
               onClick={() => handleAddToCart(title, price, id, image)}
-              disabled={cartIconDisabled}
               className="disabled:opacity-30"
             >
               <IoCartOutline size={27} />

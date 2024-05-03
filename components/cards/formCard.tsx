@@ -5,7 +5,6 @@ import { Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
-import { TiDelete } from "react-icons/ti";
 
 type Props = {
   item: {

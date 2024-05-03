@@ -1,48 +1,76 @@
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function deleteProduct(id: string) {
-  await prisma.product.delete({
-    where: {
-      id,
-    },
-  });
-  console.log("Product Deleted");
-  revalidatePath("/admin/products");
-  revalidatePath("/categories/men");
-  revalidatePath("/categories/women");
+  const session = await auth();
+  if (session?.user.role === "Admin") {
+    try {
+      await prisma.product.delete({
+        where: {
+          id,
+        },
+      });
+      console.log("Product Deleted");
+      revalidatePath("/admin/products");
+      revalidatePath("/categories/men");
+      revalidatePath("/categories/women");
+    } catch (error) {
+      return {
+        error: "Something went wrong",
+      };
+    }
+  }
 }
 
 export async function archiveProduct(id: string) {
-  await prisma.product.update({
-    where: {
-      id,
-    },
-    data: {
-      isArchived: true,
-    },
-  });
-  console.log("Product Archived");
-  revalidatePath("/admin/products");
-  revalidatePath("/categories/men");
-  revalidatePath("/categories/women");
+  const session = await auth();
+  if (session?.user.role === "Admin") {
+    try {
+      await prisma.product.update({
+        where: {
+          id,
+        },
+        data: {
+          isArchived: true,
+        },
+      });
+      console.log("Product Archived");
+      revalidatePath("/admin/products");
+      revalidatePath("/categories/men");
+      revalidatePath("/categories/women");
+    } catch (error) {
+      return {
+        error: "Something went wrong",
+      };
+    }
+  }
 }
 
 export async function unarchiveProduct(id: string) {
-  await prisma.product.update({
-    where: {
-      id,
-    },
-    data: {
-      isArchived: false,
-    },
-  });
-  console.log("Product UnArchived");
-  revalidatePath("/admin/products");
-  revalidatePath("/categories/men");
-  revalidatePath("/categories/women");
+  const session = await auth();
+  if (session?.user.role === "Admin") {
+    try {
+      await prisma.product.update({
+        where: {
+          id,
+        },
+        data: {
+          isArchived: false,
+        },
+      });
+      console.log("Product UnArchived");
+      revalidatePath("/admin/products");
+      revalidatePath("/categories/men");
+      revalidatePath("/categories/women");
+    } catch (error) {
+      return {
+        error: "Something went wrong",
+      };
+    }
+  }
 }
 
 export async function addToCart(
@@ -52,7 +80,6 @@ export async function addToCart(
   title: string,
   userId: string
 ) {
-  console.log(image);
   const cartExists = await prisma.cart.findUnique({
     where: {
       userId,
@@ -69,33 +96,13 @@ export async function addToCart(
   });
 
   if (itemExists) {
-    await prisma.cart.update({
-      include: {
-        items: true,
-      },
-      where: {
-        userId,
-      },
-      data: {
-        items: {
-          update: {
-            where: {
-              id: itemExists.id,
-            },
-            data: {
-              quantity: {
-                increment: 1,
-              },
-            },
-          },
-        },
-      },
-    });
-    revalidatePath("/cart");
+    return {
+      error: "Product already in cart",
+    };
   }
 
   if (cartExists) {
-    if (!itemExists) {
+    try {
       await prisma.cart.update({
         include: {
           items: true,
@@ -114,38 +121,54 @@ export async function addToCart(
           },
         },
       });
+    } catch (error) {
+      return {
+        error: "Something went wrong",
+      };
     }
   } else {
-    await prisma.cart.create({
-      include: {
-        items: true,
-      },
-      data: {
-        userId,
-        items: {
-          create: {
-            title,
-            image,
-            pid,
-            price,
+    try {
+      await prisma.cart.create({
+        include: {
+          items: true,
+        },
+        data: {
+          userId,
+          items: {
+            create: {
+              title,
+              image,
+              pid,
+              price,
+            },
           },
         },
-      },
-    });
+      });
+    } catch (error) {
+      return {
+        error: "Something went wrong",
+      };
+    }
   }
   revalidatePath("/cart");
 }
 
 export async function deleteCartItem(id: string, userId: string) {
-  await prisma.cartItems.delete({
-    where: {
-      cart: {
-        userId,
+  try {
+    await prisma.cartItems.delete({
+      where: {
+        cart: {
+          userId,
+        },
+        id,
       },
-      id,
-    },
-  });
-  revalidatePath("/cart");
+    });
+    revalidatePath("/cart");
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
+  }
 }
 
 export async function updateCartItemQuantity(
@@ -153,16 +176,22 @@ export async function updateCartItemQuantity(
   quantity: number,
   id: string
 ) {
-  await prisma.cartItems.update({
-    where: {
-      cart: {
-        userId,
+  try {
+    await prisma.cartItems.update({
+      where: {
+        cart: {
+          userId,
+        },
+        id,
       },
-      id,
-    },
-    data: {
-      quantity,
-    },
-  });
-  revalidatePath("/cart");
+      data: {
+        quantity,
+      },
+    });
+    revalidatePath("/cart");
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
+  }
 }
