@@ -109,7 +109,7 @@ const ProductById = async ({ params: { id } }: Params) => {
                 up!
               </h1>
             )}
-            <div className="flex gap-6">
+            <div className="flex flex-col md:flex-row gap-6">
               <form action={handleAddToCart} className="flex-1">
                 <AddToCartBtn />
               </form>
