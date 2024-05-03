@@ -1,10 +1,10 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { createProduct } from "@/actions/formSubmissions";
 import { Skeleton } from "@/components/ui/skeleton";
+import CreateProductButton from "./CreateProductButton";
 
 const CreateProductForm = () => {
   return (
@@ -46,9 +46,7 @@ const CreateProductForm = () => {
           <option value={1}>True</option>
           <option value={""}>False</option>
         </select>
-        <Button aria-label="Button" type="submit">
-          Create
-        </Button>
+        <CreateProductButton Atext="Creating..." text="Create" />
       </form>
       <Skeleton className="flex flex-1" />
     </div>

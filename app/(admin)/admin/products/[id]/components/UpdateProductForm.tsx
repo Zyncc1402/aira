@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { MdHideImage, MdImage } from "react-icons/md";
+import CreateProductButton from "../../create/components/CreateProductButton";
 
 interface Product {
   id: string;
@@ -114,9 +115,7 @@ const CreateProductForm = ({ product }: Props) => {
             <option value={1}>True</option>
             <option value={""}>False</option>
           </select>
-          <Button aria-label="Button" type="submit">
-            Update
-          </Button>
+          <CreateProductButton Atext="Updating..." text="Update" />
         </form>
         <Carousel
           className="flex flex-1"
