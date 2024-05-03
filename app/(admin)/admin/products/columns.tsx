@@ -95,6 +95,13 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "description",
     header: "Description",
+    cell: ({ row }) => {
+      const desc = row?.original?.description
+        ?.toString()
+        .slice(0, 70)
+        .concat("...");
+      return <div className="text-left font-medium">{desc}</div>;
+    },
   },
   {
     accessorKey: "price",

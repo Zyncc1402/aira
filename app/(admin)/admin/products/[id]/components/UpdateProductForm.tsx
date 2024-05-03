@@ -43,7 +43,7 @@ const CreateProductForm = ({ product }: Props) => {
     const { title, description, images, price, quantity, category, id } =
       product;
     return (
-      <div className="flex flex-wrap gap-20 mt-16 mb-16">
+      <div className="flex flex-wrap flex-col md:flex-row gap-20 mt-16 mb-16">
         <form
           action={imageDisabled ? updateProduct : updateProductWithImage}
           className="flex flex-1 flex-col gap-8"
@@ -80,6 +80,7 @@ const CreateProductForm = ({ product }: Props) => {
             placeholder="Description"
             name="description"
             defaultValue={description}
+            className="resize-y h-[150px]"
           />
           <Input
             name="price"

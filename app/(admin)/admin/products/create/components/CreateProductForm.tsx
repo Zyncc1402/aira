@@ -12,7 +12,11 @@ const CreateProductForm = () => {
       <form action={createProduct} className="flex flex-1 flex-col gap-8">
         <Input name="images" type="file" className="" multiple required />
         <Input name="title" required className="" placeholder="Title" />
-        <Textarea placeholder="Description" name="description" />
+        <Textarea
+          placeholder="Description"
+          name="description"
+          className="resize-y h-[150px]"
+        />
         <Input
           name="price"
           type="number"
@@ -48,7 +52,7 @@ const CreateProductForm = () => {
         </select>
         <CreateProductButton Atext="Creating..." text="Create" />
       </form>
-      <Skeleton className="flex flex-1" />
+      <Skeleton className="flex-1 hidden lg:block" />
     </div>
   );
 };

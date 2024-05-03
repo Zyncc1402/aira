@@ -11,13 +11,16 @@ import {
 import prisma from "@/lib/prisma";
 import { EmblaOptionsType } from "embla-carousel";
 import { Button } from "@/components/ui/button";
-import { IoCartOutline } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
 import { IoMdHeart } from "react-icons/io";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductSlider from "@/components/carousel/productSlider";
 import { addToCart } from "@/actions/action";
 import { auth } from "@/auth";
+import AddToCartBtn from "./components/AddToCartBtn";
+import Link from "next/link";
+import { MdOutlineModeEdit } from "react-icons/md";
 
 type Params = {
   params: {
@@ -99,34 +102,36 @@ const ProductById = async ({ params: { id } }: Params) => {
             <h1 className="text-3xl font-bold">{title}</h1>
             <h1>{description}</h1>
             <h1 className="text-xl font-semibold">{formatted}</h1>
-            <h1>
-              incl. of taxes <br /> (Also includes all applicable duties)
-            </h1>
+            <h1>*Shipping cost calculated at checkout*</h1>
             {quantity < 10 && (
               <h1>
                 Only <b className="text-red-600">{quantity}</b> remaining, Hurry
                 up!
               </h1>
             )}
-            <div className="flex flex-col gap-6">
-              <form action={handleAddToCart}>
-                <Button
-                  aria-label="Button"
-                  className="rounded-md w-full"
-                  variant={"outline"}
-                >
-                  <IoCartOutline className="mr-3" size={27} />
-                  Add to Cart
-                </Button>
+            <div className="flex gap-6">
+              <form action={handleAddToCart} className="flex-1">
+                <AddToCartBtn />
               </form>
               <Button
                 aria-label="Button"
-                className="rounded-md"
+                className="rounded-md flex-1"
                 variant={"secondary"}
               >
                 <IoMdHeart className="mr-3" size={23} />
                 Add to Wishlist
               </Button>
+              {session?.user.role === "Admin" && (
+                <Link href={"/admin/products/" + product.id} className="flex-1">
+                  <Button
+                    className="flex-1 w-full rounded-md"
+                    aria-label="Button"
+                  >
+                    <MdOutlineModeEdit className="mr-3" size={23} />
+                    Edit
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>

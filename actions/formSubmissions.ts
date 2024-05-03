@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 
 export async function createProduct(formData: FormData) {
   const images = formData.getAll("images");
-  const id = formData.get("id") as string;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const quantity = formData.get("quantity") as string;
@@ -41,21 +40,27 @@ export async function createProduct(formData: FormData) {
     arrayOfImages.push(res);
   }
 
-  await prisma.product.create({
-    data: {
-      title,
-      description,
-      price: Number(price),
-      quantity: Number(quantity),
-      category: category,
-      images: arrayOfImages as string[],
-      isArchived: Boolean(isArchived),
-    },
-  });
-
-  revalidatePath("/categories/men");
-  revalidatePath("/categories/women");
-  revalidatePath("/admin/products");
+  try {
+    await prisma.product.create({
+      data: {
+        title,
+        description,
+        price: Number(price),
+        quantity: Number(quantity),
+        category: category,
+        images: arrayOfImages as string[],
+        isArchived: Boolean(isArchived),
+      },
+    });
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
+  } finally {
+    revalidatePath("/categories/men");
+    revalidatePath("/categories/women");
+    revalidatePath("/admin/products");
+  }
 }
 
 export async function updateProduct(formData: FormData) {
@@ -67,24 +72,30 @@ export async function updateProduct(formData: FormData) {
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
 
-  await prisma.product.update({
-    where: {
-      id,
-    },
-    data: {
-      title,
-      description,
-      price: Number(price),
-      quantity: Number(quantity),
-      category: category,
-      isArchived: Boolean(isArchived),
-    },
-  });
-
-  revalidatePath("/categories/men");
-  revalidatePath("/categories/women");
-  revalidatePath("/admin/products");
-  revalidatePath(`/admin/products/${id}`);
+  try {
+    const result = await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        description,
+        price: Number(price),
+        quantity: Number(quantity),
+        category: category,
+        isArchived: Boolean(isArchived),
+      },
+    });
+  } catch (error) {
+    return {
+      error: "Something Went Wrong",
+    };
+  } finally {
+    revalidatePath("/categories/men");
+    revalidatePath("/categories/women");
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/products/${id}`);
+  }
 }
 
 export async function updateProductWithImage(formData: FormData) {
@@ -131,23 +142,29 @@ export async function updateProductWithImage(formData: FormData) {
     });
     arrayOfImages?.push(res);
   }
-  await prisma.product.update({
-    where: {
-      id,
-    },
-    data: {
-      title,
-      description,
-      price: Number(price),
-      quantity: Number(quantity),
-      category: category,
-      images: arrayOfImages as string[],
-      isArchived: Boolean(isArchived),
-    },
-  });
-
-  revalidatePath("/categories/men");
-  revalidatePath("/categories/women");
-  revalidatePath("/admin/products");
-  revalidatePath(`/admin/products/${id}`);
+  try {
+    await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        description,
+        price: Number(price),
+        quantity: Number(quantity),
+        category: category,
+        images: arrayOfImages as string[],
+        isArchived: Boolean(isArchived),
+      },
+    });
+  } catch (error) {
+    return {
+      error: "Something Went Wrong",
+    };
+  } finally {
+    revalidatePath("/categories/men");
+    revalidatePath("/categories/women");
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/products/${id}`);
+  }
 }
