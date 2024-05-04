@@ -10,17 +10,10 @@ import {
 
 import prisma from "@/lib/prisma";
 import { EmblaOptionsType } from "embla-carousel";
-import { Button } from "@/components/ui/button";
-import { CiEdit } from "react-icons/ci";
-import { IoMdHeart } from "react-icons/io";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductSlider from "@/components/carousel/productSlider";
-import { addToCart } from "@/actions/action";
-import { auth } from "@/auth";
-import Link from "next/link";
-import { MdOutlineModeEdit } from "react-icons/md";
-import AddToCartBtn from "../../men/[id]/components/AddToCartBtn";
+import RightPage from "../../men/[id]/components/rightPage";
 
 type Params = {
   params: {
@@ -51,29 +44,13 @@ const ProductById = async ({ params: { id } }: Params) => {
       isArchived: false,
     },
   });
-  const session = await auth();
-  async function handleAddToCart() {
-    "use server";
-    if (product)
-      await addToCart(
-        id,
-        product?.images[0],
-        product?.price,
-        product?.title,
-        session?.user.id as string
-      );
-  }
   // await new Promise((resolve) =>
   //   setTimeout((resolve) => {
   //     resolve;
   //   }, 600)
   // );
   if (product?.title) {
-    const { title, description, images, price, quantity, id } = product;
-    const formatted = new Intl.NumberFormat("en-us", {
-      style: "currency",
-      currency: "INR",
-    }).format(price);
+    const { title, images } = product;
     const OPTIONS: EmblaOptionsType = {};
     return (
       <section className="py-[100px]">
@@ -98,42 +75,7 @@ const ProductById = async ({ params: { id } }: Params) => {
           <div className="md:basis-1/2">
             <ProductSlider slides={images} options={OPTIONS} />
           </div>
-          <div className="md:basis-1/2 flex flex-col gap-4 w-[100%] container">
-            <h1 className="text-3xl font-bold">{title}</h1>
-            <h1>{description}</h1>
-            <h1 className="text-xl font-semibold">{formatted}</h1>
-            <h1>*Shipping cost calculated at checkout*</h1>
-            {quantity < 10 && (
-              <h1>
-                Only <b className="text-red-600">{quantity}</b> remaining, Hurry
-                up!
-              </h1>
-            )}
-            <div className="flex gap-6">
-              <form action={handleAddToCart} className="flex-1">
-                <AddToCartBtn />
-              </form>
-              <Button
-                aria-label="Button"
-                className="rounded-md flex-1"
-                variant={"secondary"}
-              >
-                <IoMdHeart className="mr-3" size={23} />
-                Add to Wishlist
-              </Button>
-              {session?.user.role === "Admin" && (
-                <Link href={"/admin/products/" + product.id} className="flex-1">
-                  <Button
-                    className="flex-1 w-full rounded-md"
-                    aria-label="Button"
-                  >
-                    <MdOutlineModeEdit className="mr-3" size={23} />
-                    Edit
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
+          <RightPage product={product} />
         </div>
       </section>
     );

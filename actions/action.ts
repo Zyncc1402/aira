@@ -74,10 +74,8 @@ export async function unarchiveProduct(id: string) {
 }
 
 export async function addToCart(
-  pid: string,
-  image: string,
-  price: number,
-  title: string,
+  productId: string,
+  size: string,
   userId: string
 ) {
   const cartExists = await prisma.cart.findUnique({
@@ -91,7 +89,7 @@ export async function addToCart(
       cart: {
         userId,
       },
-      pid,
+      productId,
     },
   });
 
@@ -113,10 +111,8 @@ export async function addToCart(
         data: {
           items: {
             create: {
-              pid,
-              image,
-              price,
-              title,
+              productId,
+              size,
             },
           },
         },
@@ -136,10 +132,8 @@ export async function addToCart(
           userId,
           items: {
             create: {
-              title,
-              image,
-              pid,
-              price,
+              productId,
+              size,
             },
           },
         },
