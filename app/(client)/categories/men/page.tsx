@@ -2,7 +2,7 @@ import ProductCard from "@/components/cards/productCard";
 import prisma from "@/lib/prisma";
 import React from "react";
 
-export const revalidate = 600;
+export const revalidate = 6000;
 
 const Men = async () => {
   const menProducts = await prisma.product.findMany({

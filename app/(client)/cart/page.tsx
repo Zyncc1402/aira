@@ -25,15 +25,14 @@ const Cart = async () => {
         {cartItems?.items.length == 0 ? (
           <div className="flex flex-col items-center justify-center w-screen h-[100%]">
             <Image
-              src={"/empty-cart.png"}
-              height={500}
-              width={500}
+              src={"/empty-cart.svg"}
+              height={450}
+              width={450}
               alt="empty cart"
               className="noSelectImage"
               priority={true}
-              quality={60}
             />
-            <h1 className="font-medium">No items in cart</h1>
+            <h1 className="font-medium mt-10">No items in cart</h1>
           </div>
         ) : (
           <section className="mt-[100px] flex w-full flex-wrap md:flex-nowrap gap-x-20">

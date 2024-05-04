@@ -24,6 +24,7 @@ import {
   unarchiveProduct,
 } from "@/actions/action";
 import Link from "next/link";
+import formatCurrency from "@/lib/formatCurrency";
 
 export type Product = {
   price?: number;
@@ -49,9 +50,9 @@ export const columns: ColumnDef<Product>[] = [
         <Link aria-label="navigation-link" href={`/admin/products/${id}`}>
           <Image
             src={images[0]}
-            width={50}
-            height={50}
-            className="rounded-full"
+            width={45}
+            height={45}
+            className="rounded-full object-cover aspect-square"
             alt="prodImg"
             priority={true}
           />
@@ -108,10 +109,7 @@ export const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-left">Price</div>,
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("price"));
-      const formatted = new Intl.NumberFormat("en-us", {
-        style: "currency",
-        currency: "INR",
-      }).format(price);
+      const formatted = formatCurrency(price);
 
       return <div className="text-left font-medium">{formatted}</div>;
     },

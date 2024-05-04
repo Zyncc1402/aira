@@ -1,6 +1,7 @@
 "use client";
 
 import { deleteCartItem, updateCartItemQuantity } from "@/actions/action";
+import formatCurrency from "@/lib/formatCurrency";
 import { Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -24,10 +25,7 @@ const FormCard = ({ item }: Props) => {
     updateCartItemQuantity(session?.user.id as string, quantity, item.id);
   }
 
-  const formatted = new Intl.NumberFormat("en-us", {
-    style: "currency",
-    currency: "INR",
-  }).format(item.price);
+  const formatted = formatCurrency(item.price);
 
   return (
     <div className="flex gap-5 mt-5 rounded-md w-full">

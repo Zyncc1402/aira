@@ -22,6 +22,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { IoMdHeart } from "react-icons/io";
+import formatCurrency from "@/lib/formatCurrency";
 
 type CardProps = {
   image: string;
@@ -49,10 +50,7 @@ const ProductCard = ({
   const [heart, setHeart] = useState(false);
   const [wishlistItem, setWishlistItem] = useState<string[]>([]);
 
-  const formatted = new Intl.NumberFormat("en-us", {
-    style: "currency",
-    currency: "INR",
-  }).format(price);
+  const formatted = formatCurrency(price);
 
   async function handleAddToCart(
     title: string,
@@ -119,6 +117,7 @@ const ProductCard = ({
           height={700}
           alt="product image"
           priority={true}
+          className=" object-cover aspect-square"
         />
       </Link>
       <div className="p-2 gap-4 flex justify-between w-[100%]">

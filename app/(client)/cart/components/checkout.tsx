@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import formatCurrency from "@/lib/formatCurrency";
+import { format } from "path";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -28,10 +30,7 @@ function Checkout({ cartitems }: Props) {
     setPrice(totalPrice);
   }, [cartitems.items]);
 
-  const formatted = new Intl.NumberFormat("en-us", {
-    style: "currency",
-    currency: "INR",
-  }).format(price);
+  const formatted = formatCurrency(price);
 
   return (
     <div className="mt-10 pb-20 md:mt-0 md:mb-0">

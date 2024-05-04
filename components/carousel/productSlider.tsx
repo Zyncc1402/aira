@@ -49,7 +49,7 @@ const ProductSlider: React.FC<PropType> = (props) => {
                 width={1000}
                 alt="Carousel Image"
                 priority={true}
-                className="md:rounded-lg"
+                className="md:rounded-lg object-cover aspect-square"
               />
             </div>
           ))}
@@ -68,7 +68,7 @@ const ProductSlider: React.FC<PropType> = (props) => {
                 width={100}
                 alt="Carousel Image"
                 priority={true}
-                className="rounded-sm"
+                className="rounded-sm object-cover aspect-square"
               />
             ))}
           </div>

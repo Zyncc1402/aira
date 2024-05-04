@@ -158,3 +158,9 @@ body {
     flex: 0 0 15%;
   }
 }
+
+.grid3row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 150px);
+  flex-direction: column;
+}

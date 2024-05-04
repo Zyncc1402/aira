@@ -3,14 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { useFormStatus } from "react-dom";
 import { IoCartOutline } from "react-icons/io5";
-import { toast } from "sonner";
 
 export default function AddToCartBtn() {
   const { pending } = useFormStatus();
   return (
     <Button
       aria-label="Button"
-      className="rounded-md w-full"
+      className="rounded-sm w-full"
       variant={"outline"}
       type="submit"
       disabled={pending}
