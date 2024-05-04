@@ -4,7 +4,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { LuMenu, LuUser } from "react-icons/lu";
 import { PiShoppingBagOpen } from "react-icons/pi";
 import { FaRegHeart } from "react-icons/fa";
-import { MdLockOutline } from "react-icons/md";
+import { MdLockOutline, MdSearch } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import Link from "next/link";
 
@@ -75,6 +75,9 @@ const Navbar = async () => {
                     <Link href={"/account"}>Account</Link>
                   </li>
                   <li className="font-medium text-md">
+                    <Link href={"/search"}>Search</Link>
+                  </li>
+                  <li className="font-medium text-md">
                     <Link href={"/cart"} aria-label="cart">
                       Cart
                     </Link>
@@ -126,6 +129,9 @@ const Navbar = async () => {
           </Sheet>
         </div>
         <div className="items-center gap-4 hidden lg:flex">
+          <Link href={"/search"}>
+            <MdSearch size={32} />
+          </Link>
           <Link href={"/cart"}>
             <IoCartOutline size={32} className="lg:block hidden" />
           </Link>
