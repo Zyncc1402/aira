@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 
 type Props = {
   item: {
@@ -38,17 +39,21 @@ const FormCard = ({ item, quantity, size, id }: Props) => {
 
   return (
     <div className="flex gap-5 mt-5 rounded-md w-full">
-      <Image
-        src={item.images[0]}
-        height={120}
-        width={120}
-        alt="product image"
-        className="rounded-md object-cover aspect-square"
-        priority={true}
-        quality={50}
-      />
+      <Link href={`/categories/${item.category}/${item.id}`}>
+        <Image
+          src={item.images[0]}
+          height={120}
+          width={120}
+          alt="product image"
+          className="rounded-md object-cover aspect-square"
+          priority={true}
+          quality={50}
+        />
+      </Link>
       <div className="flex flex-col gap-2">
-        <h1>{item.title}</h1>
+        <Link href={`/categories/${item.category}/${item.id}`}>
+          <h1>{item.title}</h1>
+        </Link>
         <h1>{formatted.split(".")[0]}</h1>
         <form>
           <label htmlFor="quantity">Quantity</label>
