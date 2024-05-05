@@ -49,6 +49,8 @@ const ProductById = async ({ params: { id } }: Params) => {
   //     resolve;
   //   }, 600)
   // );
+  console.log(product);
+  if (!product) return notFound();
   if (product?.title) {
     const { title, images } = product;
     const OPTIONS: EmblaOptionsType = {};
@@ -79,8 +81,6 @@ const ProductById = async ({ params: { id } }: Params) => {
         </div>
       </section>
     );
-  } else {
-    return notFound();
   }
 };
 

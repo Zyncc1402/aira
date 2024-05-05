@@ -57,84 +57,26 @@ const Navbar = async () => {
             </li>
           ))}
         </ul>
-        <div className="lg:hidden">
-          <Sheet>
-            <SheetTrigger>
-              <LuMenu size={32} className="lg:hidden" />
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <ul className="items-start gap-8 flex flex-col">
-                  {navlinks.map((navlink) => (
-                    <li key={navlink.label} className="font-medium text-md">
-                      <Link href={navlink.href}>{navlink.label}</Link>
-                    </li>
-                  ))}
-                  <Separator />
-                  <li className="font-medium text-md">
-                    <Link href={"/account"}>Account</Link>
-                  </li>
-                  <li className="font-medium text-md">
-                    <Link href={"/search"}>Search</Link>
-                  </li>
-                  <li className="font-medium text-md">
-                    <Link href={"/cart"} aria-label="cart">
-                      Cart
-                    </Link>
-                  </li>
-                  <li className="font-medium text-md">
-                    <Link href={"/wishlist"}>Wishlist</Link>
-                  </li>
-                  {session?.user?.role == "Admin" ? (
-                    <li className="font-medium text-md">
-                      <Link href={"/admin"}>Admin</Link>
-                    </li>
-                  ) : (
-                    <></>
-                  )}
-                </ul>
-              </SheetHeader>
-              {session?.user ? (
-                <form
-                  action={async () => {
-                    "use server";
-                    await signOut();
-                  }}
-                >
-                  <Button
-                    aria-label="button"
-                    type="submit"
-                    className="absolute bottom-5 right-5"
-                  >
-                    Sign Out
-                  </Button>
-                </form>
-              ) : (
-                <form
-                  action={async () => {
-                    "use server";
-                    await signIn("google");
-                  }}
-                >
-                  <Button
-                    aria-label="button"
-                    className="absolute bottom-5 right-5"
-                    type="submit"
-                  >
-                    Sign In
-                  </Button>
-                </form>
-              )}
-            </SheetContent>
-          </Sheet>
+        <div className="lg:hidden flex items-center gap-3">
+          <Link href={"/search"}>
+            <MdSearch size={32} className="lg:block" />
+          </Link>
+          <Link href={"/cart"}>
+            <IoCartOutline size={32} className="lg:block" />
+          </Link>
+          <Link href={"/account"}>
+            <VscAccount size={30} />
+          </Link>
+          <LuMenu size={32} className="lg:hidden" />
         </div>
         <div className="items-center gap-4 hidden lg:flex">
           <Link href={"/search"}>
             <MdSearch size={32} />
           </Link>
           <Link href={"/cart"}>
-            <IoCartOutline size={32} className="lg:block hidden" />
+            <IoCartOutline size={32} className="lg:block" />
           </Link>
+          <LuMenu size={32} className="lg:hidden" />
           {session?.user ? (
             <Menubar className="hidden lg:flex items-center">
               <MenubarMenu>

@@ -7,7 +7,7 @@ const Account = async () => {
     <div className="pt-[100px]">
       <div className="container">
         <h1 className="font-semibold text-3xl">
-          Hi there {session?.user.name}
+          Hi there, {session?.user.name}
         </h1>
       </div>
     </div>
