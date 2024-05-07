@@ -10,6 +10,9 @@ const Men = async () => {
       category: "men",
       isArchived: false,
     },
+    orderBy: {
+      category: "desc",
+    },
   });
   // await new Promise((resolve) =>
   //   setTimeout((resolve) => {

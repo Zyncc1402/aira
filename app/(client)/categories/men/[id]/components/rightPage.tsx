@@ -58,26 +58,28 @@ export default function RightPage({ product }: Props) {
             <div className="flex items-center gap-4">
               <Label
                 htmlFor="sm"
-                className="smlabel px-6 py-2 text-secondary-foreground rounded-sm text-xl"
+                className="smlabel p-3 text-secondary-foreground rounded-sm font-semibold"
               >
                 S
                 <input
                   id="sm"
                   name="sm"
                   type="radio"
+                  hidden
                   className=""
                   value={"small"}
                 />
               </Label>
               <Label
                 htmlFor="md"
-                className="smlabel px-6 py-2 text-secondary-foreground rounded-sm text-xl"
+                className="smlabel p-3 text-secondary-foreground rounded-sm font-semibold"
               >
-                S
+                M
                 <input
                   id="md"
                   name="md"
                   type="radio"
+                  hidden
                   className=""
                   value={"small"}
                 />

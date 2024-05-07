@@ -10,10 +10,10 @@ import {
 
 import prisma from "@/lib/prisma";
 import { EmblaOptionsType } from "embla-carousel";
-import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProductSlider from "@/components/carousel/productSlider";
 import RightPage from "./components/rightPage";
+import Image from "next/image";
 
 type Params = {
   params: {
@@ -42,6 +42,20 @@ const ProductById = async ({ params: { id } }: Params) => {
     where: {
       id,
       isArchived: false,
+    },
+  });
+
+  const similarProducts = await prisma.product.findMany({
+    where: {
+      AND: [
+        {
+          category: { contains: product?.category },
+        },
+      ],
+    },
+    take: 5,
+    orderBy: {
+      createdAt: "desc",
     },
   });
   // await new Promise((resolve) =>
@@ -77,6 +91,23 @@ const ProductById = async ({ params: { id } }: Params) => {
           </div>
           <RightPage product={product} />
         </div>
+        {similarProducts.length > 0 && (
+          <div className="container mt-[100px]">
+            <h1 className="text-2xl font-semibold">Products similar to this</h1>
+            <div className="similar gap-2 mt-6 overflow-x-auto flex">
+              {similarProducts.map((similarProduct) => (
+                <Image
+                  key={similarProduct.id}
+                  src={similarProduct.images[0]}
+                  height={400}
+                  width={400}
+                  alt="similar products"
+                  className="cursor-pointer"
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     );
   }

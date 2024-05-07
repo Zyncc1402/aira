@@ -78,9 +78,9 @@ body {
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0px;
-}
+} */
 
 .noSelectImage {
   -moz-user-select: none;
@@ -161,15 +161,18 @@ body {
 }
 
 .smlabel {
-  background-color: var(--secondary);
-  border: 2px solid rgb(68, 68, 68);
-}
-
-.smlabel:hover {
   background-color: hsl(var(--secondary) / 0.8);
 }
 
-#sm:checked ~ .smlabel {
-  border: 2px blue solid;
-  background-color: red;
+.similar::-webkit-scrollbar {
+  height: 10px;
+}
+
+.similar::-webkit-scrollbar-thumb {
+  width: 20px;
+  background: #a7a7a7;
+  border-left-color: transparent;
+  padding: 1px;
+  height: 0.625rem /* 10px */;
+  border-radius: 1rem;
 }
