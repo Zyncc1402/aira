@@ -40,7 +40,7 @@ export default async function Search({ searchParams: { q } }: Props) {
               className="w-[500px] "
               placeholder="Search"
             />
-            <Button type="submit" size={"icon"} variant={"secondary"}>
+            <Button type="submit" size={"sm"} variant={"secondary"}>
               <MdSearch size={32} className="flex-shrink-0" />
             </Button>
           </div>

@@ -25,7 +25,6 @@ const Men = async () => {
             price={product.price}
             category={product.category}
             id={product.id}
-            showIcons={true}
           />
         ))}
       </div>

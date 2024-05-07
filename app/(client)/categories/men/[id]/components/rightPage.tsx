@@ -54,22 +54,34 @@ export default function RightPage({ product }: Props) {
             action={handleAddToCart}
             className="flex flex-col items-start gap-4"
           >
+            <h1>Sizes</h1>
             <div className="flex items-center gap-4">
-              <Label htmlFor="size" className="text-md">
-                Sizes
-              </Label>
-              <select
-                name="size"
-                id="size"
-                className="border-2 inline-flex items-center justify-center whitespace-nowrap  text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none    disabled:pointer-events-none disabled:opacity-50 rounded-[8px] p-1"
-                required
+              <Label
+                htmlFor="sm"
+                className="smlabel px-6 py-2 text-secondary-foreground rounded-sm text-xl"
               >
-                <option selected></option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-              </select>
+                S
+                <input
+                  id="sm"
+                  name="sm"
+                  type="radio"
+                  className=""
+                  value={"small"}
+                />
+              </Label>
+              <Label
+                htmlFor="md"
+                className="smlabel px-6 py-2 text-secondary-foreground rounded-sm text-xl"
+              >
+                S
+                <input
+                  id="md"
+                  name="md"
+                  type="radio"
+                  className=""
+                  value={"small"}
+                />
+              </Label>
             </div>
             <div className="flex w-full gap-4 flex-col md:flex-row">
               <Button

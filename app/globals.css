@@ -82,11 +82,6 @@ body {
   width: 0px;
 }
 
-::selection {
-  color: white;
-  background-color: black;
-}
-
 .noSelectImage {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -163,4 +158,18 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, 150px);
   flex-direction: column;
+}
+
+.smlabel {
+  background-color: var(--secondary);
+  border: 2px solid rgb(68, 68, 68);
+}
+
+.smlabel:hover {
+  background-color: hsl(var(--secondary) / 0.8);
+}
+
+#sm:checked ~ .smlabel {
+  border: 2px blue solid;
+  background-color: red;
 }

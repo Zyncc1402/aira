@@ -4,7 +4,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { LuMenu, LuUser } from "react-icons/lu";
 import { PiShoppingBagOpen } from "react-icons/pi";
 import { FaRegHeart } from "react-icons/fa";
-import { MdLockOutline, MdSearch } from "react-icons/md";
+import { MdLockOutline } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import Link from "next/link";
 
@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTrigger,
@@ -57,26 +58,88 @@ const Navbar = async () => {
             </li>
           ))}
         </ul>
-        <div className="lg:hidden flex items-center gap-3">
-          <Link href={"/search"}>
-            <MdSearch size={32} className="lg:block" />
+        <div className="flex gap-3 lg:hidden">
+          <Link href={"/cart"} aria-label="cart" className="lg:hidden">
+            <IoCartOutline size={32} />
           </Link>
-          <Link href={"/cart"}>
-            <IoCartOutline size={32} className="lg:block" />
-          </Link>
-          <Link href={"/account"}>
-            <VscAccount size={30} />
-          </Link>
-          <LuMenu size={32} className="lg:hidden" />
+          <div className="lg:hidden">
+            <Sheet>
+              <SheetTrigger>
+                <LuMenu size={32} className="lg:hidden" />
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <ul className="items-start gap-8 flex flex-col">
+                    {navlinks.map((navlink) => (
+                      <li key={navlink.label} className="font-medium text-md">
+                        <SheetClose asChild>
+                          <Link href={navlink.href}>{navlink.label}</Link>
+                        </SheetClose>
+                      </li>
+                    ))}
+                    <Separator />
+                    <li className="font-medium text-md">
+                      <SheetClose asChild>
+                        <Link href={"/account"}>Account</Link>
+                      </SheetClose>
+                    </li>
+                    <li className="font-medium text-md">
+                      <SheetClose asChild>
+                        <Link href={"/wishlist"}>Wishlist</Link>
+                      </SheetClose>
+                    </li>
+                    {session?.user?.role == "Admin" ? (
+                      <li className="font-medium text-md">
+                        <SheetClose asChild>
+                          <Link href={"/admin"}>Admin</Link>
+                        </SheetClose>
+                      </li>
+                    ) : (
+                      <></>
+                    )}
+                  </ul>
+                </SheetHeader>
+                {session?.user ? (
+                  <form
+                    action={async () => {
+                      "use server";
+                      await signOut();
+                    }}
+                  >
+                    <SheetClose asChild>
+                      <Button
+                        aria-label="button"
+                        type="submit"
+                        className="absolute bottom-5 right-5"
+                      >
+                        Sign Out
+                      </Button>
+                    </SheetClose>
+                  </form>
+                ) : (
+                  <form
+                    action={async () => {
+                      "use server";
+                      await signIn("google");
+                    }}
+                  >
+                    <Button
+                      aria-label="button"
+                      className="absolute bottom-5 right-5"
+                      type="submit"
+                    >
+                      Sign In
+                    </Button>
+                  </form>
+                )}
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
         <div className="items-center gap-4 hidden lg:flex">
-          <Link href={"/search"}>
-            <MdSearch size={32} />
-          </Link>
           <Link href={"/cart"}>
-            <IoCartOutline size={32} className="lg:block" />
+            <IoCartOutline size={32} className="lg:block hidden" />
           </Link>
-          <LuMenu size={32} className="lg:hidden" />
           {session?.user ? (
             <Menubar className="hidden lg:flex items-center">
               <MenubarMenu>
