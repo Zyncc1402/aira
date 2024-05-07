@@ -102,7 +102,7 @@ const ProductById = async ({ params: { id } }: Params) => {
                   height={400}
                   width={400}
                   alt="similar products"
-                  className="cursor-pointer"
+                  className="cursor-pointer object-cover aspect-square"
                 />
               ))}
             </div>

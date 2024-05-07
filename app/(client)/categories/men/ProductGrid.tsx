@@ -212,7 +212,7 @@ export default function ProductGrid({ products }: Props) {
         </Accordion>
       </div>
 
-      <div className="container lg:basis-[85%] m-2 md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 md:gap-5 lg:gap-7 lg:pr-6 pb-10">
+      <div className="lg:container md:container lg:basis-[85%] lg:m-2 md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-5 lg:gap-7 lg:pr-6 pb-10">
         {products?.map((product, key) => (
           <ProductCard
             key={key}

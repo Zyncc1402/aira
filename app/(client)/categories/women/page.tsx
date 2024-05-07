@@ -16,8 +16,8 @@ const Men = async () => {
       <div className="flex justify-between title">
         <h1 className="font-medium text-3xl">Women</h1>
       </div>
-      <div className="m-2 md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 md:gap-5 lg:gap-7 py-10">
-        {womenProducts.map((product, key) => (
+      <div className="lg:container md:container lg:basis-[85%] lg:m-2 md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-5 lg:gap-7 lg:pr-6 pb-10">
+        {womenProducts?.map((product, key) => (
           <ProductCard
             key={key}
             image={product.images[0]}
