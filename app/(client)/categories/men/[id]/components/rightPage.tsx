@@ -37,7 +37,7 @@ export default function RightPage({ product }: Props) {
     }
   }
   return (
-    <div className="md:basis-1/2 flex flex-col gap-4 w-[100%] container">
+    <div className="md:basis-1/2 flex flex-col gap-4 container">
       <h1 className="text-3xl font-bold">{title}</h1>
       <h1>{description}</h1>
       <h1 className="text-xl font-semibold">{formatted.split(".")[0]}</h1>
@@ -66,7 +66,7 @@ export default function RightPage({ product }: Props) {
                     />
                   </Label>
                 )}
-                {quantity?.sm && quantity?.sm < 10 && (
+                {quantity?.sm && quantity?.sm < 10 && quantity?.sm !== 0 && (
                   <p className="text-sm font-medium text-red-400">
                     {quantity?.sm} left
                   </p>
@@ -89,7 +89,7 @@ export default function RightPage({ product }: Props) {
                     />
                   </Label>
                 )}
-                {quantity?.md && quantity?.md < 10 && (
+                {quantity?.md && quantity?.md < 10 && quantity?.md !== 0 && (
                   <p className="text-sm font-medium text-red-400">
                     {quantity?.md} left
                   </p>
@@ -112,7 +112,7 @@ export default function RightPage({ product }: Props) {
                     />
                   </Label>
                 )}
-                {quantity?.lg && quantity?.lg < 10 && (
+                {quantity?.lg && quantity?.lg < 10 && quantity?.lg !== 0 && (
                   <p className="text-sm font-medium text-red-400">
                     {quantity?.lg} left
                   </p>
@@ -135,17 +135,17 @@ export default function RightPage({ product }: Props) {
                     />
                   </Label>
                 )}
-                {quantity?.xl && quantity?.xl < 10 && (
+                {quantity?.xl && quantity?.xl < 10 && quantity?.xl !== 0 && (
                   <p className="text-sm font-medium text-red-400">
                     {quantity?.xl} left
                   </p>
                 )}
               </div>
             </div>
-            <div className="flex w-full gap-4 flex-col md:flex-row">
+            <div className="flex gap-4 w-full flex-wrap flex-col md:flex-row">
               <Button
                 aria-label="Button"
-                className="rounded-sm flex-1 py-3 md:py-6"
+                className="flex-1 rounded-sm py-3 md:py-6"
                 variant={"outline"}
                 size={"lg"}
                 type="submit"

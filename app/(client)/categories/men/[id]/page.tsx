@@ -85,7 +85,7 @@ const ProductById = async ({ params: { id } }: Params) => {
             <div className="similar gap-2 mt-6 overflow-x-auto flex">
               {similarProducts.map((similarProduct) => (
                 <div
-                  className="max-w-[400px] flex-shrink-0 pb-1"
+                  className="w-[400px] flex-shrink-0 pb-1"
                   key={similarProduct.id}
                 >
                   <Link

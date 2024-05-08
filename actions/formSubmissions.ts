@@ -66,9 +66,8 @@ export async function createProduct(formData: FormData) {
       },
     });
   } catch (error) {
-    return {
-      error: "Something went wrong",
-    };
+    console.log(error);
+    throw Error("Failed to create product");
   } finally {
     revalidatePath("/categories/men");
     revalidatePath("/categories/women");
@@ -113,9 +112,8 @@ export async function updateProduct(formData: FormData) {
       },
     });
   } catch (error) {
-    return {
-      error: "Something Went Wrong",
-    };
+    console.log(error);
+    throw Error("Failed to update product");
   } finally {
     revalidatePath("/categories/men");
     revalidatePath("/categories/women");
@@ -194,9 +192,8 @@ export async function updateProductWithImage(formData: FormData) {
       },
     });
   } catch (error) {
-    return {
-      error: "Something Went Wrong",
-    };
+    console.log(error);
+    throw Error("Failed to update product");
   } finally {
     revalidatePath("/categories/men");
     revalidatePath("/categories/women");
