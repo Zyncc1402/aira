@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import formatCurrency from "@/lib/formatCurrency";
 import { Label } from "@/components/ui/label";
 import { addToCart } from "@/actions/action";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 import { Products } from "@/lib/types";
 
 type Props = {
@@ -19,6 +19,7 @@ type Props = {
 };
 
 export default function RightPage({ product }: Props) {
+  const { toast } = useToast();
   const { pending } = useFormStatus();
   const { data: session } = useSession();
   const { title, description, price, quantity, id } = product;
@@ -28,12 +29,17 @@ export default function RightPage({ product }: Props) {
     console.log("yes");
     const size = formData.get("size") as string;
     if (!session?.user) {
-      toast.warning("Must be logged in to add to cart");
+      toast({
+        variant: "destructive",
+        title: "Must be logged in to add to cart",
+      });
       return null;
     }
     const result = await addToCart(id, size, session?.user.id as string);
     if (result?.error) {
-      toast.error(`${title} already in Cart`);
+      toast({
+        title: `${title} already in Cart`,
+      });
     }
   }
   return (
