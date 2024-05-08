@@ -8,7 +8,10 @@ export async function createProduct(formData: FormData) {
   const images = formData.getAll("images");
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const quantity = formData.get("quantity") as string;
+  const sm = formData.get("sm") as string;
+  const md = formData.get("md") as string;
+  const lg = formData.get("lg") as string;
+  const xl = formData.get("xl") as string;
   const price = formData.get("price") as unknown as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
@@ -46,10 +49,20 @@ export async function createProduct(formData: FormData) {
         title,
         description,
         price: Number(price),
-        quantity: Number(quantity),
+        quantity: {
+          create: {
+            sm: Number(sm),
+            md: Number(md),
+            lg: Number(lg),
+            xl: Number(xl),
+          },
+        },
         category: category,
         images: arrayOfImages as string[],
         isArchived: Boolean(isArchived),
+      },
+      include: {
+        quantity: true,
       },
     });
   } catch (error) {
@@ -67,13 +80,16 @@ export async function updateProduct(formData: FormData) {
   const id = formData.get("id") as string;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const quantity = formData.get("quantity") as string;
+  const sm = formData.get("sm") as string;
+  const md = formData.get("md") as string;
+  const lg = formData.get("lg") as string;
+  const xl = formData.get("xl") as string;
   const price = formData.get("price") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
 
   try {
-    const result = await prisma.product.update({
+    await prisma.product.update({
       where: {
         id,
       },
@@ -81,9 +97,19 @@ export async function updateProduct(formData: FormData) {
         title,
         description,
         price: Number(price),
-        quantity: Number(quantity),
+        quantity: {
+          update: {
+            sm: Number(sm),
+            md: Number(md),
+            lg: Number(lg),
+            xl: Number(xl),
+          },
+        },
         category: category,
         isArchived: Boolean(isArchived),
+      },
+      include: {
+        quantity: true,
       },
     });
   } catch (error) {
@@ -103,7 +129,10 @@ export async function updateProductWithImage(formData: FormData) {
   const id = formData.get("id") as string;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const quantity = formData.get("quantity") as string;
+  const sm = formData.get("sm") as string;
+  const md = formData.get("md") as string;
+  const lg = formData.get("lg") as string;
+  const xl = formData.get("xl") as string;
   const price = formData.get("price") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
@@ -151,7 +180,14 @@ export async function updateProductWithImage(formData: FormData) {
         title,
         description,
         price: Number(price),
-        quantity: Number(quantity),
+        quantity: {
+          update: {
+            sm: Number(sm),
+            md: Number(md),
+            lg: Number(lg),
+            xl: Number(xl),
+          },
+        },
         category: category,
         images: arrayOfImages as string[],
         isArchived: Boolean(isArchived),

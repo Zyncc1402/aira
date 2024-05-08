@@ -15,6 +15,9 @@ const CreateProducts = async ({ params }: Props) => {
     where: {
       id,
     },
+    include: {
+      quantity: true,
+    },
   });
 
   if (!product?.title) {

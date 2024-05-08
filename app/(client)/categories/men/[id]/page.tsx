@@ -14,6 +14,9 @@ import { Metadata } from "next";
 import ProductSlider from "@/components/carousel/productSlider";
 import RightPage from "./components/rightPage";
 import Image from "next/image";
+import Link from "next/link";
+import formatCurrency from "@/lib/formatCurrency";
+import { Products } from "@/lib/types";
 
 type Params = {
   params: {
@@ -23,35 +26,20 @@ type Params = {
 
 export const revalidate = 600;
 
-interface Product {
-  id: string;
-  title?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  images?: string[];
-  salePrice?: number | null;
-  category?: string;
-  isArchived?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
 const ProductById = async ({ params: { id } }: Params) => {
   const product = await prisma.product.findUnique({
     where: {
       id,
       isArchived: false,
     },
+    include: {
+      quantity: true,
+    },
   });
 
   const similarProducts = await prisma.product.findMany({
     where: {
-      AND: [
-        {
-          category: { contains: product?.category },
-        },
-      ],
+      category: "men",
     },
     take: 5,
     orderBy: {
@@ -67,7 +55,7 @@ const ProductById = async ({ params: { id } }: Params) => {
     const { title, images } = product;
     const OPTIONS: EmblaOptionsType = {};
     return (
-      <section className="py-[100px]">
+      <section className="py-[100px] ">
         <Breadcrumb className="container">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -93,17 +81,32 @@ const ProductById = async ({ params: { id } }: Params) => {
         </div>
         {similarProducts.length > 0 && (
           <div className="container mt-[100px]">
-            <h1 className="text-2xl font-semibold">Products similar to this</h1>
+            <h1 className="text-2xl font-semibold">You might like these</h1>
             <div className="similar gap-2 mt-6 overflow-x-auto flex">
               {similarProducts.map((similarProduct) => (
-                <Image
+                <div
+                  className="max-w-[400px] flex-shrink-0 pb-1"
                   key={similarProduct.id}
-                  src={similarProduct.images[0]}
-                  height={400}
-                  width={400}
-                  alt="similar products"
-                  className="cursor-pointer object-cover aspect-square"
-                />
+                >
+                  <Link
+                    href={`/categories/${similarProduct.category}/${similarProduct.id}`}
+                  >
+                    <Image
+                      key={similarProduct.id}
+                      src={similarProduct.images[0]}
+                      height={400}
+                      width={400}
+                      alt="similar products"
+                      className="cursor-pointer object-cover aspect-square"
+                    />
+                  </Link>
+                  <Link
+                    href={`/categories/${similarProduct.category}/${similarProduct.id}`}
+                  >
+                    <h1 className="mt-1">{similarProduct.title}</h1>
+                  </Link>
+                  <h2>{formatCurrency(similarProduct.price).split(".")[0]}</h2>
+                </div>
               ))}
             </div>
           </div>
@@ -116,10 +119,13 @@ const ProductById = async ({ params: { id } }: Params) => {
 export default ProductById;
 
 export async function generateStaticParams() {
-  const products: Promise<Product[]> = prisma.product.findMany({
+  const products: Promise<Products[]> = prisma.product.findMany({
     where: {
       category: "men",
       isArchived: false,
+    },
+    include: {
+      quantity: true,
     },
   });
   const product = await products;

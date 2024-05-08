@@ -16,8 +16,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { BiArchiveIn } from "react-icons/bi";
-import { MdOutlineDeleteOutline } from "react-icons/md";
 import {
   archiveProduct,
   deleteProduct,
@@ -26,7 +24,7 @@ import {
 import Link from "next/link";
 import formatCurrency from "@/lib/formatCurrency";
 
-export type Product = {
+type Product = {
   price?: number;
   id?: string;
   title?: string;

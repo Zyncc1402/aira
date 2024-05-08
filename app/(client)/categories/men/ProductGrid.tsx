@@ -9,22 +9,11 @@ import {
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Products } from "@/lib/types";
 import { LuFilter } from "react-icons/lu";
 
 type Props = {
-  products: {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    quantity: number;
-    images: string[];
-    salePrice: number | null;
-    category: string;
-    isArchived: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  }[];
+  products: Products[];
 };
 
 export default function ProductGrid({ products }: Props) {

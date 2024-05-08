@@ -12,21 +12,10 @@ import formatCurrency from "@/lib/formatCurrency";
 import { Label } from "@/components/ui/label";
 import { addToCart } from "@/actions/action";
 import { toast } from "sonner";
+import { Products } from "@/lib/types";
 
 type Props = {
-  product: {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    quantity: number;
-    images: string[];
-    salePrice?: number | null;
-    category: string;
-    isArchived: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  product: Products;
 };
 
 export default function RightPage({ product }: Props) {
@@ -36,13 +25,17 @@ export default function RightPage({ product }: Props) {
   const formatted = formatCurrency(price);
 
   async function handleAddToCart(formData: FormData) {
+    console.log("yes");
     const size = formData.get("size") as string;
+    if (!session?.user) {
+      toast.warning("Must be logged in to add to cart");
+      return null;
+    }
     const result = await addToCart(id, size, session?.user.id as string);
     if (result?.error) {
       toast.error(`${title} already in Cart`);
     }
   }
-
   return (
     <div className="md:basis-1/2 flex flex-col gap-4 w-[100%] container">
       <h1 className="text-3xl font-bold">{title}</h1>
@@ -54,42 +47,107 @@ export default function RightPage({ product }: Props) {
             action={handleAddToCart}
             className="flex flex-col items-start gap-4"
           >
-            <h1>Sizes</h1>
-            <div className="flex items-center gap-4">
-              <Label
-                htmlFor="sm"
-                className="smlabel p-3 text-secondary-foreground rounded-sm font-semibold"
-              >
-                S
-                <input
-                  id="sm"
-                  name="sm"
-                  type="radio"
-                  hidden
-                  className=""
-                  value={"small"}
-                />
-              </Label>
-              <Label
-                htmlFor="md"
-                className="smlabel p-3 text-secondary-foreground rounded-sm font-semibold"
-              >
-                M
-                <input
-                  id="md"
-                  name="md"
-                  type="radio"
-                  hidden
-                  className=""
-                  value={"small"}
-                />
-              </Label>
+            <h1>Select a size</h1>
+            <div className="flex gap-6 items-start mb-2 overflow-hidden flex-wrap">
+              <div className="flex flex-col items-center gap-2">
+                {quantity?.sm !== 0 && (
+                  <Label
+                    htmlFor="sm"
+                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
+                  >
+                    S
+                    <input
+                      id="sm"
+                      name="sm"
+                      type="radio"
+                      hidden
+                      required
+                      value={"sm"}
+                    />
+                  </Label>
+                )}
+                {quantity?.sm && quantity?.sm < 10 && (
+                  <p className="text-sm font-medium text-red-400">
+                    {quantity?.sm} left
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                {quantity?.md !== 0 && (
+                  <Label
+                    htmlFor="md"
+                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
+                  >
+                    M
+                    <input
+                      id="md"
+                      name="md"
+                      type="radio"
+                      hidden
+                      required
+                      value={"md"}
+                    />
+                  </Label>
+                )}
+                {quantity?.md && quantity?.md < 10 && (
+                  <p className="text-sm font-medium text-red-400">
+                    {quantity?.md} left
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                {quantity?.lg !== 0 && (
+                  <Label
+                    htmlFor="lg"
+                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
+                  >
+                    L
+                    <input
+                      id="lg"
+                      name="lg"
+                      type="radio"
+                      hidden
+                      required
+                      value={"lg"}
+                    />
+                  </Label>
+                )}
+                {quantity?.lg && quantity?.lg < 10 && (
+                  <p className="text-sm font-medium text-red-400">
+                    {quantity?.lg} left
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                {quantity?.xl !== 0 && (
+                  <Label
+                    htmlFor="xl"
+                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
+                  >
+                    XL
+                    <input
+                      id="xl"
+                      name="xl"
+                      type="radio"
+                      hidden
+                      required
+                      value={"xl"}
+                    />
+                  </Label>
+                )}
+                {quantity?.xl && quantity?.xl < 10 && (
+                  <p className="text-sm font-medium text-red-400">
+                    {quantity?.xl} left
+                  </p>
+                )}
+              </div>
             </div>
             <div className="flex w-full gap-4 flex-col md:flex-row">
               <Button
                 aria-label="Button"
-                className="rounded-sm flex-1"
+                className="rounded-sm flex-1 py-3 md:py-6"
                 variant={"outline"}
+                size={"lg"}
                 type="submit"
                 disabled={pending}
               >
@@ -98,8 +156,10 @@ export default function RightPage({ product }: Props) {
               </Button>
               <Button
                 aria-label="Button"
-                className="rounded-md flex-1"
+                className="rounded-md flex-1 py-3 md:py-6"
+                size={"lg"}
                 variant={"secondary"}
+                type="button"
               >
                 <IoMdHeart className="mr-3" size={23} />
                 Add to Wishlist
@@ -107,7 +167,8 @@ export default function RightPage({ product }: Props) {
               {session?.user.role === "Admin" && (
                 <Link href={"/admin/products/" + product.id} className="flex-1">
                   <Button
-                    className="flex-1 w-full rounded-md"
+                    size={"lg"}
+                    className="flex-1 w-full rounded-md py-3 md:py-6"
                     aria-label="Button"
                   >
                     <MdOutlineModeEdit className="mr-3" size={23} />

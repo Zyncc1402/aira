@@ -44,6 +44,9 @@ const ProductById = async ({ params: { id } }: Params) => {
       id,
       isArchived: false,
     },
+    include: {
+      quantity: true,
+    },
   });
 
   const similarProducts = await prisma.product.findMany({
@@ -53,6 +56,7 @@ const ProductById = async ({ params: { id } }: Params) => {
           category: { contains: product?.category },
         },
       ],
+      NOT: [{ title: { contains: product?.title } }],
     },
     take: 5,
     orderBy: {

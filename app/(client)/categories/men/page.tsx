@@ -11,7 +11,10 @@ const Men = async () => {
       isArchived: false,
     },
     orderBy: {
-      category: "desc",
+      createdAt: "desc",
+    },
+    include: {
+      quantity: true,
     },
   });
   // await new Promise((resolve) =>
@@ -20,7 +23,7 @@ const Men = async () => {
   //   }, 600)
   // );
   return (
-    <div className="pt-[100px] ">
+    <div className="pt-[80px]">
       <ProductGrid products={menProducts} />
     </div>
   );

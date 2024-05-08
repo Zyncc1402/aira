@@ -17,20 +17,11 @@ const CreateProductForm = () => {
           name="description"
           className="resize-y h-[150px]"
         />
-        <Input
-          name="price"
-          type="number"
-          required
-          className=""
-          placeholder="Price"
-        />
-        <Input
-          name="quantity"
-          type="number"
-          required
-          className=""
-          placeholder="Quantity"
-        />
+        <Input name="price" type="number" required placeholder="Price" />
+        <Input name="sm" type="number" required placeholder="Small Qty" />
+        <Input name="md" type="number" required placeholder="Medium Qty" />
+        <Input name="lg" type="number" required placeholder="Large Qty" />
+        <Input name="xl" type="number" required placeholder="Extra Large Qty" />
         <Label>Category</Label>
         <select
           name="category"

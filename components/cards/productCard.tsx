@@ -31,7 +31,7 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
   }
 
   return (
-    <div className="flex flex-col sm:border-r md:border relative overflow-hidden text-left">
+    <div className="flex flex-col border-r border-b md:border relative overflow-hidden text-left">
       <Link aria-label="navigation-link" href={`/categories/${category}/${id}`}>
         <Image
           src={image}

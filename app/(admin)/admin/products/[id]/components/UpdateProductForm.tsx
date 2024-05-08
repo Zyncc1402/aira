@@ -18,23 +18,10 @@ import {
 import Image from "next/image";
 import { MdHideImage, MdImage } from "react-icons/md";
 import CreateProductButton from "../../create/components/CreateProductButton";
-
-interface Product {
-  id: string;
-  title?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  images?: string[];
-  salePrice?: number | null;
-  category?: string;
-  isArchived?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { Products } from "@/lib/types";
 
 type Props = {
-  product: Product | null;
+  product: Products | null;
 };
 
 const CreateProductForm = ({ product }: Props) => {
@@ -89,13 +76,10 @@ const CreateProductForm = ({ product }: Props) => {
             placeholder="Price"
             defaultValue={price}
           />
-          <Input
-            name="quantity"
-            type="number"
-            required
-            placeholder="Quantity"
-            defaultValue={quantity}
-          />
+          <Input name="sm" type="number" required defaultValue={quantity?.sm} />
+          <Input name="md" type="number" required defaultValue={quantity?.md} />
+          <Input name="lg" type="number" required defaultValue={quantity?.lg} />
+          <Input name="xl" type="number" required defaultValue={quantity?.xl} />
           <Label>Category</Label>
           <select
             name="category"

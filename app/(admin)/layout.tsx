@@ -17,7 +17,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className="">
+        <body>
           <AdminNavbar />
           {children}
           <Toaster />
