@@ -16,6 +16,14 @@ const CreateProductForm = () => {
           placeholder="Description"
           name="description"
           className="resize-y h-[150px]"
+          required
+        />
+        <Input
+          name="color"
+          autoCapitalize="false"
+          type="text"
+          required
+          placeholder="Color"
         />
         <Input name="price" type="number" required placeholder="Price" />
         <Input name="sm" type="number" required placeholder="Small Qty" />

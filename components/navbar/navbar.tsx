@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { Suspense } from "react";
 import { Button } from "../ui/button";
 import { IoCartOutline } from "react-icons/io5";
 import { LuMenu, LuUser } from "react-icons/lu";
@@ -13,220 +15,196 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-
-import { Separator } from "@/components/ui/separator";
 
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { auth, signIn, signOut } from "@/auth";
-import Image from "next/image";
 
-const Navbar = async () => {
-  const navlinks = [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Men",
-      href: "/categories/men",
-    },
-    {
-      label: "Women",
-      href: "/categories/women",
-    },
-  ];
-  const session = await auth();
+import { signIn, signOut, useSession } from "next-auth/react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
+
+const Navbar = () => {
+  const { data: session } = useSession();
   return (
     <header className="z-10 header pb-4 pt-4 w-full fixed top-0 left-0 right-0 bg-white text-black">
       <nav className="container flex justify-between items-center ">
         <Link href={"/"}>
           <h1 className="font-semibold text-2xl">AIRA</h1>
         </Link>
-        <ul className="items-center gap-8 hidden lg:flex">
-          {navlinks.map((navlink) => (
-            <li key={navlink.label} className="font-medium text-md">
-              <Link href={navlink.href}>{navlink.label}</Link>
-            </li>
-          ))}
-        </ul>
-        <div className="flex gap-3 lg:hidden">
-          <Link href={"/cart"} aria-label="cart" className="lg:hidden">
-            <IoCartOutline size={32} />
-          </Link>
-          <div className="lg:hidden">
-            <Sheet>
-              <SheetTrigger>
-                <LuMenu size={32} className="lg:hidden" />
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <ul className="items-start gap-8 flex flex-col">
-                    {navlinks.map((navlink) => (
-                      <li key={navlink.label} className="font-medium text-md">
-                        <SheetClose asChild>
-                          <Link href={navlink.href}>{navlink.label}</Link>
-                        </SheetClose>
-                      </li>
-                    ))}
-                    <Separator />
-                    <li className="font-medium text-md">
-                      <SheetClose asChild>
-                        <Link href={"/account"}>Account</Link>
-                      </SheetClose>
-                    </li>
-                    <li className="font-medium text-md">
-                      <SheetClose asChild>
-                        <Link href={"/wishlist"}>Wishlist</Link>
-                      </SheetClose>
-                    </li>
-                    {session?.user?.role == "Admin" ? (
-                      <li className="font-medium text-md">
-                        <SheetClose asChild>
-                          <Link href={"/admin"}>Admin</Link>
-                        </SheetClose>
-                      </li>
-                    ) : (
-                      <></>
-                    )}
-                  </ul>
-                </SheetHeader>
-                {session?.user ? (
-                  <form
-                    action={async () => {
-                      "use server";
-                      await signOut();
-                    }}
-                  >
-                    <SheetClose asChild>
-                      <Button
-                        aria-label="button"
-                        type="submit"
-                        className="absolute bottom-5 right-5"
-                      >
-                        Sign Out
-                      </Button>
-                    </SheetClose>
-                  </form>
-                ) : (
-                  <form
-                    action={async () => {
-                      "use server";
-                      await signIn("google");
-                    }}
-                  >
-                    <Button
-                      aria-label="button"
-                      className="absolute bottom-5 right-5"
-                      type="submit"
-                    >
-                      Sign In
-                    </Button>
-                  </form>
-                )}
-              </SheetContent>
-            </Sheet>
-          </div>
+        <div className="hidden lg:block">
+          <Menubar className="flex gap-x-6">
+            <MenubarMenu>
+              <MenubarTrigger>
+                <Link href={"/"}>Home</Link>
+              </MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>
+                <Link href={"/about"}>About</Link>
+              </MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger className="cursor-pointer">
+                Categories
+              </MenubarTrigger>
+              <MenubarContent>
+                <Link href={"/categories/men"}>
+                  <MenubarItem>MEN</MenubarItem>
+                </Link>
+                <Link href={"/categories/co-ord-sets"}>
+                  <MenubarItem>CO-ORD SETS</MenubarItem>
+                </Link>
+                <Link href={"/categories/pants"}>
+                  <MenubarItem>PANTS</MenubarItem>
+                </Link>
+                <Link href={"/categories/jumpsuits"}>
+                  <MenubarItem>JUMPSUITS</MenubarItem>
+                </Link>
+                <Link href={"/categories/shorts"}>
+                  <MenubarItem>SHORTS</MenubarItem>
+                </Link>
+                <Link href={"/categories/dresses"}>
+                  <MenubarItem>DRESSES</MenubarItem>
+                </Link>
+                <Link href={"/categories/outerwear"}>
+                  <MenubarItem>OUTERWEAR</MenubarItem>
+                </Link>
+                <Link href={"/categories/tops"}>
+                  <MenubarItem>TOPS</MenubarItem>
+                </Link>
+                <Link href={"/categories/skirts"}>
+                  <MenubarItem>SKIRTS</MenubarItem>
+                </Link>
+                <Link href={"/categories/lounge-wear"}>
+                  <MenubarItem>LOUNGE WEAR</MenubarItem>
+                </Link>
+              </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>
+                <Link href={"/account"}>Account</Link>
+              </MenubarTrigger>
+            </MenubarMenu>
+            {session?.user.role === "Admin" && (
+              <MenubarMenu>
+                <MenubarTrigger>
+                  <Link href={"/admin"}>Admin</Link>
+                </MenubarTrigger>
+              </MenubarMenu>
+            )}
+          </Menubar>
         </div>
-        <div className="items-center gap-4 hidden lg:flex">
-          <Link href={"/cart"}>
-            <IoCartOutline size={32} className="lg:block hidden" />
+        <div className="flex gap-3 items-center justify-center">
+          <Link href={"/wishlist"}>
+            <FaRegHeart size={25} />
           </Link>
-          {session?.user ? (
-            <Menubar className="hidden lg:flex items-center">
-              <MenubarMenu>
-                <MenubarTrigger>
-                  <Image
-                    src={session?.user?.image || ""}
-                    height={35}
-                    width={35}
-                    alt="profile-avatar"
-                    priority={true}
-                    quality={40}
-                    className="rounded-full"
-                  />
-                </MenubarTrigger>
-                <MenubarContent>
-                  <Link href={"/account"}>
-                    <MenubarItem>
-                      <LuUser size={18} className="mr-2" />
-                      Account
-                    </MenubarItem>
-                  </Link>
-                  <MenubarSeparator />
-                  <Link href={"/orders"}>
-                    <MenubarItem>
-                      <PiShoppingBagOpen size={18} className="mr-2" />
-                      Orders
-                    </MenubarItem>
-                  </Link>
-                  <MenubarSeparator />
-                  <Link href={"/wishlist"}>
-                    <MenubarItem>
-                      <FaRegHeart size={18} className="mr-2" />
-                      Wishlist
-                    </MenubarItem>
-                  </Link>
-                  <MenubarSeparator />
-                  {session?.user?.role === "Admin" && (
-                    <>
-                      <Link href={"/admin"}>
-                        <MenubarItem>
-                          <MdLockOutline size={18} className="mr-2" />
-                          Admin
-                        </MenubarItem>
+          <Link href={"/cart"}>
+            <IoCartOutline size={30} />
+          </Link>
+          <Sheet>
+            <SheetTrigger className="lg:hidden">
+              <LuMenu size={30} />
+            </SheetTrigger>
+            <SheetContent className="flex flex-col text-left">
+              <Link href={"/"}>
+                <SheetClose>Home</SheetClose>
+              </Link>
+              <Link href={"/about"}>
+                <SheetClose></SheetClose>About
+              </Link>
+              <Link href={"/account"}>
+                <SheetClose>Account</SheetClose>
+              </Link>
+              <Accordion type="single" collapsible defaultValue="item-1">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="text-md font-normal">
+                    Categories
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="pl-4 pt-4 flex flex-col gap-y-4">
+                      <Link href={"/categories/men"}>
+                        <SheetClose>MEN</SheetClose>
                       </Link>
-                      <MenubarSeparator />
-                    </>
-                  )}
-                  <form
-                    action={async () => {
-                      "use server";
-                      await signOut();
-                    }}
-                  >
-                    <Button aria-label="button" className="w-[100%]">
-                      Sign Out
+                      <Link href={"/categories/co-ord-sets"}>CO-ORD SETS</Link>
+                      <Link href={"/categories/pants"}>
+                        <SheetClose>PANTS</SheetClose>
+                      </Link>
+                      <Link href={"/categories/jumpsuits"}>
+                        <SheetClose>JUMPSUITS</SheetClose>
+                      </Link>
+                      <Link href={"/categories/shorts"}>
+                        <SheetClose>SHORTS</SheetClose>
+                      </Link>
+                      <Link href={"/categories/dresses"}>
+                        <SheetClose>DRESSES</SheetClose>
+                      </Link>
+                      <Link href={"/categories/outerwear"}>
+                        <SheetClose>OUTERWEAR</SheetClose>
+                      </Link>
+                      <Link href={"/categories/tops"}>
+                        <SheetClose>TOPS</SheetClose>
+                      </Link>
+                      <Link href={"/categories/skirts"}>
+                        <SheetClose>SKIRTS</SheetClose>
+                      </Link>
+                      <Link href={"/categories/lounge-wear"}>
+                        <SheetClose>LOUNGE WEAR</SheetClose>
+                      </Link>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              {session?.user.role === "Admin" && (
+                <Link href={"/admin"}>
+                  <SheetClose>Admin</SheetClose>
+                </Link>
+              )}
+              <div className="absolute bottom-5 right-5">
+                {session?.user ? (
+                  <SheetClose>
+                    <Button variant={"secondary"} onClick={() => signOut()}>
+                      Sign out
                     </Button>
-                  </form>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+                  </SheetClose>
+                ) : (
+                  <SheetClose>
+                    <Button
+                      variant={"secondary"}
+                      onClick={() => signIn("google")}
+                    >
+                      Sign in
+                    </Button>
+                  </SheetClose>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+          {session?.user ? (
+            <Button
+              variant={"secondary"}
+              className="hidden lg:block w-[100px]"
+              onClick={() => signOut()}
+            >
+              Sign out
+            </Button>
           ) : (
-            <Menubar>
-              <MenubarMenu>
-                <MenubarTrigger>
-                  <VscAccount size={30} />
-                </MenubarTrigger>
-                <MenubarContent>
-                  <Link href={"/wishlist"}>
-                    <MenubarItem>
-                      <FaRegHeart size={18} className="mr-2" />
-                      Wishlist
-                    </MenubarItem>
-                  </Link>
-                  <MenubarSeparator />
-                  <form
-                    action={async () => {
-                      "use server";
-                      await signIn("google");
-                    }}
-                  >
-                    <Button aria-label="button" className="w-[100%]">
-                      Sign In
-                    </Button>
-                  </form>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+            <Button
+              variant={"secondary"}
+              className="hidden lg:block w-[100px]"
+              onClick={() => signIn("google")}
+            >
+              Sign in
+            </Button>
           )}
         </div>
       </nav>

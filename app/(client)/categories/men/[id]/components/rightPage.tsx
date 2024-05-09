@@ -9,25 +9,29 @@ import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 import { useSession } from "next-auth/react";
 import formatCurrency from "@/lib/formatCurrency";
-import { Label } from "@/components/ui/label";
+import { z } from "zod";
 import { addToCart } from "@/actions/action";
 import { useToast } from "@/components/ui/use-toast";
 import { Products } from "@/lib/types";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   product: Products;
 };
 
+const sizeScheme = z.object({
+  size: z.enum(["sm", "md", "lg", "xl"]),
+});
+
 export default function RightPage({ product }: Props) {
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const { pending } = useFormStatus();
   const { data: session } = useSession();
   const { title, description, price, quantity, id } = product;
   const formatted = formatCurrency(price);
 
-  async function handleAddToCart(formData: FormData) {
-    console.log("yes");
-    const size = formData.get("size") as string;
+  async function handleAddToCart() {
     if (!session?.user) {
       toast({
         variant: "destructive",
@@ -35,11 +39,26 @@ export default function RightPage({ product }: Props) {
       });
       return null;
     }
-    const result = await addToCart(id, size, session?.user.id as string);
-    if (result?.error) {
+    const validation = sizeScheme.safeParse({ size: searchParams.get("size") });
+    if (!validation.success) {
       toast({
-        title: `${title} already in Cart`,
+        variant: "destructive",
+        title: "Please select a size to continue",
       });
+      return null;
+    }
+    const size = searchParams.get("size");
+    if (size) {
+      const result = await addToCart(id, size, session?.user.id as string);
+      if (result?.exists) {
+        toast({
+          title: `${title} already in Cart`,
+        });
+      } else {
+        toast({
+          title: `Added ${title} to cart`,
+        });
+      }
     }
   }
   return (
@@ -53,113 +72,123 @@ export default function RightPage({ product }: Props) {
             action={handleAddToCart}
             className="flex flex-col items-start gap-4"
           >
-            <h1>Select a size</h1>
+            {quantity?.sm == 0 &&
+            quantity?.md == 0 &&
+            quantity?.lg == 0 &&
+            quantity?.xl == 0 ? (
+              <></>
+            ) : (
+              <h1>Select a size</h1>
+            )}
+
             <div className="flex gap-6 items-start mb-2 overflow-hidden flex-wrap">
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex items-start justify-start gap-2 flex-wrap">
                 {quantity?.sm !== 0 && (
-                  <Label
-                    htmlFor="sm"
-                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
-                  >
-                    S
-                    <input
-                      id="sm"
-                      name="sm"
-                      type="radio"
-                      hidden
-                      required
-                      value={"sm"}
-                    />
-                  </Label>
+                  <Link href={"?size=sm"} replace>
+                    <span className="flex items-center text-red-500 flex-col gap-2">
+                      <Button
+                        size={"lg"}
+                        variant={"secondary"}
+                        className={`flex flex-col text-lg ${
+                          searchParams.get("size") == "sm" &&
+                          "border-2 border-blue-500"
+                        }`}
+                      >
+                        S
+                      </Button>
+                      {quantity && quantity?.sm < 5 && (
+                        <span>{quantity?.sm} left</span>
+                      )}
+                    </span>
+                  </Link>
                 )}
-                {quantity?.sm && quantity?.sm < 10 && quantity?.sm !== 0 && (
-                  <p className="text-sm font-medium text-red-400">
-                    {quantity?.sm} left
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-col items-center justify-center gap-2">
                 {quantity?.md !== 0 && (
-                  <Label
-                    htmlFor="md"
-                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
-                  >
-                    M
-                    <input
-                      id="md"
-                      name="md"
-                      type="radio"
-                      hidden
-                      required
-                      value={"md"}
-                    />
-                  </Label>
+                  <Link href={"?size=md"} replace>
+                    <span className="flex items-center text-red-500 flex-col gap-2">
+                      <Button
+                        size={"lg"}
+                        variant={"secondary"}
+                        className={`flex flex-col text-lg ${
+                          searchParams.get("size") == "md" &&
+                          "border-2 border-blue-500"
+                        }`}
+                      >
+                        M
+                      </Button>
+                      {quantity && quantity?.md < 5 && (
+                        <span>{quantity?.md} left</span>
+                      )}
+                    </span>
+                  </Link>
                 )}
-                {quantity?.md && quantity?.md < 10 && quantity?.md !== 0 && (
-                  <p className="text-sm font-medium text-red-400">
-                    {quantity?.md} left
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-col items-center justify-center gap-2">
                 {quantity?.lg !== 0 && (
-                  <Label
-                    htmlFor="lg"
-                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
-                  >
-                    L
-                    <input
-                      id="lg"
-                      name="lg"
-                      type="radio"
-                      hidden
-                      required
-                      value={"lg"}
-                    />
-                  </Label>
+                  <Link href={"?size=lg"} replace>
+                    <span className="flex items-center text-red-500 flex-col gap-2">
+                      <Button
+                        size={"lg"}
+                        variant={"secondary"}
+                        className={`flex flex-col text-lg ${
+                          searchParams.get("size") == "lg" &&
+                          "border-2 border-blue-500"
+                        }`}
+                      >
+                        L
+                      </Button>
+                      {quantity && quantity?.lg < 5 && (
+                        <span>{quantity?.lg} left</span>
+                      )}
+                    </span>
+                  </Link>
                 )}
-                {quantity?.lg && quantity?.lg < 10 && quantity?.lg !== 0 && (
-                  <p className="text-sm font-medium text-red-400">
-                    {quantity?.lg} left
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-col items-center justify-center gap-2">
                 {quantity?.xl !== 0 && (
-                  <Label
-                    htmlFor="xl"
-                    className="w-[90px] smlabel p-1 text-secondary-foreground rounded-sm text-lg font-semibold text-center"
-                  >
-                    XL
-                    <input
-                      id="xl"
-                      name="xl"
-                      type="radio"
-                      hidden
-                      required
-                      value={"xl"}
-                    />
-                  </Label>
-                )}
-                {quantity?.xl && quantity?.xl < 10 && quantity?.xl !== 0 && (
-                  <p className="text-sm font-medium text-red-400">
-                    {quantity?.xl} left
-                  </p>
+                  <Link href={"?size=xl"} replace>
+                    <span className="flex items-center text-red-500 flex-col gap-2">
+                      <Button
+                        size={"lg"}
+                        variant={"secondary"}
+                        className={`flex flex-col text-lg ${
+                          searchParams.get("size") == "xl" &&
+                          "border-2 border-blue-500"
+                        }`}
+                      >
+                        XL
+                      </Button>
+                      {quantity && quantity?.xl < 5 && (
+                        <span>{quantity?.xl} left</span>
+                      )}
+                    </span>
+                  </Link>
                 )}
               </div>
             </div>
             <div className="flex gap-4 w-full flex-wrap flex-col md:flex-row">
-              <Button
-                aria-label="Button"
-                className="flex-1 rounded-sm py-3 md:py-6"
-                variant={"outline"}
-                size={"lg"}
-                type="submit"
-                disabled={pending}
-              >
-                <IoCartOutline className="mr-3" size={27} />
-                {pending ? "Adding..." : "Add to Cart"}
-              </Button>
+              {quantity?.sm == 0 &&
+              quantity?.md == 0 &&
+              quantity?.lg == 0 &&
+              quantity?.xl == 0 ? (
+                <Button
+                  disabled
+                  aria-label="Button"
+                  className="flex-1 rounded-sm py-3 md:py-6"
+                  variant={"outline"}
+                  size={"lg"}
+                >
+                  Out of stock
+                </Button>
+              ) : (
+                <Button
+                  aria-label="Button"
+                  className="flex-1 rounded-sm py-3 md:py-6"
+                  variant={"outline"}
+                  size={"lg"}
+                  type="submit"
+                  disabled={pending}
+                >
+                  <IoCartOutline className="mr-3" size={27} />
+                  {pending ? "Adding..." : "Add to Cart"}
+                </Button>
+              )}
+
               <Button
                 aria-label="Button"
                 className="rounded-md flex-1 py-3 md:py-6"

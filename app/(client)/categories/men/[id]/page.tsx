@@ -37,21 +37,27 @@ const ProductById = async ({ params: { id } }: Params) => {
     },
   });
 
-  const similarProducts = await prisma.product.findMany({
-    where: {
-      category: "men",
-    },
-    take: 5,
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
   // await new Promise((resolve) =>
   //   setTimeout((resolve) => {
   //     resolve;
   //   }, 600)
   // );
   if (product?.title) {
+    const similarProducts = await prisma.product.findMany({
+      where: {
+        color: {
+          hasSome: [product.color[0], product.color[1]],
+        },
+        category: "men",
+        id: {
+          not: product.id,
+        },
+      },
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
     const { title, images } = product;
     const OPTIONS: EmblaOptionsType = {};
     return (
@@ -129,7 +135,6 @@ export async function generateStaticParams() {
     },
   });
   const product = await products;
-
   return product.map((product) => ({
     id: product.id,
   }));
@@ -144,15 +149,13 @@ export async function generateMetadata({
       isArchived: false,
     },
   });
-
   if (!product?.title) {
     return {
       title: "No Product Not Found",
     };
   }
-
   return {
-    title: product.title,
+    title: `Aira - ${product.title}`,
     description: product.description,
   };
 }

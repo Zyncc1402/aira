@@ -49,6 +49,7 @@ model Product {
   updatedAt   DateTime    @updatedAt
   CartItems   CartItems[]
   quantity    quantity?
+  color       String[]
 }
 
 model quantity {

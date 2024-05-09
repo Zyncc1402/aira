@@ -36,6 +36,15 @@ export default function ProductGrid({ products }: Props) {
     });
     setFilteredProducts(constraint);
   }
+  function handleColorFilter(color: string) {
+    // const constraint = products.filter((product) => {
+    //   product.color.map((colour) => {
+    //     return colour === color;
+    //   });
+    // });
+    // // setFilteredProducts((prev) => [...prev, ...constraint]);
+    // setFilteredProducts(constraint);
+  }
   return (
     <div className="flex flex-col lg:flex-row mt-8 gap-8 items-start">
       <div className="lg:hidden">
@@ -165,6 +174,7 @@ export default function ProductGrid({ products }: Props) {
                       <RadioGroupItem
                         value="color-option-three"
                         id="color-option-three"
+                        onClick={() => handleColorFilter("green")}
                       />
                       <Label htmlFor="color-option-three">
                         <div className="flex gap-2">
@@ -365,6 +375,7 @@ export default function ProductGrid({ products }: Props) {
                   <RadioGroupItem
                     value="color-option-three"
                     id="color-option-three"
+                    onClick={() => handleColorFilter("green")}
                   />
                   <Label htmlFor="color-option-three">
                     <div className="flex gap-2">

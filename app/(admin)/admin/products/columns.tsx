@@ -76,10 +76,6 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "quantity",
-    header: "Stock",
-  },
-  {
     accessorKey: "category",
     header: () => <div className="text-left">Category</div>,
     cell: ({ row }) => {

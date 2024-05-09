@@ -13,8 +13,10 @@ export async function createProduct(formData: FormData) {
   const lg = formData.get("lg") as string;
   const xl = formData.get("xl") as string;
   const price = formData.get("price") as unknown as string;
+  const color = formData.get("color") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const colors = color.split(" ");
 
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -57,6 +59,7 @@ export async function createProduct(formData: FormData) {
             xl: Number(xl),
           },
         },
+        color: colors,
         category: category,
         images: arrayOfImages as string[],
         isArchived: Boolean(isArchived),
@@ -84,8 +87,10 @@ export async function updateProduct(formData: FormData) {
   const lg = formData.get("lg") as string;
   const xl = formData.get("xl") as string;
   const price = formData.get("price") as string;
+  const color = formData.get("color") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const colors = color.split(" ");
 
   try {
     await prisma.product.update({
@@ -104,6 +109,7 @@ export async function updateProduct(formData: FormData) {
             xl: Number(xl),
           },
         },
+        color: colors,
         category: category,
         isArchived: Boolean(isArchived),
       },
@@ -132,8 +138,10 @@ export async function updateProductWithImage(formData: FormData) {
   const lg = formData.get("lg") as string;
   const xl = formData.get("xl") as string;
   const price = formData.get("price") as string;
+  const color = formData.get("color") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const colors = color.split(" ");
 
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -186,6 +194,7 @@ export async function updateProductWithImage(formData: FormData) {
             xl: Number(xl),
           },
         },
+        color: colors,
         category: category,
         images: arrayOfImages as string[],
         isArchived: Boolean(isArchived),

@@ -1,7 +1,6 @@
 import React from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-
 import { FaPlus } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

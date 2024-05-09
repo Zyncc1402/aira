@@ -27,7 +27,7 @@ type Props = {
 const CreateProductForm = ({ product }: Props) => {
   const [imageDisabled, setImageDisabled] = useState(true);
   if (product) {
-    const { title, description, images, price, quantity, category, id } =
+    const { title, description, images, price, quantity, category, color, id } =
       product;
     return (
       <div className="flex flex-wrap flex-col md:flex-row gap-20 mt-16 mb-16">
@@ -57,25 +57,20 @@ const CreateProductForm = ({ product }: Props) => {
             />
           </div>
           <input type="hidden" name="id" value={id} />
-          <Input
-            name="title"
-            required
-            placeholder="Title"
-            defaultValue={title}
-          />
+          <Input name="title" required defaultValue={title} />
           <Textarea
-            placeholder="Description"
             name="description"
             defaultValue={description}
             className="resize-y h-[150px]"
           />
           <Input
-            name="price"
-            type="number"
+            name="color"
+            type="text"
+            autoCapitalize="false"
             required
-            placeholder="Price"
-            defaultValue={price}
+            defaultValue={color}
           />
+          <Input name="price" type="number" required defaultValue={price} />
           <Input name="sm" type="number" required defaultValue={quantity?.sm} />
           <Input name="md" type="number" required defaultValue={quantity?.md} />
           <Input name="lg" type="number" required defaultValue={quantity?.lg} />
@@ -118,7 +113,7 @@ const CreateProductForm = ({ product }: Props) => {
                   width={1000}
                   alt="Carousel Image"
                   priority={true}
-                  className="rounded-sm"
+                  className="rounded-sm object-cover aspect-square"
                 />
               </CarouselItem>
             ))}

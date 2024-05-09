@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import FormCard from "@/components/cards/formCard";
-import prisma from "@/lib/prisma";
 import Image from "next/image";
 import React from "react";
 import Checkout from "./components/checkout";
@@ -13,6 +12,7 @@ const Cart = async () => {
     redirect("/");
   }
   const cartItems = await getCart();
+  console.log(cartItems);
   if (cartItems) {
     return (
       <div className="flex justify-between h-screen w-screen container">

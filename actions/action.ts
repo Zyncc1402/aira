@@ -95,7 +95,7 @@ export async function addToCart(
 
   if (itemExists) {
     return {
-      error: "Product already in cart",
+      exists: "Product already in cart",
     };
   }
 

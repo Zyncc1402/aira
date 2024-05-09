@@ -17,7 +17,9 @@ export async function getCart() {
       },
     },
   });
-
+  if (!cart) {
+    return null;
+  }
   return {
     ...cart,
     size: cart?.items.reduce((acc, item) => acc + item.quantity, 0),
