@@ -6,6 +6,10 @@ import Checkout from "./components/checkout";
 import { redirect } from "next/navigation";
 import { getCart } from "@/lib/getCart";
 
+export const metadata = {
+  title: "Aira - Cart",
+};
+
 const Cart = async () => {
   const session = await auth();
   if (!session?.user) {

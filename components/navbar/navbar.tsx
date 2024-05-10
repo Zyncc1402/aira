@@ -1,6 +1,4 @@
-"use client";
-
-import React, { Suspense } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import { IoCartOutline } from "react-icons/io5";
 import { LuMenu, LuUser } from "react-icons/lu";
@@ -25,16 +23,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { signIn, signOut, useSession } from "next-auth/react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { auth, signIn, signOut } from "@/auth";
 
-const Navbar = () => {
-  const { data: session } = useSession();
+const Navbar = async () => {
+  const session = await auth();
   return (
     <header className="z-10 header pb-4 pt-4 w-full fixed top-0 left-0 right-0 bg-white text-black">
       <nav className="container flex justify-between items-center ">
@@ -171,40 +169,53 @@ const Navbar = () => {
               )}
               <div className="absolute bottom-5 right-5">
                 {session?.user ? (
-                  <SheetClose>
-                    <Button variant={"secondary"} onClick={() => signOut()}>
-                      Sign out
-                    </Button>
-                  </SheetClose>
+                  <form
+                    action={async () => {
+                      "use server";
+                      await signOut();
+                    }}
+                  >
+                    <SheetClose>
+                      <Button variant={"secondary"} type="submit">
+                        Sign out
+                      </Button>
+                    </SheetClose>
+                  </form>
                 ) : (
-                  <SheetClose>
-                    <Button
-                      variant={"secondary"}
-                      onClick={() => signIn("google")}
-                    >
-                      Sign in
-                    </Button>
-                  </SheetClose>
+                  <form
+                    action={async () => {
+                      "use server";
+                      await signIn("google");
+                    }}
+                  >
+                    <SheetClose>
+                      <Button variant={"secondary"}>Sign in</Button>
+                    </SheetClose>
+                  </form>
                 )}
               </div>
             </SheetContent>
           </Sheet>
           {session?.user ? (
-            <Button
-              variant={"secondary"}
-              className="hidden lg:block w-[100px]"
-              onClick={() => signOut()}
+            <form
+              action={async () => {
+                "use server";
+                await signOut();
+              }}
             >
-              Sign out
-            </Button>
+              <Button variant={"secondary"} type="submit">
+                Sign out
+              </Button>
+            </form>
           ) : (
-            <Button
-              variant={"secondary"}
-              className="hidden lg:block w-[100px]"
-              onClick={() => signIn("google")}
+            <form
+              action={async () => {
+                "use server";
+                await signIn("google");
+              }}
             >
-              Sign in
-            </Button>
+              <Button variant={"secondary"}>Sign in</Button>
+            </form>
           )}
         </div>
       </nav>

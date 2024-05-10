@@ -14,6 +14,7 @@ import { addToCart } from "@/actions/action";
 import { useToast } from "@/components/ui/use-toast";
 import { Products } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
+import AddToCartBtn from "./AddToCartBtn";
 
 type Props = {
   product: Products;
@@ -21,17 +22,18 @@ type Props = {
 
 const sizeScheme = z.object({
   size: z.enum(["sm", "md", "lg", "xl"]),
+  quantity: z.number().gt(0),
 });
 
 export default function RightPage({ product }: Props) {
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { pending } = useFormStatus();
   const { data: session } = useSession();
   const { title, description, price, quantity, id } = product;
   const formatted = formatCurrency(price);
 
   async function handleAddToCart() {
+    console.log("hgello");
     if (!session?.user) {
       toast({
         variant: "destructive",
@@ -39,13 +41,59 @@ export default function RightPage({ product }: Props) {
       });
       return null;
     }
-    const validation = sizeScheme.safeParse({ size: searchParams.get("size") });
-    if (!validation.success) {
+    if (searchParams.get("size") == "sm") {
+      const validation = sizeScheme.safeParse({
+        size: searchParams.get("size"),
+        quantity: product.quantity?.sm,
+      });
+      if (!validation.success) {
+        toast({
+          variant: "destructive",
+          title: "Please select a size to continue",
+        });
+        return null;
+      }
+    } else if (searchParams.get("size") == "md") {
+      const validation = sizeScheme.safeParse({
+        size: searchParams.get("size"),
+        quantity: product.quantity?.md,
+      });
+      if (!validation.success) {
+        toast({
+          variant: "destructive",
+          title: "Please select a size to continue",
+        });
+        return null;
+      }
+    } else if (searchParams.get("size") == "lg") {
+      const validation = sizeScheme.safeParse({
+        size: searchParams.get("size"),
+        quantity: product.quantity?.lg,
+      });
+      if (!validation.success) {
+        toast({
+          variant: "destructive",
+          title: "Please select a size to continue",
+        });
+        return null;
+      }
+    } else if (searchParams.get("size") == "xl") {
+      const validation = sizeScheme.safeParse({
+        size: searchParams.get("size"),
+        quantity: product.quantity?.xl,
+      });
+      if (!validation.success) {
+        toast({
+          variant: "destructive",
+          title: "Please select a size to continue",
+        });
+        return null;
+      }
+    } else {
       toast({
         variant: "destructive",
         title: "Please select a size to continue",
       });
-      return null;
     }
     const size = searchParams.get("size");
     if (size) {
@@ -63,7 +111,13 @@ export default function RightPage({ product }: Props) {
   }
   return (
     <div className="md:basis-1/2 flex flex-col gap-4 container">
-      <h1 className="text-3xl font-bold">{title}</h1>
+      {session?.user.role === "Admin" ? (
+        <Link href={"/admin/products/" + product.id}>
+          <h1 className="text-3xl font-bold">{title}</h1>
+        </Link>
+      ) : (
+        <h1 className="text-3xl font-bold">{title}</h1>
+      )}
       <h1>{description}</h1>
       <h1 className="text-xl font-semibold">{formatted.split(".")[0]}</h1>
       <div className="flex flex-col md:items-center md:flex-row gap-6">
@@ -80,11 +134,10 @@ export default function RightPage({ product }: Props) {
             ) : (
               <h1>Select a size</h1>
             )}
-
             <div className="flex gap-6 items-start mb-2 overflow-hidden flex-wrap">
               <div className="flex items-start justify-start gap-2 flex-wrap">
                 {quantity?.sm !== 0 && (
-                  <Link href={"?size=sm"} replace>
+                  <Link scroll={false} href={"?size=sm"} replace>
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -103,7 +156,7 @@ export default function RightPage({ product }: Props) {
                   </Link>
                 )}
                 {quantity?.md !== 0 && (
-                  <Link href={"?size=md"} replace>
+                  <Link scroll={false} href={"?size=md"} replace>
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -122,7 +175,7 @@ export default function RightPage({ product }: Props) {
                   </Link>
                 )}
                 {quantity?.lg !== 0 && (
-                  <Link href={"?size=lg"} replace>
+                  <Link scroll={false} href={"?size=lg"} replace>
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -141,7 +194,7 @@ export default function RightPage({ product }: Props) {
                   </Link>
                 )}
                 {quantity?.xl !== 0 && (
-                  <Link href={"?size=xl"} replace>
+                  <Link scroll={false} href={"?size=xl"} replace>
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -176,19 +229,8 @@ export default function RightPage({ product }: Props) {
                   Out of stock
                 </Button>
               ) : (
-                <Button
-                  aria-label="Button"
-                  className="flex-1 rounded-sm py-3 md:py-6"
-                  variant={"outline"}
-                  size={"lg"}
-                  type="submit"
-                  disabled={pending}
-                >
-                  <IoCartOutline className="mr-3" size={27} />
-                  {pending ? "Adding..." : "Add to Cart"}
-                </Button>
+                <AddToCartBtn />
               )}
-
               <Button
                 aria-label="Button"
                 className="rounded-md flex-1 py-3 md:py-6"
@@ -199,18 +241,6 @@ export default function RightPage({ product }: Props) {
                 <IoMdHeart className="mr-3" size={23} />
                 Add to Wishlist
               </Button>
-              {session?.user.role === "Admin" && (
-                <Link href={"/admin/products/" + product.id} className="flex-1">
-                  <Button
-                    size={"lg"}
-                    className="flex-1 w-full rounded-md py-3 md:py-6"
-                    aria-label="Button"
-                  >
-                    <MdOutlineModeEdit className="mr-3" size={23} />
-                    Edit
-                  </Button>
-                </Link>
-              )}
             </div>
           </form>
         </div>

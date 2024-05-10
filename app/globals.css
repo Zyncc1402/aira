@@ -170,3 +170,7 @@ body {
   height: 0.625rem /* 10px */;
   border-radius: 1rem;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+}
