@@ -33,9 +33,7 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
   useEffect(() => {
     const wishlistExists = localStorage.getItem("wishlist");
     if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(
-        JSON.stringify(wishlistExists)
-      );
+      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
       const index = existingItems.findIndex((item) => item.id === id);
       if (index !== -1) {
         setHeart(true);
@@ -48,9 +46,7 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
   function handleAddToWishlist(id: string) {
     const wishlistExists = localStorage.getItem("wishlist");
     if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(
-        JSON.stringify(wishlistExists)
-      );
+      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
       const index = existingItems.findIndex((item) => item.id === id);
       if (index !== -1) {
         setHeart(false);
