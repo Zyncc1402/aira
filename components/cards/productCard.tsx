@@ -2,14 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdHeart } from "react-icons/io";
 import formatCurrency from "@/lib/formatCurrency";
+import { toast } from "../ui/use-toast";
 
 type CardProps = {
   image: string;
   title: string;
-  category?: string;
+  category: string;
   id: string;
   price: number;
   showProductActions?: boolean;
@@ -17,17 +18,57 @@ type CardProps = {
   showAdminLinks?: boolean;
 };
 
+export type wishlistItemsType = {
+  id: string;
+  title: string;
+  image: string;
+  price: number;
+  category: string;
+}[];
+
 const ProductCard = ({ image, title, price, id, category }: CardProps) => {
   const [heart, setHeart] = useState(false);
-  const [wishlistItem, setWishlistItem] = useState<string[]>([]);
-
   const formatted = formatCurrency(price);
 
+  useEffect(() => {
+    const wishlistExists = localStorage.getItem("wishlist");
+    if (wishlistExists) {
+      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
+      const index = existingItems.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        setHeart(true);
+      } else {
+        setHeart(false);
+      }
+    }
+  }, [id]);
+
   function handleAddToWishlist(id: string) {
-    setHeart((prev) => !prev);
-    const newArray = [...wishlistItem, id];
-    setWishlistItem(newArray);
-    localStorage.setItem("wishlist", newArray.toString());
+    const wishlistExists = localStorage.getItem("wishlist");
+    if (wishlistExists) {
+      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
+      const index = existingItems.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        setHeart(false);
+        existingItems.splice(index, 1);
+      } else {
+        setHeart(true);
+        toast({
+          title: `Added ${title} to wishlist`,
+        });
+        existingItems.push({ id, title, image, price, category });
+      }
+      localStorage.setItem("wishlist", JSON.stringify(existingItems));
+    } else {
+      setHeart(true);
+      toast({
+        title: `Added ${title} to wishlist`,
+      });
+      localStorage.setItem(
+        "wishlist",
+        JSON.stringify([{ id, title, price, image }])
+      );
+    }
   }
 
   return (

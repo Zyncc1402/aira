@@ -46,9 +46,9 @@ const ProductById = async ({ params: { id } }: Params) => {
     const similarProducts = await prisma.product.findMany({
       where: {
         color: {
-          hasSome: [product.color[0], product.color[1]],
+          hasSome: [product.color[0]],
         },
-        category: "men",
+        category: product.category,
         id: {
           not: product.id,
         },

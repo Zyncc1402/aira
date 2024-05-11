@@ -102,16 +102,16 @@ const Navbar = async () => {
             )}
           </Menubar>
         </div>
-        <div className="flex gap-3 items-center justify-center">
+        <div className="flex items-center justify-between">
           <Link href={"/wishlist"}>
-            <FaRegHeart size={25} />
+            <FaRegHeart size={25} className="ml-3" />
           </Link>
           <Link href={"/cart"}>
-            <IoCartOutline size={30} />
+            <IoCartOutline size={30} className="ml-3" />
           </Link>
           <Sheet>
             <SheetTrigger className="lg:hidden">
-              <LuMenu size={30} />
+              <LuMenu size={30} className="ml-3" />
             </SheetTrigger>
             <SheetContent className="flex flex-col text-left">
               <Link href={"/"}>
@@ -203,7 +203,11 @@ const Navbar = async () => {
                 await signOut();
               }}
             >
-              <Button variant={"secondary"} type="submit">
+              <Button
+                variant={"secondary"}
+                type="submit"
+                className="hidden lg:block ml-3"
+              >
                 Sign out
               </Button>
             </form>
@@ -214,7 +218,9 @@ const Navbar = async () => {
                 await signIn("google");
               }}
             >
-              <Button variant={"secondary"}>Sign in</Button>
+              <Button variant={"secondary"} className="hidden lg:block ml-3">
+                Sign in
+              </Button>
             </form>
           )}
         </div>

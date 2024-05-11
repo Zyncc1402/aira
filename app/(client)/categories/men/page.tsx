@@ -5,7 +5,7 @@ import ProductGrid from "./ProductGrid";
 export const revalidate = 6000;
 
 export const metadata = {
-  title: "Aira - Men",
+  title: "Men - AIRA",
 };
 
 const Men = async () => {
