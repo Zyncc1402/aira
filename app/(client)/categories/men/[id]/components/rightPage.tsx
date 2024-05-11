@@ -2,11 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { MdOutlineModeEdit } from "react-icons/md";
-import { useFormStatus } from "react-dom";
-import { IoCartOutline } from "react-icons/io5";
-import { IoMdHeart } from "react-icons/io";
 import { useSession } from "next-auth/react";
 import formatCurrency from "@/lib/formatCurrency";
 import { z } from "zod";
@@ -15,7 +10,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Products } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import AddToCartBtn from "./AddToCartBtn";
-import { wishlistItemsType } from "@/components/cards/productCard";
 
 type Props = {
   product: Products;
@@ -27,57 +21,13 @@ const sizeScheme = z.object({
 });
 
 export default function RightPage({ product }: Props) {
-  const [heart, setHeart] = useState<boolean>();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { data: session } = useSession();
-  const { title, description, price, quantity, id, images, category } = product;
+  const { title, description, price, quantity, id } = product;
   const formatted = formatCurrency(price);
 
-  useEffect(() => {
-    const wishlistExists = localStorage.getItem("wishlist");
-    if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
-      const index = existingItems.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        setHeart(true);
-      } else {
-        setHeart(false);
-      }
-    }
-  }, [id]);
-
-  function handleAddToWishlist(id: string) {
-    const wishlistExists = localStorage.getItem("wishlist");
-    const image = images[0];
-    if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
-      const index = existingItems.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        setHeart(false);
-        existingItems.splice(index, 1);
-      } else {
-        setHeart(true);
-        toast({
-          title: `Added ${title} to wishlist`,
-        });
-        existingItems.push({ id, title, image, price, category });
-      }
-      localStorage.setItem("wishlist", JSON.stringify(existingItems));
-    } else {
-      setHeart(true);
-      toast({
-        title: `Added ${title} to wishlist`,
-      });
-      localStorage.setItem(
-        "wishlist",
-        JSON.stringify([{ id, title, price, image }])
-      );
-    }
-  }
-
   async function handleAddToCart() {
-    console.log("hgello");
     if (!session?.user) {
       toast({
         variant: "destructive",
@@ -275,21 +225,6 @@ export default function RightPage({ product }: Props) {
               ) : (
                 <AddToCartBtn />
               )}
-              <Button
-                aria-label="Button"
-                className="rounded-md flex-1 py-3 md:py-6"
-                size={"lg"}
-                variant={"secondary"}
-                type="button"
-                onClick={() => handleAddToWishlist(id)}
-              >
-                <IoMdHeart
-                  className="mr-3"
-                  size={23}
-                  color={heart ? "#dc6e73" : "#0f172a"}
-                />
-                {heart ? "Remove from wishlist" : "Add to Wishlist"}
-              </Button>
             </div>
           </form>
         </div>
