@@ -36,8 +36,11 @@ export default function RightPage({ product }: Props) {
 
   useEffect(() => {
     const wishlistExists = localStorage.getItem("wishlist");
+    console.log(wishlistExists);
     if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
+      const existingItems: wishlistItemsType = JSON.parse(
+        JSON.stringify(wishlistExists)
+      );
       const index = existingItems.findIndex((item) => item.id === id);
       if (index !== -1) {
         setHeart(true);
@@ -51,7 +54,9 @@ export default function RightPage({ product }: Props) {
     const wishlistExists = localStorage.getItem("wishlist");
     const image = images[0];
     if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
+      const existingItems: wishlistItemsType = JSON.parse(
+        JSON.stringify(wishlistExists)
+      );
       const index = existingItems.findIndex((item) => item.id === id);
       if (index !== -1) {
         setHeart(false);
