@@ -10,7 +10,7 @@ export default function AddToCartBtn() {
     <Button
       aria-label="Button"
       className="rounded-sm w-full py-3 md:py-6"
-      variant={"outline"}
+      variant={"default"}
       size={"lg"}
       type="submit"
       disabled={pending}

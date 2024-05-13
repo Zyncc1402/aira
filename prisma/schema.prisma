@@ -37,19 +37,23 @@ model CartItems {
 }
 
 model Product {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  price       Int
-  images      String[]
-  salePrice   Int?
-  category    String
-  isArchived  Boolean     @default(false)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  CartItems   CartItems[]
-  quantity    quantity?
-  color       String[]
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String
+  price        Int
+  images       String[]
+  salePrice    Int?
+  category     String
+  isArchived   Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  CartItems    CartItems[]
+  quantity     quantity?
+  color        String[]
+  fabric       String?
+  transpareny  String?
+  weavePattern String?
+  fit          String?
 }
 
 model quantity {

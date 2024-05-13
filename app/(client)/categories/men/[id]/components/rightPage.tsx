@@ -10,6 +10,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { Products } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import AddToCartBtn from "./AddToCartBtn";
+import { useEffect, useState } from "react";
+import { TbTruckDelivery } from "react-icons/tb";
+import { FaRegMoneyBillAlt } from "react-icons/fa";
+import { BiTransferAlt } from "react-icons/bi";
+import { CgDetailsMore } from "react-icons/cg";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
 
 type Props = {
   product: Products;
@@ -26,6 +32,14 @@ export default function RightPage({ product }: Props) {
   const { data: session } = useSession();
   const { title, description, price, quantity, id } = product;
   const formatted = formatCurrency(price);
+  const [isClient, setIsClient] = useState(false);
+  const [date, setDate] = useState<Date>();
+
+  useEffect(() => {
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 3);
+    setDate(currentDate);
+  }, []);
 
   async function handleAddToCart() {
     if (!session?.user) {
@@ -84,10 +98,16 @@ export default function RightPage({ product }: Props) {
         return null;
       }
     } else {
-      toast({
-        variant: "destructive",
-        title: "Please select a size to continue",
+      const validation = sizeScheme.safeParse({
+        size: searchParams.get("size"),
       });
+      if (!validation.success) {
+        toast({
+          variant: "destructive",
+          title: "Please select a size to continue",
+        });
+        return null;
+      }
     }
     const size = searchParams.get("size");
     if (size) {
@@ -104,16 +124,15 @@ export default function RightPage({ product }: Props) {
     }
   }
   return (
-    <div className="md:basis-1/2 flex flex-col gap-4 container">
+    <div className="md:basis-1/2 flex flex-col gap-3 container">
       {session?.user.role === "Admin" ? (
         <Link href={"/admin/products/" + product.id}>
-          <h1 className="text-3xl font-bold">{title}</h1>
+          <h1 className="text-3xl font-semibold">{title}</h1>
         </Link>
       ) : (
         <h1 className="text-3xl font-bold">{title}</h1>
       )}
-      <h1>{description}</h1>
-      <h1 className="text-xl font-semibold">{formatted.split(".")[0]}</h1>
+      <h1 className="text-xl font-medium">{formatted.split(".")[0]}</h1>
       <div className="flex flex-col md:items-center md:flex-row gap-6">
         <div className="flex-1">
           <form
@@ -227,6 +246,64 @@ export default function RightPage({ product }: Props) {
               )}
             </div>
           </form>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 mt-4 w-fit text-gray-600">
+        <div className="flex gap-5 items-center">
+          <TbTruckDelivery size={30} />
+          <div>
+            Expected delivery by{" "}
+            <span className="font-medium">{date?.toString().slice(0, 11)}</span>{" "}
+            <br />
+            Free delivery
+          </div>
+        </div>
+        <div className="flex gap-5 items-center">
+          <FaRegMoneyBillAlt size={30} />
+          <div>Pay on delivery is available</div>
+        </div>
+        <div className="flex gap-5 items-center">
+          <BiTransferAlt size={30} />
+          <div>
+            Hassle free 7 days Exchange <br />
+            No Return
+          </div>
+        </div>
+        <div className="flex gap-5 items-center">
+          <VscWorkspaceTrusted size={28} />
+          <div>100% Genuine Product</div>
+        </div>
+      </div>
+      <div className="mt-4 flex font-semibold items-center gap-2">
+        <CgDetailsMore size={30} />
+        Product Details
+      </div>
+      <div className="border-2 rounded-lg p-3 ">
+        <div className="grid grid-cols-2 gap-y-5">
+          <div>
+            <h1 className="font-semibold">Fabric</h1>
+            <p className="text-muted-foreground">{"Cotton"}</p>
+          </div>
+          <div>
+            <h1 className="font-semibold">Transparency</h1>
+            <p className="text-muted-foreground">{"Opaque"}</p>
+          </div>
+          <div>
+            <h1 className="font-semibold">Weave Pattern</h1>
+            <p className="text-muted-foreground">{"Regular"}</p>
+          </div>
+          <div>
+            <h1 className="font-semibold">Sustainable</h1>
+            <p className="text-muted-foreground">{"Sustainable"}</p>
+          </div>
+          <div>
+            <h1 className="font-semibold">Fit</h1>
+            <p className="text-muted-foreground">{"Regular fit"}</p>
+          </div>
+        </div>
+        <div className="mt-5">
+          <h1 className="font-semibold">Description</h1>
+          <p>{description}</p>
         </div>
       </div>
     </div>

@@ -68,7 +68,7 @@ const CreateProductForm = ({ product }: Props) => {
             type="text"
             autoCapitalize="false"
             required
-            defaultValue={color}
+            defaultValue={color.join(" ")}
           />
           <Input name="price" type="number" required defaultValue={price} />
           <Input name="sm" type="number" required defaultValue={quantity?.sm} />

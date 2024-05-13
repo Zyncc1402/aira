@@ -14,8 +14,12 @@ export async function createProduct(formData: FormData) {
   const xl = formData.get("xl") as string;
   const price = formData.get("price") as unknown as string;
   const color = formData.get("color") as string;
-  const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const category = formData.get("category") as string;
+  const fabric = formData.get("fabric") as string;
+  const transpareny = formData.get("transpareny") as string;
+  const weavePattern = formData.get("weavePattern") as string;
+  const fit = formData.get("fit") as string;
   const colors = color.split(" ");
 
   cloudinary.config({
@@ -59,6 +63,10 @@ export async function createProduct(formData: FormData) {
             xl: Number(xl),
           },
         },
+        fabric,
+        transpareny,
+        weavePattern,
+        fit,
         color: colors,
         category: category,
         images: arrayOfImages as string[],
