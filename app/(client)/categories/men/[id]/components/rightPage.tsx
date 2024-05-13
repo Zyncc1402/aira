@@ -130,7 +130,7 @@ export default function RightPage({ product }: Props) {
           <h1 className="text-3xl font-semibold">{title}</h1>
         </Link>
       ) : (
-        <h1 className="text-3xl font-bold">{title}</h1>
+        <h1 className="text-3xl font-semibold">{title}</h1>
       )}
       <h1 className="text-xl font-medium">{formatted.split(".")[0]}</h1>
       <div className="flex flex-col md:items-center md:flex-row gap-6">
@@ -154,8 +154,8 @@ export default function RightPage({ product }: Props) {
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
-                        variant={"secondary"}
-                        className={`flex flex-col text-lg ${
+                        variant={"outline"}
+                        className={`flex flex-col text-lg text-black border-2 ${
                           searchParams.get("size") == "sm" &&
                           "border-2 border-blue-500"
                         }`}
@@ -173,8 +173,8 @@ export default function RightPage({ product }: Props) {
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
-                        variant={"secondary"}
-                        className={`flex flex-col text-lg ${
+                        variant={"outline"}
+                        className={`flex flex-col text-lg border-2 text-black ${
                           searchParams.get("size") == "md" &&
                           "border-2 border-blue-500"
                         }`}
@@ -192,8 +192,8 @@ export default function RightPage({ product }: Props) {
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
-                        variant={"secondary"}
-                        className={`flex flex-col text-lg ${
+                        variant={"outline"}
+                        className={`flex flex-col text-lg border-2 text-black ${
                           searchParams.get("size") == "lg" &&
                           "border-2 border-blue-500"
                         }`}
@@ -211,8 +211,8 @@ export default function RightPage({ product }: Props) {
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
-                        variant={"secondary"}
-                        className={`flex flex-col text-lg ${
+                        variant={"outline"}
+                        className={`flex flex-col text-lg border-2 text-black ${
                           searchParams.get("size") == "xl" &&
                           "border-2 border-blue-500"
                         }`}

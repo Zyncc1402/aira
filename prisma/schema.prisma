@@ -45,6 +45,7 @@ model Product {
   salePrice    Int?
   category     String
   isArchived   Boolean     @default(false)
+  isFeatured   Boolean?    @default(false)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   CartItems    CartItems[]

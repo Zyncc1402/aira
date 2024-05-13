@@ -115,7 +115,7 @@ body {
 .embla__container {
   backface-visibility: hidden;
   display: flex;
-  touch-action: pan-y;
+  touch-action: auto;
   margin-left: calc(var(--slide-spacing) * -1);
 }
 .embla__slide {

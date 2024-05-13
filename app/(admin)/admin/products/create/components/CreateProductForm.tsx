@@ -30,25 +30,37 @@ const CreateProductForm = () => {
         <Input name="md" type="number" required placeholder="Medium Qty" />
         <Input name="lg" type="number" required placeholder="Large Qty" />
         <Input name="xl" type="number" required placeholder="Extra Large Qty" />
-        <Label>Category</Label>
+        <select
+          name="featured"
+          required
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <option value={1}>Is Featured</option>
+          <option value={""} selected>
+            Not Featured
+          </option>
+        </select>
         <select
           name="category"
           required
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <option value="men">Men</option>
-          <option value="women">Women</option>
         </select>
-        <Label>isArchived?</Label>
         <select
           name="isArchived"
           defaultValue={""}
           required
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <option value={1}>True</option>
-          <option value={""}>False</option>
+          <option value={1}>Is Archived</option>
+          <option value={""}>Not Archived</option>
         </select>
+        <Label>Product Details</Label>
+        <Input name="fabric" required placeholder="Fabric" />
+        <Input name="transparency" required placeholder="Transparency" />
+        <Input name="weavePattern" required placeholder="Weave Pattern" />
+        <Input name="fit" required placeholder="Fit" />
         <CreateProductButton Atext="Creating..." text="Create" />
       </form>
       <Skeleton className="flex-1 hidden lg:block" />

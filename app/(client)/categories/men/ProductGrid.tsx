@@ -74,7 +74,7 @@ export default function ProductGrid({ products }: Props) {
             <Link href={"/categories/men"}>
               <Button variant={"secondary"}>Reset Filters</Button>
             </Link>
-            <SheetTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center px-3 py-2 rounded-sm font-semibold">
+            <SheetTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center px-3 py-2 rounded-lg font-semibold">
               Filters
             </SheetTrigger>
           </div>
@@ -100,7 +100,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={min == 0 && max == 100000}
                           />
                         </Link>
-                        <Label htmlFor="price-option-zero">Any</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="price-option-zero"
+                        >
+                          Any
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Link
@@ -116,7 +121,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={min == 0 && max == 5000}
                           />
                         </Link>
-                        <Label htmlFor="price-option-one">Under ₹5000</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="price-option-one"
+                        >
+                          Under ₹5000
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Link
@@ -132,7 +142,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={min == 5000 && max == 10000}
                           />
                         </Link>
-                        <Label htmlFor="price-option-two">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="price-option-two"
+                        >
                           ₹5000 - ₹10,000
                         </Label>
                       </div>
@@ -150,7 +163,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={min == 10000 && max == 15000}
                           />
                         </Link>
-                        <Label htmlFor="price-option-three">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="price-option-three"
+                        >
                           ₹10,000 - ₹15,000
                         </Label>
                       </div>
@@ -168,7 +184,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={min == 15000 && max == 150000}
                           />
                         </Link>
-                        <Label htmlFor="price-option-four">Above ₹15,000</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="price-option-four"
+                        >
+                          Above ₹15,000
+                        </Label>
                       </div>
                     </RadioGroup>
                   </div>
@@ -189,7 +210,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={size == "any"}
                           />
                         </Link>
-                        <Label htmlFor="size-option-zero">Any</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="size-option-zero"
+                        >
+                          Any
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Link
@@ -205,7 +231,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={size == "sm"}
                           />
                         </Link>
-                        <Label htmlFor="size-option-one">Small</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="size-option-one"
+                        >
+                          Small
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Link
@@ -221,7 +252,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={size == "md"}
                           />
                         </Link>
-                        <Label htmlFor="size-option-two">Medium</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="size-option-two"
+                        >
+                          Medium
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Link
@@ -237,7 +273,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={size == "lg"}
                           />
                         </Link>
-                        <Label htmlFor="size-option-three">Large</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="size-option-three"
+                        >
+                          Large
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Link
@@ -253,7 +294,12 @@ export default function ProductGrid({ products }: Props) {
                             checked={size == "xl"}
                           />
                         </Link>
-                        <Label htmlFor="size-option-four">Extra Large</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="size-option-four"
+                        >
+                          Extra Large
+                        </Label>
                       </div>
                     </RadioGroup>
                   </div>
@@ -274,7 +320,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "any"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-zero">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-zero"
+                        >
                           <div className="flex gap-2">Any</div>
                         </Label>
                       </div>
@@ -292,7 +341,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "black"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-one">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-one"
+                        >
                           <div className="flex gap-2">
                             Black
                             <div className="h-4 w-4 rounded-full bg-black"></div>
@@ -313,7 +365,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "blue"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-two">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-two"
+                        >
                           <div className="flex gap-2">
                             Blue
                             <div className="h-4 w-4 rounded-full bg-blue-400"></div>
@@ -334,7 +389,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "green"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-three">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-three"
+                        >
                           <div className="flex gap-2">
                             Green
                             <div className="h-4 w-4 rounded-full bg-green-700"></div>
@@ -355,7 +413,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "white"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-four">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-four"
+                        >
                           <div className="flex gap-2">
                             White
                             <div className="h-4 w-4 rounded-full bg-white border-[1px] border-black"></div>
@@ -376,7 +437,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "pink"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-five">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-five"
+                        >
                           <div className="flex gap-2">
                             Pink
                             <div className="h-4 w-4 rounded-full bg-pink-500"></div>
@@ -397,7 +461,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "red"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-six">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-six"
+                        >
                           <div className="flex gap-2">
                             Red
                             <div className="h-4 w-4 rounded-full bg-red-500"></div>
@@ -418,7 +485,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "brown"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-seven">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-seven"
+                        >
                           <div className="flex gap-2">
                             Brown
                             <div className="h-4 w-4 rounded-full bg-[#964B00]"></div>
@@ -439,7 +509,10 @@ export default function ProductGrid({ products }: Props) {
                             checked={color == "beige"}
                           />
                         </Link>
-                        <Label htmlFor="color-option-eight">
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor="color-option-eight"
+                        >
                           <div className="flex gap-2">
                             Beige
                             <div className="h-4 w-4 rounded-full bg-[#F5F5DC]"></div>

@@ -15,6 +15,7 @@ export async function createProduct(formData: FormData) {
   const price = formData.get("price") as unknown as string;
   const color = formData.get("color") as string;
   const isArchived = formData.get("isArchived") as string;
+  const isFeatured = formData.get("isFeatured") as string;
   const category = formData.get("category") as string;
   const fabric = formData.get("fabric") as string;
   const transpareny = formData.get("transpareny") as string;

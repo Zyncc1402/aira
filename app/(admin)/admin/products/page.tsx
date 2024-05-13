@@ -5,10 +5,16 @@ import { FaPlus } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
+import { notFound } from "next/navigation";
 
 export const revalidate = 600;
 
 const Products = async () => {
+  const session = await auth();
+  if (session?.user.role !== "Admin" || !session) {
+    notFound();
+  }
   const data = await prisma.product.findMany();
   return (
     <>
