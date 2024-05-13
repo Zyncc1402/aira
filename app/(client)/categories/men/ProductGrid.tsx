@@ -78,7 +78,6 @@ export default function ProductGrid({ products }: Props) {
               Filters
             </SheetTrigger>
           </div>
-
           <SheetContent side={"left"}>
             <ScrollArea className="h-full">
               <SheetHeader>
@@ -462,16 +461,22 @@ export default function ProductGrid({ products }: Props) {
       </div>
       <div className="flex lg:container md:container lg:flex-row gap-8 items-start">
         <div className="md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-5 lg:gap-7 pb-10">
-          {filteredProducts?.map((product, key) => (
-            <ProductCard
-              key={key}
-              image={product.images[0]}
-              title={product.title}
-              price={product.price}
-              category={product.category}
-              id={product.id}
-            />
-          ))}
+          {filteredProducts.length == 0 ? (
+            <div className="flex items-center justify-center">
+              <h1 className="font-medium text-xl">No Products Found...</h1>
+            </div>
+          ) : (
+            filteredProducts?.map((product, key) => (
+              <ProductCard
+                key={key}
+                image={product.images[0]}
+                title={product.title}
+                price={product.price}
+                category={product.category}
+                id={product.id}
+              />
+            ))
+          )}
         </div>
       </div>
     </>
