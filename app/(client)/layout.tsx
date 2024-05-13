@@ -16,6 +16,12 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-B07TPNLBKT"
+        ></script>
+      </head>
       <body className="">
         <Providers>
           <Navbar />
