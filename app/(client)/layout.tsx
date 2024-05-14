@@ -6,7 +6,7 @@ import Providers from "@/lib/authProvider";
 
 export const metadata: Metadata = {
   title: "Aira",
-  description: "Aira",
+  description: "Aira Shopping",
 };
 
 export default async function RootLayout({

@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import formatCurrency from "@/lib/formatCurrency";
 import { Products } from "@/lib/types";
+import Reviews from "./components/reviews";
 
 type Params = {
   params: {
@@ -85,6 +86,7 @@ const ProductById = async ({ params: { id } }: Params) => {
           </div>
           <RightPage product={product} />
         </div>
+        <Reviews />
         {similarProducts.length > 0 && (
           <div className="container mt-[100px]">
             <h1 className="text-2xl font-semibold">You might like these</h1>

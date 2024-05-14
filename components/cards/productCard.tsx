@@ -23,11 +23,11 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
       <Link aria-label="navigation-link" href={`/categories/${category}/${id}`}>
         <Image
           src={image}
-          width={700}
-          height={700}
+          height={400}
+          width={400}
           alt="product image"
           priority={true}
-          className=" object-cover aspect-square"
+          className="aspect-square object-cover"
         />
       </Link>
       <div className="p-2 gap-4 flex justify-between w-[100%]">

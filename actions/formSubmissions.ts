@@ -15,10 +15,10 @@ export async function createProduct(formData: FormData) {
   const price = formData.get("price") as unknown as string;
   const color = formData.get("color") as string;
   const isArchived = formData.get("isArchived") as string;
-  const isFeatured = formData.get("isFeatured") as string;
+  const isFeatured = formData.get("featured") as string;
   const category = formData.get("category") as string;
   const fabric = formData.get("fabric") as string;
-  const transpareny = formData.get("transpareny") as string;
+  const transparency = formData.get("transparency") as string;
   const weavePattern = formData.get("weavePattern") as string;
   const fit = formData.get("fit") as string;
   const colors = color.split(" ");
@@ -65,9 +65,10 @@ export async function createProduct(formData: FormData) {
           },
         },
         fabric,
-        transpareny,
+        transparency,
         weavePattern,
         fit,
+        isFeatured: Boolean(isFeatured),
         color: colors,
         category: category,
         images: arrayOfImages as string[],

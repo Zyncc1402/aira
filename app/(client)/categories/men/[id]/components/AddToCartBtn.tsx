@@ -9,13 +9,15 @@ export default function AddToCartBtn() {
   return (
     <Button
       aria-label="Button"
-      className="rounded-sm w-full py-3 md:py-6"
+      className={`rounded-sm w-full py-3 md:py-6 ${
+        pending && "hover:cursor-progress font-semibold"
+      }`}
       variant={"default"}
       size={"lg"}
       type="submit"
       disabled={pending}
     >
-      <IoCartOutline className="mr-3" size={27} />
+      <IoCartOutline className={`mr-3`} size={27} />
       {pending ? "Adding..." : "Add to Cart"}
     </Button>
   );

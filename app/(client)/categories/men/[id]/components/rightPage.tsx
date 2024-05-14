@@ -16,6 +16,7 @@ import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
 import { CgDetailsMore } from "react-icons/cg";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
+import { IoMdHeart } from "react-icons/io";
 
 type Props = {
   product: Products;
@@ -244,6 +245,16 @@ export default function RightPage({ product }: Props) {
               ) : (
                 <AddToCartBtn />
               )}
+              <Button
+                aria-label="Button"
+                className={`rounded-sm w-full py-3 md:py-6`}
+                variant={"secondary"}
+                size={"lg"}
+                type="button"
+              >
+                <IoMdHeart className="mr-3" size={23} />
+                Add to wishlist
+              </Button>
             </div>
           </form>
         </div>
