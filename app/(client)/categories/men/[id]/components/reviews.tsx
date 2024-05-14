@@ -141,7 +141,7 @@ export default function Reviews({ id }: { id: string }) {
             </form>
           </DialogContent>
         </Dialog>
-        <div className="mt-5 rounded-lg p-4 bg-gray-50 max-w-[768px]">
+        <div className="mt-5 rounded-lg p-4 bg- max-w-[768px]">
           <div className="flex gap-2 items-center justify-start">
             <Image
               src={session?.user.image || ""}
@@ -151,10 +151,11 @@ export default function Reviews({ id }: { id: string }) {
               className="rounded-full"
               priority
             />
-            <h1 className="font-semibold">
-              Walking on Clouds: Nike Air Max Plus is a Game Changer!
-            </h1>
+            <h1 className="font-semibold">{session?.user.name}</h1>
           </div>
+          <h1 className="font-medium mt-3">
+            Walking on Clouds: Nike Air Max Plus is a Game Changer!
+          </h1>
           <p className="mt-3 text-[15px] line-clamp-[7] md:line-clamp-4 lg:line-clamp-3">
             Let me start by saying, these Nike Air Max Plus sneakers have
             completely transformed my walking experience. From the moment I
@@ -201,7 +202,7 @@ export default function Reviews({ id }: { id: string }) {
             />
           </div>
         </div>
-        <div className="mt-5 rounded-lg p-4 bg-gray-50  max-w-[768px]">
+        <div className="mt-5 rounded-lg p-4 bg-  max-w-[768px]">
           <div className="flex gap-2 items-center justify-start">
             <Image
               src={session?.user.image || ""}
@@ -211,11 +212,12 @@ export default function Reviews({ id }: { id: string }) {
               className="rounded-full"
               priority
             />
-            <h1 className="font-semibold">
-              Step Up Your Sneaker Game: Nike Air Max Plus is a Winner!
-            </h1>
+            <h1 className="font-semibold">{session?.user.name}</h1>
           </div>
-          <p className="mt-3 line-clamp-3">
+          <h1 className="font-medium mt-3">
+            Step Up Your Sneaker Game: Nike Air Max Plus is a Winner!
+          </h1>
+          <p className="mt-3 line-clamp-[7] md:line-clamp-4 lg:line-clamp-3">
             Let me just say, the Nike Air Max Plus sneakers are an absolute
             game-changer! From the moment I put them on, I knew I had found my
             new favorite kicks. The comfort level is off the charts – it feels
@@ -260,7 +262,7 @@ export default function Reviews({ id }: { id: string }) {
             />
           </div>
         </div>
-        <div className="mt-5 rounded-lg p-4 bg-gray-50 max-w-[768px]">
+        <div className="mt-5 rounded-lg p-4 bg- max-w-[768px]">
           <div className="flex gap-2 items-center justify-start">
             <Image
               src={session?.user.image || ""}
@@ -270,11 +272,12 @@ export default function Reviews({ id }: { id: string }) {
               className="rounded-full"
               priority
             />
-            <h1 className="font-semibold">
-              Max Comfort, Max Style: Nike Air Max Plus Delivers!
-            </h1>
+            <h1 className="font-semibold">{session?.user.name}</h1>
           </div>
-          <p className="mt-3 line-clamp-3">
+          <h1 className="mt-3 font-medium">
+            Max Comfort, Max Style: Nike Air Max Plus Delivers!
+          </h1>
+          <p className="mt-3 line-clamp-[7] md:line-clamp-4 lg:line-clamp-3">
             These Nike Air Max Plus sneakers are an absolute game-changer! As
             someone who spends a lot of time on my feet, comfort is key, and
             these shoes deliver in spades. The cushioning is like walking on a
