@@ -28,6 +28,10 @@ export default async function RootLayout({
           gtag('js', new Date());
           gtag('config', 'G-B07TPNLBKT');`}
         </Script>
+        <meta
+          name="google-site-verification"
+          content="2q79Eq6b6YD4luQsXPMJCN_OL_3QTK_B8VqdWralAPA"
+        />
       </head>
       <body>
         <Providers>
