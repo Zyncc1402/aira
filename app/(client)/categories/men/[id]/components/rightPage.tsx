@@ -16,7 +16,7 @@ import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
 import { CgDetailsMore } from "react-icons/cg";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
-import { IoMdHeart } from "react-icons/io";
+import { IoMdHeart, IoMdInformationCircleOutline } from "react-icons/io";
 
 type Props = {
   product: Products;
@@ -286,7 +286,7 @@ export default function RightPage({ product }: Props) {
         </div>
       </div>
       <div className="mt-4 flex font-semibold items-center gap-2">
-        <CgDetailsMore size={30} />
+        <IoMdInformationCircleOutline size={27} />
         Product Details
       </div>
       <div className="border-2 rounded-lg p-3 ">

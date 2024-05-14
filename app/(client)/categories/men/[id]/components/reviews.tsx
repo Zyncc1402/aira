@@ -13,19 +13,43 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import Dropzone from "react-dropzone";
-import { IoCloudUploadOutline, IoImageOutline } from "react-icons/io5";
+import Dropzone, { FileRejection } from "react-dropzone";
+import { IoCloudUploadOutline } from "react-icons/io5";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { uploadReview } from "@/actions/formSubmissions";
+import { toast } from "@/components/ui/use-toast";
 
-export default function Reviews() {
+export default function Reviews({ id }: { id: string }) {
   const { data: session } = useSession();
   const [isDragOver, setIsDragOver] = useState(false);
-  function acceptFiles() {
-    console.log("Files Accepted");
+  const [images, setImages] = useState<File[] | File>();
+  function acceptFiles(acceptFiles: File[]) {
+    acceptFiles.map((file) => {
+      setImages(file);
+    });
+    console.log(images);
   }
-  function rejectFiles() {
-    console.log("Files Rejected");
+  function rejectFiles(rejectedFiles: FileRejection[]) {
+    if (rejectedFiles[0].errors[0].code == "file-too-large") {
+      toast({
+        variant: "destructive",
+        title: "File too large",
+        description: "Please select a file smaller than 2MB",
+      });
+    } else if (rejectedFiles[0].errors[0].code == "file-invalid-type") {
+      toast({
+        variant: "destructive",
+        title: "Invalid file type",
+        description: "Please select a PNG, JPG or JPEG",
+      });
+    } else if (rejectedFiles[0].errors[0].code == "too-many-files") {
+      toast({
+        variant: "destructive",
+        title: "Too many files",
+        description: "Please select upto 3 images",
+      });
+    }
   }
   return (
     <div className="container mt-[100px]">
@@ -55,13 +79,15 @@ export default function Reviews() {
                   "image/jpeg": [".jpeg"],
                   "image/jpg": [".jpg"],
                 }}
+                maxFiles={3}
+                maxSize={1048576}
               >
                 {({ getRootProps, getInputProps }) => (
                   <div
                     {...getRootProps()}
-                    className="h-full w-full flex items-center justify-center"
+                    className="h-full w-full flex items-center justify-center cursor-pointer"
                   >
-                    <input {...getInputProps()} />
+                    <input {...getInputProps()} name="images" />
                     {!isDragOver && (
                       <div className="flex flex-col items-center justify-center gap-2 bg-red">
                         <IoCloudUploadOutline size={27} />
@@ -83,28 +109,36 @@ export default function Reviews() {
                 )}
               </Dropzone>
             </div>
-            <div className="grid gap-4 py-4">
-              <Input
-                id="title"
-                name="title"
-                placeholder="Title"
-                className="col-span-3"
-                maxLength={50}
-                autoComplete="off"
-              />
-              <Textarea
-                id="message"
-                name="message"
-                defaultValue=""
-                placeholder="Message"
-                className="col-span-3 max-h-[300px]"
-                maxLength={550}
-                autoComplete="off"
-              />
-            </div>
-            <DialogFooter>
-              <Button type="submit">Post Review</Button>
-            </DialogFooter>
+            <form
+              action={(FormData) =>
+                uploadReview(FormData, id, session?.user.id as string)
+              }
+            >
+              <div className="grid gap-4 py-4">
+                <Input
+                  id="title"
+                  name="title"
+                  placeholder="Title"
+                  className="col-span-3"
+                  maxLength={50}
+                  autoComplete="off"
+                  required
+                />
+                <Textarea
+                  id="message"
+                  name="description"
+                  defaultValue=""
+                  placeholder="Message"
+                  className="col-span-3 h-[150px] max-h-[300px] max-[640px]:h-[300px]"
+                  maxLength={550}
+                  autoComplete="off"
+                  required
+                />
+              </div>
+              <DialogFooter>
+                <Button type="submit">Post Review</Button>
+              </DialogFooter>
+            </form>
           </DialogContent>
         </Dialog>
         <div className="mt-5 rounded-lg p-4 bg-gray-50 max-w-[768px]">
@@ -121,7 +155,7 @@ export default function Reviews() {
               Walking on Clouds: Nike Air Max Plus is a Game Changer!
             </h1>
           </div>
-          <p className="mt-3 text-[15px] line-clamp-3">
+          <p className="mt-3 text-[15px] line-clamp-[7] md:line-clamp-4 lg:line-clamp-3">
             Let me start by saying, these Nike Air Max Plus sneakers have
             completely transformed my walking experience. From the moment I
             slipped them on, I felt like I was walking on clouds. The cushioning

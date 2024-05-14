@@ -220,3 +220,72 @@ export async function updateProductWithImage(formData: FormData) {
     revalidatePath(`/admin/products/${id}`);
   }
 }
+
+export async function uploadReview(
+  formData: FormData,
+  pid: string,
+  uid: string
+) {
+  console.log(formData);
+  const images = formData.getAll("images");
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+  });
+
+  if (images.length > 0) {
+    let arrayOfImages = [];
+    for (const image of images) {
+      const file = image as File;
+      const arrayBuffer = await file?.arrayBuffer();
+      const buffer = new Uint8Array(arrayBuffer);
+      const res = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({}, (error, result) => {
+            if (error) {
+              reject(error);
+              return;
+            }
+            resolve(result?.secure_url);
+          })
+          .end(buffer);
+      });
+      arrayOfImages.push(res);
+    }
+    try {
+      await prisma.reviews.create({
+        data: {
+          title,
+          description,
+          images: arrayOfImages as string[],
+          productId: pid,
+          userId: uid,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      revalidatePath(`/categories/men/${pid}`);
+    }
+  } else {
+    try {
+      await prisma.reviews.create({
+        data: {
+          title,
+          description,
+          productId: pid,
+          userId: uid,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      revalidatePath(`/categories/men/${pid}`);
+    }
+  }
+}

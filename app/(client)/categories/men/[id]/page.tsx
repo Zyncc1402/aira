@@ -86,7 +86,7 @@ const ProductById = async ({ params: { id } }: Params) => {
           </div>
           <RightPage product={product} />
         </div>
-        <Reviews />
+        <Reviews id={id} />
         {similarProducts.length > 0 && (
           <div className="container mt-[100px]">
             <h1 className="text-2xl font-semibold">You might like these</h1>
