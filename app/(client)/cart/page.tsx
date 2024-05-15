@@ -16,7 +16,6 @@ const Cart = async () => {
     redirect("/");
   }
   const cartItems = await getCart();
-  console.log(cartItems);
   if (cartItems) {
     return (
       <div className="flex justify-between h-screen w-screen container">

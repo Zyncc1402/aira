@@ -31,6 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           data: {
             name: profile?.name as string,
             email: profile?.email as string,
+            avatar: profile?.picture as string,
           },
         });
         console.log("User Created");

@@ -3,10 +3,28 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from "cloudinary";
 
 export async function deleteProduct(id: string) {
   const session = await auth();
   if (session?.user.role === "Admin") {
+    const getProduct = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+    let toDeleteImages: string[] = [];
+    getProduct?.images.map((image) => {
+      const imgId: string = String(image.split("/").pop());
+      toDeleteImages.push(imgId.split(".")[0]);
+    });
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
+    });
+    cloudinary.api.delete_resources(toDeleteImages);
     try {
       await prisma.product.delete({
         where: {

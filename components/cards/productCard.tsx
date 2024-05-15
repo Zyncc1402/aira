@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { IoMdHeart } from "react-icons/io";
 import formatCurrency from "@/lib/formatCurrency";
 import { toast } from "../ui/use-toast";
+import { FaRegHeart } from "react-icons/fa";
 
 type CardProps = {
   image: string;
@@ -101,11 +102,19 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
               handleAddToWishlist(id);
             }}
           >
-            <IoMdHeart
-              color={heart ? "#dc6e73" : "8a8a8a"}
-              size={27}
-              className="cursor-pointer bg-red"
-            />
+            {heart ? (
+              <IoMdHeart
+                color={"#dc6e73"}
+                size={27}
+                className="cursor-pointer"
+              />
+            ) : (
+              <FaRegHeart
+                color={"8a8a8a"}
+                size={25}
+                className="cursor-pointer"
+              />
+            )}
           </button>
         </div>
       </div>

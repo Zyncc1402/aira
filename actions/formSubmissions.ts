@@ -32,23 +32,29 @@ export async function createProduct(formData: FormData) {
 
   let arrayOfImages = [];
 
-  for (const image of images) {
-    const file = image as File;
-    const arrayBuffer = await file?.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-    const res = await new Promise((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream({}, (error, result) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          resolve(result?.secure_url);
-        })
-        .end(buffer);
-    });
-    arrayOfImages.push(res);
+  if (images.length == 0) {
+    return {
+      noImage: true,
+    };
   }
+  if (images)
+    for (const image of images) {
+      const file = image as File;
+      const arrayBuffer = await file?.arrayBuffer();
+      const buffer = new Uint8Array(arrayBuffer);
+      const res = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({}, (error, result) => {
+            if (error) {
+              reject(error);
+              return;
+            }
+            resolve(result?.secure_url);
+          })
+          .end(buffer);
+      });
+      arrayOfImages.push(res);
+    }
 
   try {
     await prisma.product.create({
@@ -78,6 +84,7 @@ export async function createProduct(formData: FormData) {
         quantity: true,
       },
     });
+    console.log("Success");
   } catch (error) {
     console.log(error);
     throw Error("Failed to create product");
@@ -221,18 +228,10 @@ export async function updateProductWithImage(formData: FormData) {
   }
 }
 
-export async function uploadReview({
-  images,
-  formData,
-  pid,
-  uid,
-}: {
-  images: File[] | undefined;
-  formData: FormData;
-  pid: string;
-  uid: string;
-}) {
-  console.log(formData);
+export async function uploadReview(formData: FormData) {
+  const images = formData.getAll("images");
+  const pid = formData.get("pid") as string;
+  const uid = formData.get("uid") as string;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
 

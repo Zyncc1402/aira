@@ -12,7 +12,7 @@ import { useSearchParams } from "next/navigation";
 import AddToCartBtn from "./AddToCartBtn";
 import { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
-import { FaRegMoneyBillAlt } from "react-icons/fa";
+import { FaRegHeart, FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { IoMdHeart, IoMdInformationCircleOutline } from "react-icons/io";
@@ -41,8 +41,13 @@ export default function RightPage({ product }: Props) {
   const { data: session } = useSession();
   const { title, description, price, quantity, id, category, images } = product;
   const formatted = formatCurrency(price);
-  const [isClient, setIsClient] = useState(false);
   const [date, setDate] = useState<Date>();
+
+  useEffect(() => {
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 3);
+    setDate(currentDate);
+  }, []);
 
   useEffect(() => {
     const wishlistExists = localStorage.getItem("wishlist");
@@ -196,7 +201,12 @@ export default function RightPage({ product }: Props) {
             <div className="flex gap-6 items-start mb-2 overflow-hidden flex-wrap">
               <div className="flex items-start justify-start gap-2 flex-wrap">
                 {quantity?.sm !== 0 && (
-                  <Link scroll={false} href={"?size=sm"} replace>
+                  <Link
+                    scroll={false}
+                    href={"?size=sm"}
+                    replace
+                    draggable={false}
+                  >
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -215,7 +225,12 @@ export default function RightPage({ product }: Props) {
                   </Link>
                 )}
                 {quantity?.md !== 0 && (
-                  <Link scroll={false} href={"?size=md"} replace>
+                  <Link
+                    scroll={false}
+                    href={"?size=md"}
+                    replace
+                    draggable={false}
+                  >
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -234,7 +249,12 @@ export default function RightPage({ product }: Props) {
                   </Link>
                 )}
                 {quantity?.lg !== 0 && (
-                  <Link scroll={false} href={"?size=lg"} replace>
+                  <Link
+                    scroll={false}
+                    href={"?size=lg"}
+                    replace
+                    draggable={false}
+                  >
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -253,7 +273,12 @@ export default function RightPage({ product }: Props) {
                   </Link>
                 )}
                 {quantity?.xl !== 0 && (
-                  <Link scroll={false} href={"?size=xl"} replace>
+                  <Link
+                    scroll={false}
+                    href={"?size=xl"}
+                    replace
+                    draggable={false}
+                  >
                     <span className="flex items-center text-red-500 flex-col gap-2">
                       <Button
                         size={"lg"}
@@ -298,11 +323,11 @@ export default function RightPage({ product }: Props) {
                 type="button"
                 onClick={() => handleAddToWishlist(id)}
               >
-                <IoMdHeart
-                  className="mr-3"
-                  size={23}
-                  color={heart ? "#dc6e73" : "#0f172a"}
-                />
+                {heart ? (
+                  <IoMdHeart color={"#dc6e73"} className="mr-3" size={23} />
+                ) : (
+                  <FaRegHeart color={"black"} size={22} className="mr-3" />
+                )}
                 {heart ? "Remove from wishlist" : "Add to Wishlist"}
               </Button>
             </div>
@@ -314,7 +339,9 @@ export default function RightPage({ product }: Props) {
           <TbTruckDelivery size={30} />
           <div>
             Expected delivery by{" "}
-            <span className="font-medium">{date?.toString().slice(0, 11)}</span>{" "}
+            <span className="font-semibold">
+              {date?.toString().slice(0, 11)}
+            </span>{" "}
             <br />
             Free delivery
           </div>
