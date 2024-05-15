@@ -45,11 +45,11 @@ const ProductSlider: React.FC<PropType> = (props) => {
             <div className="embla__slide" key={index}>
               <Image
                 src={image}
-                height={1000}
-                width={1000}
+                height={1350}
+                width={1080}
                 alt="Carousel Image"
                 priority={true}
-                className="md:rounded-lg object-cover aspect-square"
+                className="md:rounded-lg object-cover aspect-[9-16] cursor-grab"
               />
             </div>
           ))}
@@ -68,7 +68,7 @@ const ProductSlider: React.FC<PropType> = (props) => {
                 width={100}
                 alt="Carousel Image"
                 priority={true}
-                className="rounded-sm object-cover aspect-square"
+                className="rounded-sm object-cover aspect-square cursor-pointer"
               />
             ))}
           </div>

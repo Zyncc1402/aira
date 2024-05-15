@@ -14,8 +14,13 @@ export async function createProduct(formData: FormData) {
   const xl = formData.get("xl") as string;
   const price = formData.get("price") as unknown as string;
   const color = formData.get("color") as string;
-  const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const isFeatured = formData.get("featured") as string;
+  const category = formData.get("category") as string;
+  const fabric = formData.get("fabric") as string;
+  const transparency = formData.get("transparency") as string;
+  const weavePattern = formData.get("weavePattern") as string;
+  const fit = formData.get("fit") as string;
   const colors = color.split(" ");
 
   cloudinary.config({
@@ -59,6 +64,11 @@ export async function createProduct(formData: FormData) {
             xl: Number(xl),
           },
         },
+        fabric,
+        transparency,
+        weavePattern,
+        fit,
+        isFeatured: Boolean(isFeatured),
         color: colors,
         category: category,
         images: arrayOfImages as string[],
@@ -208,5 +218,74 @@ export async function updateProductWithImage(formData: FormData) {
     revalidatePath("/categories/women");
     revalidatePath("/admin/products");
     revalidatePath(`/admin/products/${id}`);
+  }
+}
+
+export async function uploadReview(
+  formData: FormData,
+  pid: string,
+  uid: string
+) {
+  console.log(formData);
+  const images = formData.getAll("images");
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+  });
+
+  if (images.length > 0) {
+    let arrayOfImages = [];
+    for (const image of images) {
+      const file = image as File;
+      const arrayBuffer = await file?.arrayBuffer();
+      const buffer = new Uint8Array(arrayBuffer);
+      const res = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({}, (error, result) => {
+            if (error) {
+              reject(error);
+              return;
+            }
+            resolve(result?.secure_url);
+          })
+          .end(buffer);
+      });
+      arrayOfImages.push(res);
+    }
+    try {
+      await prisma.reviews.create({
+        data: {
+          title,
+          description,
+          images: arrayOfImages as string[],
+          productId: pid,
+          userId: uid,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      revalidatePath(`/categories/men/${pid}`);
+    }
+  } else {
+    try {
+      await prisma.reviews.create({
+        data: {
+          title,
+          description,
+          productId: pid,
+          userId: uid,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      revalidatePath(`/categories/men/${pid}`);
+    }
   }
 }

@@ -27,8 +27,22 @@ type Props = {
 const CreateProductForm = ({ product }: Props) => {
   const [imageDisabled, setImageDisabled] = useState(true);
   if (product) {
-    const { title, description, images, price, quantity, category, color, id } =
-      product;
+    const {
+      title,
+      description,
+      images,
+      price,
+      quantity,
+      category,
+      color,
+      id,
+      fabric,
+      fit,
+      isFeatured,
+      isArchived,
+      transparency,
+      weavePattern,
+    } = product;
     return (
       <div className="flex flex-wrap flex-col md:flex-row gap-20 mt-16 mb-16">
         <form
@@ -68,14 +82,31 @@ const CreateProductForm = ({ product }: Props) => {
             type="text"
             autoCapitalize="false"
             required
-            defaultValue={color}
+            defaultValue={color.join(" ")}
           />
           <Input name="price" type="number" required defaultValue={price} />
           <Input name="sm" type="number" required defaultValue={quantity?.sm} />
           <Input name="md" type="number" required defaultValue={quantity?.md} />
           <Input name="lg" type="number" required defaultValue={quantity?.lg} />
           <Input name="xl" type="number" required defaultValue={quantity?.xl} />
-          <Label>Category</Label>
+          <select
+            name="featured"
+            required
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <option
+              value={1}
+              selected={isFeatured !== null && isFeatured && true}
+            >
+              Is Featured
+            </option>
+            <option
+              value={""}
+              selected={isFeatured !== null && !isFeatured && true}
+            >
+              Not Featured
+            </option>
+          </select>
           <select
             name="category"
             required
@@ -83,18 +114,45 @@ const CreateProductForm = ({ product }: Props) => {
             defaultValue={category}
           >
             <option value="men">Men</option>
-            <option value="women">Women</option>
           </select>
-          <Label>isArchived?</Label>
           <select
             name="isArchived"
             defaultValue={""}
             required
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value={1}>True</option>
-            <option value={""}>False</option>
+            <option value={1} selected={isArchived && true}>
+              Is Archived
+            </option>
+            <option value={""} selected={!isArchived && true}>
+              Not Archived
+            </option>
           </select>
+          <Label>Product Details</Label>
+          <Input
+            name="fabric"
+            required
+            placeholder="Fabric"
+            defaultValue={fabric !== null ? fabric : ""}
+          />
+          <Input
+            name="transparency"
+            required
+            placeholder="Transparency"
+            defaultValue={transparency !== null ? transparency : ""}
+          />
+          <Input
+            name="weavePattern"
+            required
+            placeholder="Weave Pattern"
+            defaultValue={weavePattern !== null ? weavePattern : ""}
+          />
+          <Input
+            name="fit"
+            required
+            placeholder="Fit"
+            defaultValue={fit !== null ? fit : ""}
+          />
           <CreateProductButton Atext="Updating..." text="Update" />
         </form>
         <Carousel

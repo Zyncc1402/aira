@@ -3,6 +3,8 @@ import "../globals.css";
 import Providers from "@/lib/authProvider";
 import { Toaster } from "@/components/ui/toaster";
 import AdminNavbar from "@/components/navbar/adminNavbar";
+import { auth } from "@/auth";
+import Navbar from "@/components/navbar/navbar";
 
 export const metadata: Metadata = {
   title: "Aira Admin Panel",
@@ -14,11 +16,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
   return (
     <html lang="en">
       <Providers>
         <body>
-          <AdminNavbar />
+          {session?.user.role !== "Admin" ? <Navbar /> : <AdminNavbar />}
           {children}
           <Toaster />
         </body>

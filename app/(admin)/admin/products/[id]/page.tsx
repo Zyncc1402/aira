@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import UpdateProductForm from "./components/UpdateProductForm";
 import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
 
 type Props = {
   params: {
@@ -11,6 +12,10 @@ type Props = {
 
 const CreateProducts = async ({ params }: Props) => {
   const { id } = params;
+  const session = await auth();
+  if (session?.user.role !== "Admin" || !session) {
+    notFound();
+  }
   const product = await prisma.product.findUnique({
     where: {
       id,
