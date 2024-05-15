@@ -46,6 +46,10 @@ export default function RightPage({ product }: Props) {
   const [date, setDate] = useState<Date>();
 
   useEffect(() => {
+    var currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 3);
+      setDate(currentDate);
+    }, []);
     const wishlistExists = localStorage.getItem("wishlist");
     if (wishlistExists) {
       const existingItems: wishlistItemsType = eval(JSON.parse(
