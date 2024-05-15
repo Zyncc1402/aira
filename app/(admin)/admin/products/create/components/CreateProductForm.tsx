@@ -1,16 +1,46 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { createProduct } from "@/actions/formSubmissions";
-import { Skeleton } from "@/components/ui/skeleton";
 import CreateProductButton from "./CreateProductButton";
+import Dropzone, { FileRejection } from "react-dropzone";
+import { toast } from "@/components/ui/use-toast";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 const CreateProductForm = () => {
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
+  function acceptFiles(acceptedFiles: File[]) {
+    setIsDragOver(false);
+    setImages(acceptedFiles);
+    console.log(acceptedFiles);
+  }
+  function rejectFiles(rejectedFiles: FileRejection[]) {
+    setIsDragOver(false);
+    if (rejectedFiles[0].errors[0].code == "file-too-large") {
+      toast({
+        variant: "destructive",
+        title: "File too large",
+        description: "Please select a file smaller than 2MB",
+      });
+    } else if (rejectedFiles[0].errors[0].code == "file-invalid-type") {
+      toast({
+        variant: "destructive",
+        title: "Invalid file type",
+        description: "Please select a PNG, JPG or JPEG",
+      });
+    }
+  }
   return (
-    <div className="flex gap-8 mt-16 mb-16">
-      <form action={createProduct} className="flex flex-1 flex-col gap-8">
-        <Input name="images" type="file" className="" multiple required />
+    <div className="flex flex-wrap gap-16 mt-8 mb-16">
+      <form
+        action={createProduct}
+        className="flex flex-1 max-[734px]:order-2 flex-col gap-8 min-w-[320px]"
+      >
+        {/* <Input name="images" type="file" className="" multiple required /> */}
         <Input name="title" required className="" placeholder="Title" />
         <Textarea
           placeholder="Description"
@@ -63,7 +93,62 @@ const CreateProductForm = () => {
         <Input name="fit" required placeholder="Fit" />
         <CreateProductButton Atext="Creating..." text="Create" />
       </form>
-      <Skeleton className="flex-1 hidden lg:block" />
+      <div className="flex-1 flex justify-center max-[734px]:order-1">
+        <Dropzone
+          onDropAccepted={acceptFiles}
+          onDropRejected={rejectFiles}
+          onDragEnter={() => setIsDragOver(true)}
+          onDragLeave={() => setIsDragOver(false)}
+          accept={{
+            "image/png": [".png"],
+            "image/jpeg": [".jpeg"],
+            "image/jpg": [".jpg"],
+          }}
+          maxSize={2097152}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div
+              {...getRootProps()}
+              className="flex h-[500px] w-full min-w-[320px] items-center rounded-lg p-4 bg-muted justify-center cursor-pointer"
+            >
+              <input {...getInputProps()} name="images" />
+              {!isDragOver ? (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <IoCloudUploadOutline size={27} />
+                  <h1 className="font-medium text-sm">
+                    Click to upload or{" "}
+                    <span className="font-bold">Drag and Drop</span>
+                  </h1>
+                  <div className="text-center">
+                    <p className="text-muted-foreground text-xs">
+                      PNG JPG JPEG
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      Max 2MB per Image
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <IoCloudUploadOutline size={27} />
+                  <h1 className="font-medium text-sm">
+                    Click to upload or{" "}
+                    <span className="font-bold">Drag and Drop</span>
+                  </h1>
+                  <div className="text-center">
+                    <p className="text-muted-foreground text-xs">
+                      PNG JPG JPEG
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      Max 2MB per Image
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </Dropzone>
+      </div>
     </div>
   );
 };

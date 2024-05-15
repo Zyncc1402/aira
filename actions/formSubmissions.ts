@@ -221,13 +221,18 @@ export async function updateProductWithImage(formData: FormData) {
   }
 }
 
-export async function uploadReview(
-  formData: FormData,
-  pid: string,
-  uid: string
-) {
+export async function uploadReview({
+  images,
+  formData,
+  pid,
+  uid,
+}: {
+  images: File[] | undefined;
+  formData: FormData;
+  pid: string;
+  uid: string;
+}) {
   console.log(formData);
-  const images = formData.getAll("images");
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
 
@@ -238,7 +243,7 @@ export async function uploadReview(
     secure: true,
   });
 
-  if (images.length > 0) {
+  if (images) {
     let arrayOfImages = [];
     for (const image of images) {
       const file = image as File;

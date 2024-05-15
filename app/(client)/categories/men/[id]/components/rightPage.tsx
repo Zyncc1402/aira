@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
-import { CgDetailsMore } from "react-icons/cg";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { IoMdHeart, IoMdInformationCircleOutline } from "react-icons/io";
 
@@ -22,25 +21,74 @@ type Props = {
   product: Products;
 };
 
+type wishlistItemsType = {
+  id: string;
+  title: string;
+  image: string;
+  price: number;
+  category: string;
+}[];
+
 const sizeScheme = z.object({
   size: z.enum(["sm", "md", "lg", "xl"]),
   quantity: z.number().gt(0),
 });
 
 export default function RightPage({ product }: Props) {
+  const [heart, setHeart] = useState<boolean>();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { data: session } = useSession();
-  const { title, description, price, quantity, id } = product;
+  const { title, description, price, quantity, id, category, images } = product;
   const formatted = formatCurrency(price);
   const [isClient, setIsClient] = useState(false);
   const [date, setDate] = useState<Date>();
 
   useEffect(() => {
-    var currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 3);
-    setDate(currentDate);
-  }, []);
+    const wishlistExists = localStorage.getItem("wishlist");
+    if (wishlistExists) {
+      const existingItems: wishlistItemsType = eval(
+        JSON.parse(JSON.stringify(wishlistExists))
+      );
+      const index = existingItems.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        setHeart(true);
+      } else {
+        setHeart(false);
+      }
+    }
+  }, [id]);
+
+  function handleAddToWishlist(id: string) {
+    const wishlistExists = localStorage.getItem("wishlist");
+    const image = images[0];
+    if (wishlistExists) {
+      const existingItems: wishlistItemsType = eval(
+        JSON.parse(JSON.stringify(wishlistExists))
+      );
+      const index = existingItems.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        setHeart(false);
+        existingItems.splice(index, 1);
+      } else {
+        setHeart(true);
+        toast({
+          title: `Added ${title} to wishlist`,
+        });
+        existingItems.push({ id, title, image, price, category });
+      }
+      localStorage.setItem("wishlist", JSON.stringify(existingItems));
+    } else {
+      setHeart(true);
+      toast({
+        title: `Added ${title} to wishlist`,
+      });
+      localStorage.setItem(
+        "wishlist",
+        JSON.stringify([{ id, title, price, image }])
+      );
+    }
+  }
 
   async function handleAddToCart() {
     if (!session?.user) {
@@ -251,9 +299,14 @@ export default function RightPage({ product }: Props) {
                 variant={"secondary"}
                 size={"lg"}
                 type="button"
+                onClick={() => handleAddToWishlist(id)}
               >
-                <IoMdHeart className="mr-3" size={23} />
-                Add to wishlist
+                <IoMdHeart
+                  className="mr-3"
+                  size={23}
+                  color={heart ? "#dc6e73" : "#0f172a"}
+                />
+                {heart ? "Remove from wishlist" : "Add to Wishlist"}
               </Button>
             </div>
           </form>

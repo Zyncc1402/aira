@@ -19,18 +19,21 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { uploadReview } from "@/actions/formSubmissions";
 import { toast } from "@/components/ui/use-toast";
+import { Divide } from "lucide-react";
 
 export default function Reviews({ id }: { id: string }) {
   const { data: session } = useSession();
   const [isDragOver, setIsDragOver] = useState(false);
-  const [images, setImages] = useState<File[] | File>();
-  function acceptFiles(acceptFiles: File[]) {
-    acceptFiles.map((file) => {
-      setImages(file);
-    });
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [images, setImages] = useState<File[]>();
+  function acceptFiles(acceptedFiles: File[]) {
+    setIsDragOver(false);
+    setIsUploaded(true);
+    setImages(acceptedFiles);
     console.log(images);
   }
   function rejectFiles(rejectedFiles: FileRejection[]) {
+    setIsDragOver(false);
     if (rejectedFiles[0].errors[0].code == "file-too-large") {
       toast({
         variant: "destructive",
@@ -80,16 +83,16 @@ export default function Reviews({ id }: { id: string }) {
                   "image/jpg": [".jpg"],
                 }}
                 maxFiles={3}
-                maxSize={1048576}
+                maxSize={2097152}
               >
                 {({ getRootProps, getInputProps }) => (
                   <div
                     {...getRootProps()}
-                    className="h-full w-full flex items-center justify-center cursor-pointer"
+                    className="flex items-center justify-center cursor-pointer"
                   >
                     <input {...getInputProps()} name="images" />
-                    {!isDragOver && (
-                      <div className="flex flex-col items-center justify-center gap-2 bg-red">
+                    {!isDragOver ? (
+                      <div className="flex flex-col h-full w-full p-4 items-center justify-center gap-2">
                         <IoCloudUploadOutline size={27} />
                         <h1 className="font-medium text-sm">
                           Click to upload or{" "}
@@ -100,7 +103,23 @@ export default function Reviews({ id }: { id: string }) {
                             PNG JPG JPEG
                           </p>
                           <p className="text-muted-foreground text-xs">
-                            MAX 2MB
+                            Max 3 images upto 2MB each
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col h-full w-full p-4 items-center justify-center border-2 border-dashed gap-2">
+                        <IoCloudUploadOutline size={27} />
+                        <h1 className="font-medium text-sm">
+                          Click to upload or{" "}
+                          <span className="font-bold">Drag and Drop</span>
+                        </h1>
+                        <div className="text-center">
+                          <p className="text-muted-foreground text-xs">
+                            PNG JPG JPEG
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            Max 3 images upto 2MB each
                           </p>
                         </div>
                       </div>
@@ -110,9 +129,15 @@ export default function Reviews({ id }: { id: string }) {
               </Dropzone>
             </div>
             <form
-              action={(FormData) =>
-                uploadReview(FormData, id, session?.user.id as string)
-              }
+              action={(FormData) => {
+                const formObject = {
+                  images: images,
+                  formData: FormData,
+                  pid: id,
+                  uid: session?.user.id as string,
+                };
+                uploadReview(formObject);
+              }}
             >
               <div className="grid gap-4 py-4">
                 <Input

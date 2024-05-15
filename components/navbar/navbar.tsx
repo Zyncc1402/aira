@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { IoCartOutline } from "react-icons/io5";
 import { LuMenu, LuUser } from "react-icons/lu";
 import { PiShoppingBagOpen } from "react-icons/pi";
+import { FaRegHeart } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import Link from "next/link";
@@ -102,6 +103,9 @@ const Navbar = async () => {
           </Menubar>
         </div>
         <div className="flex items-center justify-between">
+          <Link href={"/wishlist"}>
+            <FaRegHeart size={25} className="ml-3" />
+          </Link>
           <Link href={"/cart"}>
             <IoCartOutline size={30} className="ml-3" />
           </Link>

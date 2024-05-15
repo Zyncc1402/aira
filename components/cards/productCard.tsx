@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { IoMdHeart } from "react-icons/io";
 import formatCurrency from "@/lib/formatCurrency";
+import { toast } from "../ui/use-toast";
 
 type CardProps = {
   image: string;
@@ -11,23 +13,75 @@ type CardProps = {
   category: string;
   id: string;
   price: number;
-  showProductActions?: boolean;
-  showIcons?: boolean;
-  showAdminLinks?: boolean;
 };
 
+export type wishlistItemsType = {
+  id: string;
+  title: string;
+  image: string;
+  price: number;
+  category: string;
+}[];
+
 const ProductCard = ({ image, title, price, id, category }: CardProps) => {
+  const [heart, setHeart] = useState(false);
   const formatted = formatCurrency(price);
+
+  useEffect(() => {
+    const wishlistExists = localStorage.getItem("wishlist");
+    if (wishlistExists) {
+      const existingItems: wishlistItemsType = eval(
+        JSON.parse(JSON.stringify(wishlistExists))
+      );
+      const index = existingItems.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        setHeart(true);
+      } else {
+        setHeart(false);
+      }
+    }
+  }, [id]);
+
+  function handleAddToWishlist(id: string) {
+    const wishlistExists = localStorage.getItem("wishlist");
+    if (wishlistExists) {
+      const existingItems: wishlistItemsType = eval(
+        JSON.parse(JSON.stringify(wishlistExists))
+      );
+      const index = existingItems.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        setHeart(false);
+        existingItems.splice(index, 1);
+      } else {
+        setHeart(true);
+        toast({
+          title: `Added ${title} to wishlist`,
+        });
+        existingItems.push({ id, title, image, price, category });
+      }
+      localStorage.setItem("wishlist", JSON.stringify(existingItems));
+    } else {
+      setHeart(true);
+      toast({
+        title: `Added ${title} to wishlist`,
+      });
+      localStorage.setItem(
+        "wishlist",
+        JSON.stringify([{ id, title, price, image }])
+      );
+    }
+  }
+
   return (
     <div className="flex flex-col border-r border-b md:border relative overflow-hidden text-left">
       <Link aria-label="navigation-link" href={`/categories/${category}/${id}`}>
         <Image
           src={image}
-          height={400}
           width={400}
+          height={400}
           alt="product image"
           priority={true}
-          className="aspect-square object-cover"
+          className=" object-cover aspect-square"
         />
       </Link>
       <div className="p-2 gap-4 flex justify-between w-[100%]">
@@ -45,6 +99,18 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
               {formatted.split(".")[0]}
             </p>
           </div>
+          <button
+            aria-label="Button"
+            onClick={() => {
+              handleAddToWishlist(id);
+            }}
+          >
+            <IoMdHeart
+              color={heart ? "#dc6e73" : "8a8a8a"}
+              size={27}
+              className="cursor-pointer bg-red"
+            />
+          </button>
         </div>
       </div>
     </div>
