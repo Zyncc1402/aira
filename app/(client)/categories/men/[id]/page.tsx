@@ -62,8 +62,8 @@ const ProductById = async ({ params: { id } }: Params) => {
     const { title, images } = product;
     const OPTIONS: EmblaOptionsType = {};
     return (
-      <section className="py-[100px] ">
-        <Breadcrumb className="container">
+      <section className="md:py-[100px] max-[768px]:pt-[64px]">
+        <Breadcrumb className="container hidden md:block">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -80,7 +80,7 @@ const ProductById = async ({ params: { id } }: Params) => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="flex mt-10 flex-wrap md:flex-nowrap gap-12 md:container">
+        <div className="flex md:mt-10 flex-wrap md:flex-nowrap gap-12 md:container">
           <div className="md:basis-1/2">
             <ProductSlider slides={images} options={OPTIONS} />
           </div>
@@ -88,7 +88,7 @@ const ProductById = async ({ params: { id } }: Params) => {
         </div>
         <Reviews id={id} />
         {similarProducts.length > 0 && (
-          <div className="container mt-[100px]">
+          <div className="container mt-[80px]">
             <h1 className="text-2xl font-semibold">You might like these</h1>
             <div className="similar gap-2 mt-6 overflow-x-auto flex">
               {similarProducts.map((similarProduct) => (

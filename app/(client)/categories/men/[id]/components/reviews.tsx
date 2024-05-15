@@ -1,7 +1,8 @@
 import Image from "next/image";
-import ReviewForm from "./reviewForm";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Reviews({ id }: { id: string }) {
   const session = await auth();
@@ -12,6 +13,10 @@ export default async function Reviews({ id }: { id: string }) {
     include: {
       user: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 3,
   });
   const alreadyReviewed = await prisma.user.findUnique({
     where: {
@@ -28,7 +33,12 @@ export default async function Reviews({ id }: { id: string }) {
     <div className="container mt-[100px]">
       <h1 className="text-2xl font-semibold">Reviews</h1>
       <div>
-        <ReviewForm id={id} alreadyReviewed={!!result} />
+        <Link href={`/reviews/add/${id}`}>
+          <Button variant="secondary" className="mt-4">
+            Write a review
+          </Button>
+        </Link>
+        {/* <ReviewForm id={id} alreadyReviewed={!!result} /> */}
         {review.map((review) => (
           <div
             className="mt-5 rounded-lg p-4 bg- max-w-[768px] bg-gray-50"
@@ -66,6 +76,11 @@ export default async function Reviews({ id }: { id: string }) {
           </div>
         ))}
       </div>
+      <Link href={"/reviews/all/" + id}>
+        <Button variant={"link"} className="mt-5 text-black">
+          See all reviews
+        </Button>
+      </Link>
     </div>
   );
 }

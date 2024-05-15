@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createProduct(formData: FormData) {
   const images = formData.getAll("images");
@@ -138,10 +139,8 @@ export async function updateProduct(formData: FormData) {
     console.log(error);
     throw Error("Failed to update product");
   } finally {
-    revalidatePath("/categories/men");
-    revalidatePath("/categories/women");
+    revalidatePath(`/categories/${category}`);
     revalidatePath("/admin/products");
-    revalidatePath(`/admin/products/${id}`);
   }
 }
 
@@ -221,10 +220,8 @@ export async function updateProductWithImage(formData: FormData) {
     console.log(error);
     throw Error("Failed to update product");
   } finally {
-    revalidatePath("/categories/men");
-    revalidatePath("/categories/women");
+    revalidatePath(`/categories/${category}`);
     revalidatePath("/admin/products");
-    revalidatePath(`/admin/products/${id}`);
   }
 }
 
@@ -233,6 +230,7 @@ export async function uploadReview(formData: FormData) {
   const pid = formData.get("pid") as string;
   const uid = formData.get("uid") as string;
   const title = formData.get("title") as string;
+  const category = formData.get("category") as string;
   const description = formData.get("description") as string;
 
   cloudinary.config({
@@ -274,7 +272,8 @@ export async function uploadReview(formData: FormData) {
     } catch (error) {
       console.log(error);
     } finally {
-      revalidatePath(`/categories/men/${pid}`);
+      revalidatePath(`/categories/${category}/${pid}`);
+      redirect(`/categories/${category}/${pid}`);
     }
   } else {
     try {

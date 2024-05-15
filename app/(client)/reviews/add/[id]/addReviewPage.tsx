@@ -1,41 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { uploadReview } from "@/actions/formSubmissions";
+import CreateProductButton from "@/app/(admin)/admin/products/create/components/CreateProductButton";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { Session } from "next-auth";
+import Image from "next/image";
+import React, { useState } from "react";
 import Dropzone, { FileRejection } from "react-dropzone";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { toast } from "@/components/ui/use-toast";
-import { useSession } from "next-auth/react";
-import { uploadReview } from "@/actions/formSubmissions";
-import { UserWithReviews } from "@/lib/types";
-import { useFormStatus } from "react-dom";
 
-export default function ReviewForm({
+export default function AddReviewPage({
   id,
-  alreadyReviewed,
+  session,
+  category,
 }: {
   id: string;
-  alreadyReviewed: boolean;
+  session: Session;
+  category: string;
 }) {
-  const { data: session } = useSession();
   const [isDragOver, setIsDragOver] = useState(false);
-  const { pending } = useFormStatus();
-  const [images, setImages] = useState<File[]>();
+  const [droppedFiles, setDroppedFiles] = useState(false);
+  const [images, setImages] = useState<File[] | null>(null);
   function acceptFiles(acceptedFiles: File[]) {
+    const sortedArray = acceptedFiles.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
     setIsDragOver(false);
-    setImages(acceptedFiles);
+    setDroppedFiles(true);
+    setImages(sortedArray);
   }
   function rejectFiles(rejectedFiles: FileRejection[]) {
     setIsDragOver(false);
@@ -51,12 +45,6 @@ export default function ReviewForm({
         title: "Invalid file type",
         description: "Please select a PNG, JPG or JPEG",
       });
-    } else if (rejectedFiles[0].errors[0].code == "too-many-files") {
-      toast({
-        variant: "destructive",
-        title: "Too many files",
-        description: "Please select upto 3 images",
-      });
     }
   }
   function handleReviewSubmit(formData: FormData) {
@@ -64,27 +52,38 @@ export default function ReviewForm({
       formData.append("images", image);
     });
     formData.append("pid", id);
+    formData.append("category", category);
     formData.append("uid", session?.user.id as string);
     uploadReview(formData);
   }
-
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {true && (
-          <Button variant="secondary" className="mt-4">
-            Write a review
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Review</DialogTitle>
-          <DialogDescription>
-            Share your thoughts about this product with others
-          </DialogDescription>
-        </DialogHeader>
-        <div className="bg-muted w-full h-full rounded-lg p-5 flex items-center justify-center">
+    <div className="flex flex-wrap gap-16 max-[734px]:flex-col mt-8 mb-16">
+      <form
+        action={(formData) => handleReviewSubmit(formData)}
+        className="flex flex-1 max-[734px]:order-2 flex-col gap-8 min-w-[320px]"
+      >
+        <Input
+          id="title"
+          name="title"
+          placeholder="Title"
+          className="col-span-3"
+          maxLength={50}
+          autoComplete="off"
+          required
+        />
+        <Textarea
+          name="description"
+          defaultValue=""
+          placeholder="Message"
+          className="col-span-3 h-[150px] max-h-[300px] max-[640px]:h-[300px]"
+          maxLength={550}
+          autoComplete="off"
+          required
+        />
+        <CreateProductButton Atext="Adding..." text="Add review" />
+      </form>
+      <div className="flex-1 flex justify-center max-[734px]:order-1">
+        {!droppedFiles ? (
           <Dropzone
             onDropAccepted={acceptFiles}
             onDropRejected={rejectFiles}
@@ -101,11 +100,11 @@ export default function ReviewForm({
             {({ getRootProps, getInputProps }) => (
               <div
                 {...getRootProps()}
-                className="flex items-center justify-center cursor-pointer"
+                className="flex h-[500px] w-full min-w-[320px] items-center rounded-lg p-4 bg-muted justify-center cursor-pointer"
               >
-                <input {...getInputProps()} name="images" />
+                <input {...getInputProps()} name="images" required />
                 {!isDragOver ? (
-                  <div className="flex flex-col h-full w-full p-4 items-center justify-center gap-2">
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
                     <h1 className="font-medium text-sm">
                       Click to upload or{" "}
@@ -116,12 +115,12 @@ export default function ReviewForm({
                         PNG JPG JPEG
                       </p>
                       <p className="text-muted-foreground text-xs">
-                        Max 3 images upto 2MB each
+                        Max 2MB per Image
                       </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col h-full w-full p-4 items-center justify-center border-2 border-dashed gap-2">
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
                     <h1 className="font-medium text-sm">
                       Click to upload or{" "}
@@ -132,7 +131,7 @@ export default function ReviewForm({
                         PNG JPG JPEG
                       </p>
                       <p className="text-muted-foreground text-xs">
-                        Max 3 images upto 2MB each
+                        Max 2MB per Image
                       </p>
                     </div>
                   </div>
@@ -140,38 +139,24 @@ export default function ReviewForm({
               </div>
             )}
           </Dropzone>
-        </div>
-        <form action={(FormData) => handleReviewSubmit(FormData)}>
-          <div className="grid gap-4 py-4">
-            <Input
-              id="title"
-              name="title"
-              placeholder="Title"
-              className="col-span-3"
-              maxLength={50}
-              autoComplete="off"
-              required
-            />
-            <Textarea
-              id="message"
-              name="description"
-              defaultValue=""
-              placeholder="Message"
-              className="col-span-3 h-[150px] max-h-[300px] max-[640px]:h-[300px]"
-              maxLength={550}
-              autoComplete="off"
-              required
-            />
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="submit" disabled={pending}>
-                {pending ? "Posting Review" : "Post Review"}
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+        ) : (
+          <>
+            <div className="flex gap-4 flex-wrap h-fit">
+              {images?.map((image, index) => (
+                <div key={index}>
+                  <Image
+                    src={URL.createObjectURL(image)}
+                    width={200}
+                    height={200}
+                    alt="product image"
+                    className="object-cover aspect-square rounded-md"
+                  />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
