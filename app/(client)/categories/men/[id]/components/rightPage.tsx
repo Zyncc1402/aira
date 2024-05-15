@@ -36,11 +36,10 @@ export default function RightPage({ product }: Props) {
 
   useEffect(() => {
     const wishlistExists = localStorage.getItem("wishlist");
-    console.log(wishlistExists);
     if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(
+      const existingItems: wishlistItemsType = eval(JSON.parse(
         JSON.stringify(wishlistExists)
-      );
+      ));
       const index = existingItems.findIndex((item) => item.id === id);
       if (index !== -1) {
         setHeart(true);
@@ -54,9 +53,9 @@ export default function RightPage({ product }: Props) {
     const wishlistExists = localStorage.getItem("wishlist");
     const image = images[0];
     if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(
+      const existingItems: wishlistItemsType = eval(JSON.parse(
         JSON.stringify(wishlistExists)
-      );
+      ));
       const index = existingItems.findIndex((item) => item.id === id);
       if (index !== -1) {
         setHeart(false);
@@ -82,7 +81,6 @@ export default function RightPage({ product }: Props) {
   }
 
   async function handleAddToCart() {
-    console.log("hgello");
     if (!session?.user) {
       toast({
         variant: "destructive",
