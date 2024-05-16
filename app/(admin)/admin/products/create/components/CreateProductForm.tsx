@@ -16,7 +16,6 @@ const CreateProductForm = () => {
   const [droppedFiles, setDroppedFiles] = useState(false);
   const [images, setImages] = useState<File[] | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const imageRef = useRef<HTMLInputElement>(null);
   function acceptFiles(acceptedFiles: File[]) {
     const sortedArray = acceptedFiles.sort((a, b) =>
       a.name.localeCompare(b.name)
@@ -55,9 +54,6 @@ const CreateProductForm = () => {
       });
     }
     formRef.current?.reset();
-    if (imageRef.current) {
-      imageRef.current.value = "";
-    }
     setDroppedFiles(false);
     setImages(null);
   }
@@ -139,15 +135,10 @@ const CreateProductForm = () => {
               <div
                 {...getRootProps()}
                 className={`flex h-[500px] bg-background border-2 border-muted w-full min-w-[320px] items-center rounded-lg p-4 justify-center cursor-pointer ${
-                  isDragOver && "border-dashed"
+                  isDragOver && "border-dashed border-blue-950"
                 }`}
               >
-                <input
-                  {...getInputProps()}
-                  name="images"
-                  required
-                  ref={imageRef}
-                />
+                <input {...getInputProps()} name="images" />
                 {!isDragOver ? (
                   <div className="flex flex-col items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
@@ -168,8 +159,7 @@ const CreateProductForm = () => {
                   <div className="flex flex-col bg-background items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
                     <h1 className="font-medium text-sm">
-                      Click to upload or{" "}
-                      <span className="font-bold">Drag and Drop</span>
+                      <span className="font-bold">Release to drop</span>
                     </h1>
                     <div className="text-center">
                       <p className="text-muted-foreground text-xs">

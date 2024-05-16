@@ -15,7 +15,11 @@ const Products = async () => {
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }
-  const data = await prisma.product.findMany();
+  const data = await prisma.product.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return (
     <>
       <div className="pt-[100px]">

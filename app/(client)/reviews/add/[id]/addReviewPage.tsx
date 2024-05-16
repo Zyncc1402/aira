@@ -100,7 +100,9 @@ export default function AddReviewPage({
             {({ getRootProps, getInputProps }) => (
               <div
                 {...getRootProps()}
-                className="flex h-[500px] w-full min-w-[320px] items-center rounded-lg p-4 bg-muted justify-center cursor-pointer"
+                className={`flex h-[500px] bg-background border-2 border-muted w-full min-w-[320px] items-center rounded-lg p-4 justify-center cursor-pointer ${
+                  isDragOver && "border-dashed border-blue-950"
+                }`}
               >
                 <input {...getInputProps()} name="images" required />
                 {!isDragOver ? (
@@ -120,18 +122,17 @@ export default function AddReviewPage({
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="flex flex-col bg-background items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
                     <h1 className="font-medium text-sm">
-                      Click to upload or{" "}
-                      <span className="font-bold">Drag and Drop</span>
+                      <span className="font-bold">Release to drop</span>
                     </h1>
                     <div className="text-center">
                       <p className="text-muted-foreground text-xs">
                         PNG JPG JPEG
                       </p>
                       <p className="text-muted-foreground text-xs">
-                        Upto 3 Images, Max 2MB per Image
+                        Upto 3 images, Max 2MB per Image
                       </p>
                     </div>
                   </div>

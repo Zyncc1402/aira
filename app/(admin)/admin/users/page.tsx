@@ -12,7 +12,11 @@ const AllUsers = async () => {
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }
-  const user = await prisma.user.findMany();
+  const user = await prisma.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return (
     <section>
       <div className="pt-[100px]">
