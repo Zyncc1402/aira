@@ -248,7 +248,7 @@ export async function uploadReview(formData: FormData) {
       const buffer = new Uint8Array(arrayBuffer);
       const res = await new Promise((resolve, reject) => {
         cloudinary.uploader
-          .upload_stream({}, (error, result) => {
+          .upload_stream({ folder: "Reviews" }, (error, result) => {
             if (error) {
               reject(error);
               return;
