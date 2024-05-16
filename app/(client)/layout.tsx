@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import Providers from "@/lib/authProvider";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Aira",
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <Providers>
           <Navbar />
           <Toaster />
+          <SpeedInsights />
           {children}
         </Providers>
       </body>
