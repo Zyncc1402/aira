@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import AdminNavbar from "@/components/navbar/adminNavbar";
 import { auth } from "@/auth";
 import Navbar from "@/components/navbar/navbar";
+import { ThemeProvider } from "@/lib/themeProvider";
 
 export const metadata: Metadata = {
   title: "Aira Admin Panel",
@@ -21,8 +22,10 @@ export default async function RootLayout({
     <html lang="en">
       <Providers>
         <body>
-          {session?.user.role !== "Admin" ? <Navbar /> : <AdminNavbar />}
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            {session?.user.role !== "Admin" ? <Navbar /> : <AdminNavbar />}
+            {children}
+          </ThemeProvider>
           <Toaster />
         </body>
       </Providers>

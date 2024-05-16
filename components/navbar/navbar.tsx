@@ -43,70 +43,108 @@ const Navbar = async () => {
           <Menubar className="flex gap-x-6">
             <MenubarMenu>
               <MenubarTrigger>
-                <Link href={"/"}>Home</Link>
+                <Link className="font-medium text-[15px]" href={"/"}>
+                  Home
+                </Link>
               </MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
               <MenubarTrigger>
-                <Link href={"/about"}>About</Link>
+                <Link className="font-medium text-[15px]" href={"/about"}>
+                  About
+                </Link>
               </MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
-              <MenubarTrigger className="cursor-pointer">
+              <MenubarTrigger className="cursor-pointer font-medium text-[15px]">
                 Categories
               </MenubarTrigger>
               <MenubarContent>
-                <Link href={"/categories/men"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/men"}
+                >
                   <MenubarItem>MEN</MenubarItem>
                 </Link>
-                <Link href={"/categories/co-ord-sets"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/co-ord-sets"}
+                >
                   <MenubarItem>CO-ORD SETS</MenubarItem>
                 </Link>
-                <Link href={"/categories/pants"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/pants"}
+                >
                   <MenubarItem>PANTS</MenubarItem>
                 </Link>
-                <Link href={"/categories/jumpsuits"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/jumpsuits"}
+                >
                   <MenubarItem>JUMPSUITS</MenubarItem>
                 </Link>
-                <Link href={"/categories/shorts"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/shorts"}
+                >
                   <MenubarItem>SHORTS</MenubarItem>
                 </Link>
-                <Link href={"/categories/dresses"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/dresses"}
+                >
                   <MenubarItem>DRESSES</MenubarItem>
                 </Link>
-                <Link href={"/categories/outerwear"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/outerwear"}
+                >
                   <MenubarItem>OUTERWEAR</MenubarItem>
                 </Link>
-                <Link href={"/categories/tops"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/tops"}
+                >
                   <MenubarItem>TOPS</MenubarItem>
                 </Link>
-                <Link href={"/categories/skirts"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/skirts"}
+                >
                   <MenubarItem>SKIRTS</MenubarItem>
                 </Link>
-                <Link href={"/categories/lounge-wear"}>
+                <Link
+                  className="font-medium text-[15px]"
+                  href={"/categories/lounge-wear"}
+                >
                   <MenubarItem>LOUNGE WEAR</MenubarItem>
                 </Link>
               </MenubarContent>
             </MenubarMenu>
             <MenubarMenu>
               <MenubarTrigger>
-                <Link href={"/account"}>Account</Link>
+                <Link className="font-medium text-[15px]" href={"/account"}>
+                  Account
+                </Link>
               </MenubarTrigger>
             </MenubarMenu>
             {session?.user.role === "Admin" && (
               <MenubarMenu>
                 <MenubarTrigger>
-                  <Link href={"/admin"}>Admin</Link>
+                  <Link className="font-medium text-[15px]" href={"/admin"}>
+                    Admin
+                  </Link>
                 </MenubarTrigger>
               </MenubarMenu>
             )}
           </Menubar>
         </div>
         <div className="flex items-center justify-between">
-          <Link href={"/wishlist"}>
+          <Link className="font-medium text-[15px]" href={"/wishlist"}>
             <FaRegHeart size={25} className="ml-3" />
           </Link>
-          <Link href={"/cart"}>
+          <Link className="font-medium text-[15px]" href={"/cart"}>
             <IoCartOutline size={30} className="ml-3" />
           </Link>
           <Sheet>
@@ -114,13 +152,13 @@ const Navbar = async () => {
               <LuMenu size={30} className="ml-3" />
             </SheetTrigger>
             <SheetContent className="flex flex-col text-left">
-              <Link href={"/"}>
+              <Link className="font-medium text-[15px]" href={"/"}>
                 <SheetClose>Home</SheetClose>
               </Link>
-              <Link href={"/about"}>
+              <Link className="font-medium text-[15px]" href={"/about"}>
                 <SheetClose></SheetClose>About
               </Link>
-              <Link href={"/account"}>
+              <Link className="font-medium text-[15px]" href={"/account"}>
                 <SheetClose>Account</SheetClose>
               </Link>
               <Accordion type="single" collapsible defaultValue="item-1">
@@ -130,32 +168,64 @@ const Navbar = async () => {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="pl-4 pt-4 flex flex-col gap-y-4">
-                      <Link href={"/categories/men"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/men"}
+                      >
                         <SheetClose>MEN</SheetClose>
                       </Link>
-                      <Link href={"/categories/co-ord-sets"}>CO-ORD SETS</Link>
-                      <Link href={"/categories/pants"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/co-ord-sets"}
+                      >
+                        CO-ORD SETS
+                      </Link>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/pants"}
+                      >
                         <SheetClose>PANTS</SheetClose>
                       </Link>
-                      <Link href={"/categories/jumpsuits"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/jumpsuits"}
+                      >
                         <SheetClose>JUMPSUITS</SheetClose>
                       </Link>
-                      <Link href={"/categories/shorts"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/shorts"}
+                      >
                         <SheetClose>SHORTS</SheetClose>
                       </Link>
-                      <Link href={"/categories/dresses"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/dresses"}
+                      >
                         <SheetClose>DRESSES</SheetClose>
                       </Link>
-                      <Link href={"/categories/outerwear"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/outerwear"}
+                      >
                         <SheetClose>OUTERWEAR</SheetClose>
                       </Link>
-                      <Link href={"/categories/tops"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/tops"}
+                      >
                         <SheetClose>TOPS</SheetClose>
                       </Link>
-                      <Link href={"/categories/skirts"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/skirts"}
+                      >
                         <SheetClose>SKIRTS</SheetClose>
                       </Link>
-                      <Link href={"/categories/lounge-wear"}>
+                      <Link
+                        className="font-medium text-[15px]"
+                        href={"/categories/lounge-wear"}
+                      >
                         <SheetClose>LOUNGE WEAR</SheetClose>
                       </Link>
                     </div>
@@ -163,7 +233,7 @@ const Navbar = async () => {
                 </AccordionItem>
               </Accordion>
               {session?.user.role === "Admin" && (
-                <Link href={"/admin"}>
+                <Link className="font-medium text-[15px]" href={"/admin"}>
                   <SheetClose>Admin</SheetClose>
                 </Link>
               )}

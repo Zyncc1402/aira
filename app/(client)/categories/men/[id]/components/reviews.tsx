@@ -33,12 +33,13 @@ export default async function Reviews({ id }: { id: string }) {
     <div className="container mt-[100px]">
       <h1 className="text-2xl font-semibold">Reviews</h1>
       <div>
-        <Link href={`/reviews/add/${id}`}>
-          <Button variant="secondary" className="mt-4">
-            Write a review
-          </Button>
-        </Link>
-        {/* <ReviewForm id={id} alreadyReviewed={!!result} /> */}
+        {session?.user && (
+          <Link href={`/reviews/add/${id}`}>
+            <Button variant="secondary" className="mt-4">
+              Write a review
+            </Button>
+          </Link>
+        )}
         {review.map((review) => (
           <div
             className="mt-5 rounded-lg p-4 bg- max-w-[768px] bg-gray-50"

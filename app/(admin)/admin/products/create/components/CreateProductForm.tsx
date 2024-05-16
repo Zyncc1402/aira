@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,8 @@ const CreateProductForm = () => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [droppedFiles, setDroppedFiles] = useState(false);
   const [images, setImages] = useState<File[] | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null);
   function acceptFiles(acceptedFiles: File[]) {
     const sortedArray = acceptedFiles.sort((a, b) =>
       a.name.localeCompare(b.name)
@@ -52,11 +54,18 @@ const CreateProductForm = () => {
         description: "Please select atleast 1 image",
       });
     }
+    formRef.current?.reset();
+    if (imageRef.current) {
+      imageRef.current.value = "";
+    }
+    setDroppedFiles(false);
+    setImages(null);
   }
 
   return (
     <div className="flex flex-wrap gap-16 max-[734px]:flex-col mt-8 mb-16">
       <form
+        ref={formRef}
         action={(formData) => handleFormSubmit(formData)}
         className="flex flex-1 max-[734px]:order-2 flex-col gap-8 min-w-[320px]"
       >
@@ -129,9 +138,15 @@ const CreateProductForm = () => {
             {({ getRootProps, getInputProps }) => (
               <div
                 {...getRootProps()}
-                className="flex h-[500px] w-full min-w-[320px] items-center rounded-lg p-4 bg-muted justify-center cursor-pointer"
+                className="flex h-[500px] bg-background border-2 border-muted w-full min-w-[320px] items-center rounded-lg p-4 justify-center cursor-pointer"
               >
-                <input {...getInputProps()} name="images" required />
+                <input
+                  {...getInputProps()}
+                  name="images"
+                  required
+                  ref={imageRef}
+                  type="file"
+                />
                 {!isDragOver ? (
                   <div className="flex flex-col items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
@@ -149,7 +164,7 @@ const CreateProductForm = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="flex flex-col bg-background items-center justify-center gap-2">
                     <IoCloudUploadOutline size={27} />
                     <h1 className="font-medium text-sm">
                       Click to upload or{" "}
@@ -170,15 +185,15 @@ const CreateProductForm = () => {
           </Dropzone>
         ) : (
           <>
-            <div className="flex gap-4 flex-wrap h-fit">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 h-fit">
               {images?.map((image, index) => (
-                <div key={index}>
+                <div key={index} className="w-full">
                   <Image
                     src={URL.createObjectURL(image)}
                     width={200}
                     height={200}
                     alt="product image"
-                    className="object-cover aspect-square rounded-md"
+                    className="object-cover aspect-square rounded-lg"
                   />
                 </div>
               ))}

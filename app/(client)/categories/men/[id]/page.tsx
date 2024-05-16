@@ -18,6 +18,7 @@ import Link from "next/link";
 import formatCurrency from "@/lib/formatCurrency";
 import { Products } from "@/lib/types";
 import Reviews from "./components/reviews";
+import { notFound } from "next/navigation";
 
 type Params = {
   params: {
@@ -43,6 +44,9 @@ const ProductById = async ({ params: { id } }: Params) => {
   //     resolve;
   //   }, 600)
   // );
+  if (!product?.title) {
+    notFound();
+  }
   if (product?.title) {
     const similarProducts = await prisma.product.findMany({
       where: {

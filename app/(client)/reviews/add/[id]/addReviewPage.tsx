@@ -115,7 +115,7 @@ export default function AddReviewPage({
                         PNG JPG JPEG
                       </p>
                       <p className="text-muted-foreground text-xs">
-                        Max 2MB per Image
+                        Upto 3 Images, Max 2MB per Image
                       </p>
                     </div>
                   </div>
@@ -131,7 +131,7 @@ export default function AddReviewPage({
                         PNG JPG JPEG
                       </p>
                       <p className="text-muted-foreground text-xs">
-                        Max 2MB per Image
+                        Upto 3 Images, Max 2MB per Image
                       </p>
                     </div>
                   </div>
@@ -141,7 +141,7 @@ export default function AddReviewPage({
           </Dropzone>
         ) : (
           <>
-            <div className="flex gap-4 flex-wrap h-fit">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 h-fit">
               {images?.map((image, index) => (
                 <div key={index}>
                   <Image
