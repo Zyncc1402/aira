@@ -7,12 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-import { Button } from "@/components/ui/button";
-import { IoCartOutline } from "react-icons/io5";
-import { IoMdHeart } from "react-icons/io";
 import { Skeleton } from "@/components/ui/skeleton";
-import AddToCartBtn from "./components/AddToCartBtn";
-import { FaRegHeart } from "react-icons/fa";
 
 const Loading = () => {
   return (

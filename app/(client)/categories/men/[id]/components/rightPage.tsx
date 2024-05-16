@@ -9,13 +9,13 @@ import { addToCart } from "@/actions/action";
 import { useToast } from "@/components/ui/use-toast";
 import { Products } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
-import AddToCartBtn from "./AddToCartBtn";
 import { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import { FaRegHeart, FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { IoMdHeart, IoMdInformationCircleOutline } from "react-icons/io";
+import AddToCartBtn from "./AddToCartBtn";
 
 type Props = {
   product: Products;

@@ -17,8 +17,8 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { MdHideImage, MdImage } from "react-icons/md";
-import CreateProductButton from "../../create/components/CreateProductButton";
 import { Products } from "@/lib/types";
+import FormSubmitButton from "@/components/FormSubmitButton";
 
 type Props = {
   product: Products | null;
@@ -153,7 +153,7 @@ const CreateProductForm = ({ product }: Props) => {
             placeholder="Fit"
             defaultValue={fit !== null ? fit : ""}
           />
-          <CreateProductButton Atext="Updating..." text="Update" />
+          <FormSubmitButton text="Update" />
         </form>
         <Carousel
           className="flex flex-1"

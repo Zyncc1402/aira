@@ -21,7 +21,7 @@ const Loading = () => {
         </div>
       </div>
       <div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center">
-        <Spinner />
+        <Spinner size={60} />
       </div>
     </>
   );

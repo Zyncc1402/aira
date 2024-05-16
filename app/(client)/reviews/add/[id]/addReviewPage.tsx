@@ -1,7 +1,7 @@
 "use client";
 
 import { uploadReview } from "@/actions/formSubmissions";
-import CreateProductButton from "@/app/(admin)/admin/products/create/components/CreateProductButton";
+import FormSubmitButton from "@/components/FormSubmitButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -88,7 +88,7 @@ export default function AddReviewPage({
           autoComplete="off"
           required
         />
-        <CreateProductButton Atext="Adding..." text="Add review" />
+        <FormSubmitButton text="Add review" />
       </form>
       <div className="flex-1 flex justify-center max-[734px]:order-1">
         {!droppedFiles ? (

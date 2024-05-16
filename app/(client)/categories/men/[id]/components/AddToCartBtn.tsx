@@ -1,10 +1,11 @@
 "use client";
 
+import Spinner from "@/components/loadingSpinner";
 import { Button } from "@/components/ui/button";
 import { useFormStatus } from "react-dom";
 import { IoCartOutline } from "react-icons/io5";
 
-export default function AddToCartBtn() {
+export default function FormSubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button
@@ -17,8 +18,8 @@ export default function AddToCartBtn() {
       type="submit"
       disabled={pending}
     >
-      <IoCartOutline className={`mr-3`} size={27} />
-      {pending ? "Adding..." : "Add to Cart"}
+      <IoCartOutline className={`mr-3 ${pending && "hidden"}`} size={27} />
+      {pending ? <Spinner size={30} /> : `Add to cart`}
     </Button>
   );
 }

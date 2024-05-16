@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { createProduct } from "@/actions/formSubmissions";
-import CreateProductButton from "./CreateProductButton";
 import Dropzone, { FileRejection } from "react-dropzone";
 import { toast } from "@/components/ui/use-toast";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import FormSubmitButton from "@/components/FormSubmitButton";
 
 const CreateProductForm = () => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -117,7 +117,7 @@ const CreateProductForm = () => {
         <Input name="transparency" required placeholder="Transparency" />
         <Input name="weavePattern" required placeholder="Weave Pattern" />
         <Input name="fit" required placeholder="Fit" />
-        <CreateProductButton Atext="Creating..." text="Create" />
+        <FormSubmitButton text="Create" />
       </form>
       <div className="flex-1 flex justify-center max-[734px]:order-1">
         {!droppedFiles ? (

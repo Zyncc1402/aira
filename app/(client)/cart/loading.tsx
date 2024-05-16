@@ -4,7 +4,7 @@ import React from "react";
 const Loading = () => {
   return (
     <div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center">
-      <Spinner />
+      <Spinner size={60} />
     </div>
   );
 };
