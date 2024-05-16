@@ -10,6 +10,8 @@ import Dropzone, { FileRejection } from "react-dropzone";
 import { toast } from "@/components/ui/use-toast";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const CreateProductForm = () => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -188,6 +190,16 @@ const CreateProductForm = () => {
                   />
                 </div>
               ))}
+              <Button
+                variant={"outline"}
+                className="w-full h-[200px]"
+                onClick={() => {
+                  setImages(null);
+                  setDroppedFiles(false);
+                }}
+              >
+                <RiDeleteBin6Line color="white" size={60} />
+              </Button>
             </div>
           </>
         )}

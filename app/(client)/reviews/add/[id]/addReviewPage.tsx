@@ -2,6 +2,7 @@
 
 import { uploadReview } from "@/actions/formSubmissions";
 import CreateProductButton from "@/app/(admin)/admin/products/create/components/CreateProductButton";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
@@ -10,6 +11,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Dropzone, { FileRejection } from "react-dropzone";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export default function AddReviewPage({
   id,
@@ -44,6 +46,12 @@ export default function AddReviewPage({
         variant: "destructive",
         title: "Invalid file type",
         description: "Please select a PNG, JPG or JPEG",
+      });
+    } else if (rejectedFiles[0].errors[0].code == "too-many-files") {
+      toast({
+        variant: "destructive",
+        title: "Too many files",
+        description: "Please select upto 3 files",
       });
     }
   }
@@ -154,6 +162,16 @@ export default function AddReviewPage({
                   />
                 </div>
               ))}
+              <Button
+                variant={"outline"}
+                className="w-full h-[200px]"
+                onClick={() => {
+                  setImages(null);
+                  setDroppedFiles(false);
+                }}
+              >
+                <RiDeleteBin6Line color="grey" size={60} />
+              </Button>
             </div>
           </>
         )}
