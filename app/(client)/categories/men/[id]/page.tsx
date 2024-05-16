@@ -38,7 +38,6 @@ const ProductById = async ({ params: { id } }: Params) => {
       quantity: true,
     },
   });
-
   // await new Promise((resolve) =>
   //   setTimeout((resolve) => {
   //     resolve;

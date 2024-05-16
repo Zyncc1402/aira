@@ -62,8 +62,6 @@ export default function TransactionBarChart() {
     <ResponsiveContainer width="100%" height="100%">
       <BarChart width={500} height={300} data={data}>
         <XAxis dataKey="name" />
-        <YAxis />
-
         <Legend />
         <Bar
           dataKey="pv"

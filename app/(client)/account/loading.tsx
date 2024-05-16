@@ -1,11 +1,11 @@
 import React from "react";
 
-const Loading = () => {
+export default function Loading() {
   return (
-    <div className="flex h-screen w-screen justify-center items-center font-semibold text-6xl">
-      Loading...
+    <div className="pt-[100px]">
+      <div className="container">
+        <h1 className="font-semibold text-3xl">Hi there,</h1>
+      </div>
     </div>
   );
-};
-
-export default Loading;
+}

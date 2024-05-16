@@ -68,7 +68,7 @@ export default function ProductGrid({ products }: Props) {
   return (
     <>
       <div className="flex w-screen container justify-between mt-6 mb-6">
-        <h1 className="font-medium text-2xl">Men</h1>
+        <h1 className="font-semibold text-2xl">Men</h1>
         <Sheet>
           <div className="flex gap-3">
             <Link href={"/categories/men"}>

@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import React from "react";
-import SalesAreaChart from "./components/salesAreaChart";
 import { FaUsers } from "react-icons/fa";
 import prisma from "@/lib/prisma";
 import { MdArchive } from "react-icons/md";

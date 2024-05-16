@@ -1,6 +1,6 @@
 import React from "react";
 
-const Orders = async () => {
+const Orders = () => {
   return (
     <div className="pt-[100px]">
       <div className="flex justify-between container">

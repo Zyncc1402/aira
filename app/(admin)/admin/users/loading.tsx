@@ -1,10 +1,18 @@
+import Spinner from "@/components/loadingSpinner";
 import React from "react";
 
 const Loading = () => {
   return (
-    <div className="flex h-screen w-screen justify-center items-center font-semibold text-6xl">
-      Loading...
-    </div>
+    <section>
+      <div className="pt-[100px]">
+        <div className="flex justify-between w-screen container">
+          <h1 className="font-semibold text-3xl">All Users</h1>
+        </div>
+      </div>
+      <div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    </section>
   );
 };
 

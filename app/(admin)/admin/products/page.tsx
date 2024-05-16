@@ -20,16 +20,17 @@ const Products = async () => {
       createdAt: "desc",
     },
   });
+  // await new Promise((resolve) =>
+  //   setTimeout((resolve) => {
+  //     resolve;
+  //   }, 600)
+  // );
   return (
     <>
       <div className="pt-[100px]">
         <div className="flex justify-between flex-wrap gap-5 w-screen container">
           <h1 className="font-semibold text-3xl">All Products</h1>
           <div className="flex gap-2">
-            <Link
-              aria-label="navigation-link"
-              href={"/admin/products/archived"}
-            ></Link>
             <Link aria-label="navigation-link" href={"/admin/products/create"}>
               <Button
                 aria-label="Button"

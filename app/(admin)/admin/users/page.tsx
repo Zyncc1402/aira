@@ -17,6 +17,11 @@ const AllUsers = async () => {
       createdAt: "desc",
     },
   });
+  // await new Promise((resolve) =>
+  //   setTimeout((resolve) => {
+  //     resolve;
+  //   }, 600)
+  // );
   return (
     <section>
       <div className="pt-[100px]">

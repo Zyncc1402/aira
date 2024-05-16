@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 import { Skeleton } from "@/components/ui/skeleton";
+import AddToCartBtn from "./components/AddToCartBtn";
+import { FaRegHeart } from "react-icons/fa";
 
 const Loading = () => {
   return (
@@ -29,8 +31,8 @@ const Loading = () => {
       <div className="flex mt-10 flex-wrap md:flex-nowrap gap-16 md:container m-0">
         <div className="md:basis-1/2 w-screen ">
           <div className="flex flex-col">
-            <Skeleton className="w-[100%] h-[50vh] md:h-[60vh] rounded-none md:rounded-md" />
-            <div className="flex gap-2 mt-3 overflow-hidden container">
+            <Skeleton className="w-[100%] h-[70vh] rounded-none md:rounded-md" />
+            <div className="flex gap-2 mt-3 overflow-hidden">
               <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
               <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
               <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
@@ -40,20 +42,25 @@ const Loading = () => {
           </div>
         </div>
         <div className="md:basis-1/2 flex flex-col gap-4 w-screen container">
-          <Skeleton className="w-[100%] h-[40px]" />
-          <Skeleton className="w-[100%] h-[20px]" />
-          <Skeleton className="w-[100%] h-[30px]" />
-          <Skeleton className="w-[100%] h-[30px]" />
-          <Skeleton className="w-[100%] h-[30px]" />
-          <div className="flex flex-col md:flex-row gap-6">
-            <Button className="rounded-sm md:w-[50%]" variant={"secondary"}>
-              <IoCartOutline className="mr-3" size={27} />
-              Add to Cart
-            </Button>
-            <Button className="rounded-sm md:w-[50%]" variant={"outline"}>
-              <IoMdHeart className="mr-3" size={23} />
-              Add to Wishlist
-            </Button>
+          <Skeleton className="w-[100%] h-[27px]" />
+          <Skeleton className="w-[70%] h-[22px]" />
+          <Skeleton className="w-[20%] h-[30px]" />
+          <div className="flex gap-3 flex-wrap">
+            <Skeleton className="w-[80px] h-[45px] aspect-video" />
+            <Skeleton className="w-[80px] h-[45px] aspect-video" />
+            <Skeleton className="w-[80px] h-[45px] aspect-video" />
+          </div>
+          <div className="flex gap-4 w-full flex-wrap flex-col md:flex-row">
+            <Skeleton className="w-[100%] h-[44px] rounded-sm" />
+            <Skeleton className="w-[100%] h-[44px] rounded-sm" />
+          </div>
+          <div className="flex flex-col gap-3 mt-2">
+            <Skeleton className="w-[70%] h-[32px]" />
+            <Skeleton className="w-[80%] h-[32px]" />
+            <Skeleton className="w-[70%] h-[32px]" />
+            <Skeleton className="w-[60%] h-[32px]" />
+            <Skeleton className="w-[30%] h-[30px] mt-5" />
+            <Skeleton className="w-[100%] h-[400px] mt-2" />
           </div>
         </div>
       </div>
