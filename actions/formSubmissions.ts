@@ -108,6 +108,7 @@ export async function updateProduct(formData: FormData) {
   const color = formData.get("color") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const featured = formData.get("featured") as string;
   const colors = color.split(" ");
 
   try {
@@ -129,6 +130,7 @@ export async function updateProduct(formData: FormData) {
         },
         color: colors,
         category: category,
+        isFeatured: Boolean(featured),
         isArchived: Boolean(isArchived),
       },
       include: {
@@ -157,6 +159,7 @@ export async function updateProductWithImage(formData: FormData) {
   const color = formData.get("color") as string;
   const category = formData.get("category") as string;
   const isArchived = formData.get("isArchived") as string;
+  const featured = formData.get("featured") as string;
   const colors = color.split(" ");
 
   cloudinary.config({
@@ -212,6 +215,7 @@ export async function updateProductWithImage(formData: FormData) {
         },
         color: colors,
         category: category,
+        isFeatured: Boolean(featured),
         images: arrayOfImages as string[],
         isArchived: Boolean(isArchived),
       },

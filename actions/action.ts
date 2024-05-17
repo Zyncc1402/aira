@@ -207,3 +207,25 @@ export async function updateCartItemQuantity(
     };
   }
 }
+
+// export async function addToWishlist(id: string) {
+//   const session = await auth();
+//   if (session?.user) {
+//     const wishlistExists = await prisma.wishlist.findUnique({
+//       where: {
+//         userId: session.user.id as string,
+//       },
+//     });
+//     if (!wishlistExists) {
+//       await prisma.wishlist.create({
+//         data: {
+//           productId: id,
+//           userId: session.user.id as string,
+//         },
+//         include: {
+//           WishlistItems: true,
+//         },
+//       });
+//     }
+//   }
+// }

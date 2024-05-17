@@ -70,7 +70,7 @@ const CreateProductForm = ({ product }: Props) => {
               disabled={imageDisabled}
             />
           </div>
-          <input type="hidden" name="id" value={id} />
+          <input type="hidden" name="id" defaultValue={id} />
           <Input name="title" required defaultValue={title} />
           <Textarea
             name="description"
@@ -101,7 +101,7 @@ const CreateProductForm = ({ product }: Props) => {
               Is Featured
             </option>
             <option
-              value={""}
+              defaultValue={""}
               selected={isFeatured !== null && !isFeatured && true}
             >
               Not Featured
@@ -113,7 +113,7 @@ const CreateProductForm = ({ product }: Props) => {
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             defaultValue={category}
           >
-            <option value="men">Men</option>
+            <option defaultValue="men">Men</option>
           </select>
           <select
             name="isArchived"
@@ -121,10 +121,10 @@ const CreateProductForm = ({ product }: Props) => {
             required
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value={1} selected={isArchived && true}>
+            <option defaultValue={1} selected={isArchived && true}>
               Is Archived
             </option>
-            <option value={""} selected={!isArchived && true}>
+            <option defaultValue={""} selected={!isArchived && true}>
               Not Archived
             </option>
           </select>

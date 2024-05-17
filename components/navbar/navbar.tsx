@@ -122,13 +122,15 @@ const Navbar = async () => {
                 </Link>
               </MenubarContent>
             </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>
-                <Link className="font-medium text-[15px]" href={"/account"}>
-                  Account
-                </Link>
-              </MenubarTrigger>
-            </MenubarMenu>
+            {session?.user && (
+              <MenubarMenu>
+                <MenubarTrigger>
+                  <Link className="font-medium text-[15px]" href={"/account"}>
+                    Account
+                  </Link>
+                </MenubarTrigger>
+              </MenubarMenu>
+            )}
             {session?.user.role === "Admin" && (
               <MenubarMenu>
                 <MenubarTrigger>
@@ -158,12 +160,14 @@ const Navbar = async () => {
               <Link className="font-medium text-[15px]" href={"/about"}>
                 <SheetClose></SheetClose>About
               </Link>
-              <Link className="font-medium text-[15px]" href={"/account"}>
-                <SheetClose>Account</SheetClose>
-              </Link>
+              {session?.user.role === "Admin" && (
+                <Link className="font-medium text-[15px]" href={"/account"}>
+                  <SheetClose>Account</SheetClose>
+                </Link>
+              )}
               <Accordion type="single" collapsible defaultValue="item-1">
                 <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-md font-normal">
+                  <AccordionTrigger className="text-md font-medium">
                     Categories
                   </AccordionTrigger>
                   <AccordionContent>
@@ -259,7 +263,7 @@ const Navbar = async () => {
                     }}
                   >
                     <SheetClose>
-                      <Button variant={"secondary"}>Sign in</Button>
+                      <Button variant={"secondary"}>Sign up</Button>
                     </SheetClose>
                   </form>
                 )}
@@ -289,7 +293,7 @@ const Navbar = async () => {
               }}
             >
               <Button variant={"secondary"} className="hidden lg:block ml-3">
-                Sign in
+                Sign up
               </Button>
             </form>
           )}

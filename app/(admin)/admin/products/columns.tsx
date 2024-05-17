@@ -105,7 +105,9 @@ export const columns: ColumnDef<Product>[] = [
       const price = parseFloat(row.getValue("price"));
       const formatted = formatCurrency(price);
 
-      return <div className="text-left font-medium">{formatted}</div>;
+      return (
+        <div className="text-left font-medium">{formatted.split(".")[0]}</div>
+      );
     },
   },
   {

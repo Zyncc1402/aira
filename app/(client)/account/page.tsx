@@ -1,8 +1,12 @@
 import { auth } from "@/auth";
+import { notFound } from "next/navigation";
 import React from "react";
 
 const Account = async () => {
   const session = await auth();
+  if (!session?.user) {
+    notFound();
+  }
   return (
     <div className="pt-[100px]">
       <div className="container">

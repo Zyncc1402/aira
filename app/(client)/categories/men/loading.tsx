@@ -19,7 +19,7 @@ const loading = async () => {
       <div className="md:m-2 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-[2px] md:gap-5 lg:gap-7 py-10">
         {number.map((num, key) => (
           <div key={key} className="w-[100%]">
-            <Skeleton className="w-full aspect-square rounded-none md:rounded-md" />
+            <Skeleton className="w-full aspect-square rounded-none" />
             <Skeleton className="w-[80%] h-[20px] mt-2 max-w-[768px]:ml-2" />
             <Skeleton className="w-[65%] h-[20px] mt-2 max-w-[768px]:ml-2 max-w-[768px]:mb-2" />
           </div>

@@ -11,8 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Loading = () => {
   return (
-    <section className="py-[100px]">
-      <Breadcrumb className="container">
+    <section className="md:py-[100px] max-[768px]:pt-[64px]">
+      <Breadcrumb className="container hidden md:block">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -23,11 +23,11 @@ const Loading = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex mt-10 flex-wrap md:flex-nowrap gap-16 md:container m-0">
+      <div className="flex lg:mt-10 flex-wrap md:flex-nowrap gap-8 md:container m-0">
         <div className="md:basis-1/2 w-screen ">
           <div className="flex flex-col">
             <Skeleton className="w-[100%] h-[70vh] rounded-none md:rounded-md" />
-            <div className="flex gap-2 mt-3 overflow-hidden">
+            <div className="flex gap-2 mt-3 overflow-hidden container md:p-0">
               <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
               <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />
               <Skeleton className="w-[90px] h-[90px] flex-shrink-0" />

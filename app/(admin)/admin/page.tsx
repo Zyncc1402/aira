@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { MdArchive } from "react-icons/md";
 import { IoIosShirt } from "react-icons/io";
 import Charts from "./components/charts";
+import Link from "next/link";
 
 export const revalidate = 600;
 
@@ -28,13 +29,15 @@ const Admin = async () => {
     <div className="pt-[100px]">
       <div className="flex justify-between w-screen container flex-col">
         <div className="w-full mb-10 flex gap-5 flex-wrap">
-          <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
-            <IoIosShirt size={22} />
-            <div>
-              <h1 className="font-semibold flex gap-2">All Products</h1>
-              <h2>{allProducts}</h2>
+          <Link href={"/admin/products"}>
+            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
+              <IoIosShirt size={22} />
+              <div>
+                <h1 className="font-semibold flex gap-2">All Products</h1>
+                <h2>{allProducts}</h2>
+              </div>
             </div>
-          </div>
+          </Link>
           {allArchivedProducts > 0 && (
             <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
               <MdArchive size={22} />
@@ -44,13 +47,15 @@ const Admin = async () => {
               </div>
             </div>
           )}
-          <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
-            <FaUsers size={22} />
-            <div>
-              <h1 className="font-semibold flex gap-2">All Users</h1>
-              <h2>{allUsers}</h2>
+          <Link href={"/admin/users"}>
+            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
+              <FaUsers size={22} />
+              <div>
+                <h1 className="font-semibold flex gap-2">All Users</h1>
+                <h2>{allUsers}</h2>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
       <Charts />
