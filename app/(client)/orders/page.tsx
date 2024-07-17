@@ -22,7 +22,7 @@ const Orders = async () => {
         <h1 className="font-semibold text-3xl">Your Orders</h1>
         <div>
           {orders.map((order) => (
-            <div>
+            <div key={order.id}>
               <Image
                 src={order.image}
                 height={100}

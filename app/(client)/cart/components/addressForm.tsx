@@ -111,8 +111,10 @@ export default function AddressForm() {
           <SelectValue placeholder="Select a state" />
         </SelectTrigger>
         <SelectContent>
-          {states.map((state) => (
-            <SelectItem value={state}>{state}</SelectItem>
+          {states.map((state, i) => (
+            <SelectItem value={state} key={i}>
+              {state}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
