@@ -73,7 +73,7 @@ const ProductById = async ({ params: { id } }: Params) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/categories/men">Men</BreadcrumbLink>
+              <BreadcrumbLink href="/men">Men</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -100,7 +100,7 @@ const ProductById = async ({ params: { id } }: Params) => {
                   key={similarProduct.id}
                 >
                   <Link
-                    href={`/categories/${similarProduct.category}/${similarProduct.id}`}
+                    href={`/${similarProduct.category}/${similarProduct.id}`}
                   >
                     <Image
                       key={similarProduct.id}
@@ -112,7 +112,7 @@ const ProductById = async ({ params: { id } }: Params) => {
                     />
                   </Link>
                   <Link
-                    href={`/categories/${similarProduct.category}/${similarProduct.id}`}
+                    href={`/${similarProduct.category}/${similarProduct.id}`}
                   >
                     <h1 className="mt-1">{similarProduct.title}</h1>
                   </Link>

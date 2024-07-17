@@ -15,7 +15,7 @@ export default async function Home() {
   });
   return (
     <div className="mt-[65px]">
-      <Link href={"/categories/men"}>
+      <Link href={"men"}>
         <div>
           <Image
             src={
@@ -42,7 +42,7 @@ export default async function Home() {
                     key={featuredProducts.id}
                   >
                     <Link
-                      href={`/categories/${featuredProducts.category}/${featuredProducts.id}`}
+                      href={`${featuredProducts.category}/${featuredProducts.id}`}
                     >
                       <Image
                         key={featuredProducts.id}
@@ -54,7 +54,7 @@ export default async function Home() {
                       />
                     </Link>
                     <Link
-                      href={`/categories/${featuredProducts.category}/${featuredProducts.id}`}
+                      href={`${featuredProducts.category}/${featuredProducts.id}`}
                     >
                       <h1 className="mt-1">{featuredProducts.title}</h1>
                     </Link>

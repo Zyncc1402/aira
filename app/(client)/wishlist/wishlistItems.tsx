@@ -34,7 +34,7 @@ export default function WishlistItems() {
       )}
       {wishlistItems?.map(({ id, image, title, price, category }) => (
         <div key={id} className="flex gap-4 mb-4 w-fit">
-          <Link href={`/categories/${category}/${id}`}>
+          <Link href={`${category}/${id}`}>
             <Image
               src={image}
               width={100}
@@ -46,12 +46,12 @@ export default function WishlistItems() {
           </Link>
           <div className="flex flex-col justify-between">
             <div>
-              <Link href={`/categories/${category}/${id}`}>
+              <Link href={`${category}/${id}`}>
                 <h1>{title}</h1>
               </Link>
               <p>{formatCurrency(price).split(".")[0]}</p>
             </div>
-            <Link href={`/categories/${category}/${id}`}>
+            <Link href={`${category}/${id}`}>
               <IoCartOutline size={30} onClick={addtocart} />
             </Link>
           </div>

@@ -1,11 +1,8 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { IoCartOutline } from "react-icons/io5";
-import { LuMenu, LuUser } from "react-icons/lu";
-import { PiShoppingBagOpen } from "react-icons/pi";
+import { LuMenu } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa";
-import { MdLockOutline } from "react-icons/md";
-import { VscAccount } from "react-icons/vsc";
 import Link from "next/link";
 
 import {
@@ -60,64 +57,34 @@ const Navbar = async () => {
                 Categories
               </MenubarTrigger>
               <MenubarContent>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/men"}
-                >
+                <Link className="font-medium text-[15px]" href={"/men"}>
                   <MenubarItem>MEN</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/co-ord-sets"}
-                >
+                <Link className="font-medium text-[15px]" href={"/co-ord-sets"}>
                   <MenubarItem>CO-ORD SETS</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/pants"}
-                >
+                <Link className="font-medium text-[15px]" href={"/pants"}>
                   <MenubarItem>PANTS</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/jumpsuits"}
-                >
+                <Link className="font-medium text-[15px]" href={"/jumpsuits"}>
                   <MenubarItem>JUMPSUITS</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/shorts"}
-                >
+                <Link className="font-medium text-[15px]" href={"/shorts"}>
                   <MenubarItem>SHORTS</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/dresses"}
-                >
+                <Link className="font-medium text-[15px]" href={"/dresses"}>
                   <MenubarItem>DRESSES</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/outerwear"}
-                >
+                <Link className="font-medium text-[15px]" href={"/outerwear"}>
                   <MenubarItem>OUTERWEAR</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/tops"}
-                >
+                <Link className="font-medium text-[15px]" href={"/tops"}>
                   <MenubarItem>TOPS</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/skirts"}
-                >
+                <Link className="font-medium text-[15px]" href={"/skirts"}>
                   <MenubarItem>SKIRTS</MenubarItem>
                 </Link>
-                <Link
-                  className="font-medium text-[15px]"
-                  href={"/categories/lounge-wear"}
-                >
+                <Link className="font-medium text-[15px]" href={"/lounge-wear"}>
                   <MenubarItem>LOUNGE WEAR</MenubarItem>
                 </Link>
               </MenubarContent>
@@ -172,63 +139,54 @@ const Navbar = async () => {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="pl-4 pt-4 flex flex-col gap-y-4">
-                      <Link
-                        className="font-medium text-[15px]"
-                        href={"/categories/men"}
-                      >
+                      <Link className="font-medium text-[15px]" href={"/men"}>
                         <SheetClose>MEN</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/co-ord-sets"}
+                        href={"/co-ord-sets"}
                       >
                         CO-ORD SETS
                       </Link>
-                      <Link
-                        className="font-medium text-[15px]"
-                        href={"/categories/pants"}
-                      >
+                      <Link className="font-medium text-[15px]" href={"/pants"}>
                         <SheetClose>PANTS</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/jumpsuits"}
+                        href={"/jumpsuits"}
                       >
                         <SheetClose>JUMPSUITS</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/shorts"}
+                        href={"/shorts"}
                       >
                         <SheetClose>SHORTS</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/dresses"}
+                        href={"/dresses"}
                       >
                         <SheetClose>DRESSES</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/outerwear"}
+                        href={"/outerwear"}
                       >
                         <SheetClose>OUTERWEAR</SheetClose>
                       </Link>
-                      <Link
-                        className="font-medium text-[15px]"
-                        href={"/categories/tops"}
-                      >
+                      <Link className="font-medium text-[15px]" href={"/tops"}>
                         <SheetClose>TOPS</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/skirts"}
+                        href={"/skirts"}
                       >
                         <SheetClose>SKIRTS</SheetClose>
                       </Link>
                       <Link
                         className="font-medium text-[15px]"
-                        href={"/categories/lounge-wear"}
+                        href={"/lounge-wear"}
                       >
                         <SheetClose>LOUNGE WEAR</SheetClose>
                       </Link>

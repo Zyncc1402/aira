@@ -7,3 +7,17 @@ export type Products = Prisma.ProductGetPayload<{
 export type UserWithReviews = Prisma.UserGetPayload<{
   include: { reviews: true };
 }>;
+
+export type UserWithAddress = Prisma.UserGetPayload<{
+  include: { address: true };
+}>;
+
+export type CartWithCartItems = Prisma.CartGetPayload<{
+  include: {
+    items: {
+      include: {
+        product: true;
+      };
+    };
+  };
+}>;

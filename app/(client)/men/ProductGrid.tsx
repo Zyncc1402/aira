@@ -71,7 +71,7 @@ export default function ProductGrid({ products }: Props) {
         <h1 className="font-semibold text-2xl">Men</h1>
         <Sheet>
           <div className="flex gap-3">
-            <Link href={"/categories/men"}>
+            <Link href={"/men"}>
               <Button variant={"secondary"}>Reset Filters</Button>
             </Link>
             <SheetTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center px-3 py-2 rounded-lg font-semibold">
@@ -522,7 +522,7 @@ export default function ProductGrid({ products }: Props) {
                     </RadioGroup>
                   </div>
                 </div>
-                <Link href={"/categories/men"}>
+                <Link href={"/men"}>
                   <Button variant={"destructive"} className="mt-10">
                     Reset Filters
                   </Button>

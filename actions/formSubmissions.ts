@@ -90,8 +90,7 @@ export async function createProduct(formData: FormData) {
     console.log(error);
     throw Error("Failed to create product");
   } finally {
-    revalidatePath("/categories/men");
-    revalidatePath("/categories/women");
+    revalidatePath("/men");
     revalidatePath("/admin/products");
   }
 }
@@ -141,7 +140,7 @@ export async function updateProduct(formData: FormData) {
     console.log(error);
     throw Error("Failed to update product");
   } finally {
-    revalidatePath(`/categories/${category}`);
+    revalidatePath(`/${category}`);
     revalidatePath("/admin/products");
   }
 }
@@ -224,7 +223,7 @@ export async function updateProductWithImage(formData: FormData) {
     console.log(error);
     throw Error("Failed to update product");
   } finally {
-    revalidatePath(`/categories/${category}`);
+    revalidatePath(`/${category}`);
     revalidatePath("/admin/products");
   }
 }
@@ -276,8 +275,8 @@ export async function uploadReview(formData: FormData) {
     } catch (error) {
       console.log(error);
     } finally {
-      revalidatePath(`/categories/${category}/${pid}`);
-      redirect(`/categories/${category}/${pid}`);
+      revalidatePath(`/${category}/${pid}`);
+      redirect(`/${category}/${pid}`);
     }
   } else {
     try {
@@ -292,7 +291,43 @@ export async function uploadReview(formData: FormData) {
     } catch (error) {
       console.log(error);
     } finally {
-      revalidatePath(`/categories/men/${pid}`);
+      revalidatePath(`/men/${pid}`);
     }
   }
+}
+
+export async function updateUserAddress(formData: FormData) {
+  const id = formData.get("id") as string;
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const phone = formData.get("phone") as string;
+  const address1 = formData.get("address1") as string;
+  const address2 = formData.get("address2") as string;
+  const state = formData.get("state") as string;
+  const zipcode = formData.get("zipcode") as string;
+  const landmark = formData.get("landmark") as string;
+
+  await prisma.address.create({
+    data: {
+      userId: id,
+      name,
+      email,
+      phone,
+      address1,
+      address2,
+      landmark,
+      state,
+      zipcode: Number(zipcode),
+    },
+  });
+  revalidatePath("/cart");
+}
+
+export async function deleteAddress(id: string) {
+  await prisma.address.delete({
+    where: {
+      userId: id,
+    },
+  });
+  revalidatePath("/cart");
 }

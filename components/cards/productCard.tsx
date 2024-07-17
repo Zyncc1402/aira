@@ -71,7 +71,7 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
 
   return (
     <div className="flex flex-col border-r border-b md:border relative overflow-hidden text-left">
-      <Link aria-label="navigation-link" href={`/categories/${category}/${id}`}>
+      <Link aria-label="navigation-link" href={`/${category}/${id}`}>
         <Image
           src={image}
           width={400}
@@ -84,10 +84,7 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
       <div className="p-2 gap-4 flex justify-between w-[100%]">
         <div className="flex w-[100%] items-center justify-between gap-4">
           <div>
-            <Link
-              aria-label="navigation-link"
-              href={`/categories/${category}/${id}`}
-            >
+            <Link aria-label="navigation-link" href={`/${category}/${id}`}>
               <div className="text-slate-500 text-sm">
                 <h1>{title}</h1>
               </div>

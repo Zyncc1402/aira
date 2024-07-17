@@ -33,8 +33,7 @@ export async function deleteProduct(id: string) {
       });
       console.log("Product Deleted");
       revalidatePath("/admin/products");
-      revalidatePath("/categories/men");
-      revalidatePath("/categories/women");
+      revalidatePath("/men");
     } catch (error) {
       return {
         error: "Something went wrong",
@@ -57,8 +56,7 @@ export async function archiveProduct(id: string) {
       });
       console.log("Product Archived");
       revalidatePath("/admin/products");
-      revalidatePath("/categories/men");
-      revalidatePath("/categories/women");
+      revalidatePath("/men");
     } catch (error) {
       return {
         error: "Something went wrong",
@@ -81,8 +79,7 @@ export async function unarchiveProduct(id: string) {
       });
       console.log("Product UnArchived");
       revalidatePath("/admin/products");
-      revalidatePath("/categories/men");
-      revalidatePath("/categories/women");
+      revalidatePath("/men");
     } catch (error) {
       return {
         error: "Something went wrong",
@@ -188,44 +185,20 @@ export async function updateCartItemQuantity(
   quantity: number,
   id: string
 ) {
-  try {
-    await prisma.cartItems.update({
-      where: {
-        cart: {
-          userId,
-        },
-        id,
+  console.log(id);
+  await prisma.cartItems.update({
+    where: {
+      cart: {
+        userId,
       },
-      data: {
-        quantity,
-      },
-    });
-    revalidatePath("/cart");
-  } catch (error) {
-    return {
-      error: "Something went wrong",
-    };
-  }
+      id,
+    },
+    data: {
+      quantity,
+    },
+    include: {
+      cart: true,
+    },
+  });
+  revalidatePath("/cart");
 }
-
-// export async function addToWishlist(id: string) {
-//   const session = await auth();
-//   if (session?.user) {
-//     const wishlistExists = await prisma.wishlist.findUnique({
-//       where: {
-//         userId: session.user.id as string,
-//       },
-//     });
-//     if (!wishlistExists) {
-//       await prisma.wishlist.create({
-//         data: {
-//           productId: id,
-//           userId: session.user.id as string,
-//         },
-//         include: {
-//           WishlistItems: true,
-//         },
-//       });
-//     }
-//   }
-// }

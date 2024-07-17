@@ -19,7 +19,7 @@ const Loading = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/categories/men">Men</BreadcrumbLink>
+            <BreadcrumbLink href="/men">Men</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

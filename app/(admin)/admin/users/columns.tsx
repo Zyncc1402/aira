@@ -122,8 +122,6 @@ export const columns: ColumnDef<Users>[] = [
             >
               Copy UID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View User</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
