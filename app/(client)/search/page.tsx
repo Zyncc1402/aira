@@ -24,7 +24,7 @@ export default async function Search({ searchParams: { q } }: Props) {
   });
   if (products.length == 0) {
     return (
-      <section className="py-[100px] container">
+      <section className="py-[40px] container">
         {q && <h1 className="font-medium text-xl">You searched for {q}</h1>}
         <form
           action={async (formData: FormData) => {
@@ -52,8 +52,7 @@ export default async function Search({ searchParams: { q } }: Props) {
     );
   }
   return (
-    <section className="py-[100px] container">
-      {q && <h1 className="font-medium text-xl">You searched for {q}</h1>}
+    <section className="py-[40px] md:container">
       <form
         action={async (formData: FormData) => {
           "use server";
@@ -61,7 +60,7 @@ export default async function Search({ searchParams: { q } }: Props) {
           redirect(`/search?q=${q}`);
         }}
       >
-        <div className="flex items-center mt-5 gap-4">
+        <div className="flex items-center gap-4 max-md:container">
           <Input
             type="text"
             name="q"
@@ -72,8 +71,13 @@ export default async function Search({ searchParams: { q } }: Props) {
             <MdSearch size={32} className="flex-shrink-0" />
           </Button>
         </div>
+        {q && (
+          <h1 className="font-medium text-xl mt-5 max-md:container">
+            You searched for {q}
+          </h1>
+        )}
       </form>
-      <div className="m-2 md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 md:gap-5 lg:gap-7 py-10">
+      <div className="md:m-2 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-5 lg:gap-7 py-10">
         {products.map((product, key) => (
           <ProductCard
             key={key}

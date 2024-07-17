@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { IoCartOutline } from "react-icons/io5";
+import { IoCartOutline, IoSearch } from "react-icons/io5";
 import { LuMenu } from "react-icons/lu";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 
 import {
@@ -31,7 +31,7 @@ import { auth, signIn, signOut } from "@/auth";
 const Navbar = async () => {
   const session = await auth();
   return (
-    <header className="z-10 header pb-4 pt-4 w-full fixed top-0 left-0 right-0 bg-white text-black">
+    <header className="z-10 header pb-4 pt-4 w-full sticky top-0 left-0 right-0 bg-white text-black">
       <nav className="container flex justify-between items-center ">
         <Link href={"/"}>
           <h1 className="font-semibold text-2xl">AIRA</h1>
@@ -110,6 +110,9 @@ const Navbar = async () => {
           </Menubar>
         </div>
         <div className="flex items-center justify-between">
+          <Link className="font-medium text-[15px]" href={"/search"}>
+            <IoSearch size={28} className="ml-3" />
+          </Link>
           <Link className="font-medium text-[15px]" href={"/wishlist"}>
             <FaRegHeart size={25} className="ml-3" />
           </Link>

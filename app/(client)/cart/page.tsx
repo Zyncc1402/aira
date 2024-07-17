@@ -34,7 +34,7 @@ const Cart = async () => {
   const getCartInfo = await getCart();
   if (getCartInfo) {
     return (
-      <section className="pt-[100px] container">
+      <section className="pt-[40px] container">
         <div className="flex flex-col md:flex-row gap-y-8 md:gap-y-0">
           {getCartInfo.items.length == 0 && (
             <div className="h-full flex items-center justify-center">

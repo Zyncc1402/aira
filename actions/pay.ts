@@ -14,8 +14,8 @@ export async function Pay(formData: FormData, id: string) {
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: totalPrice * 100,
-    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123,
     paymentInstrument: {
@@ -70,7 +70,7 @@ export async function Pay(formData: FormData, id: string) {
         await prisma.order.create({
           data: {
             userId: id,
-            productId: item.id,
+            productId: item.productId,
             price: getCurrentPriceOfItem?.price || 2000,
             image: getCurrentPriceOfItem?.images[0] || "",
             title: getCurrentPriceOfItem?.title || "",

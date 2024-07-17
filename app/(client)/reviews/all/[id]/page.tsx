@@ -27,7 +27,7 @@ export default async function Page({ params: { id } }: Params) {
     },
   });
   return (
-    <section className="container mt-[100px] mb-[100px] flex flex-wrap gap-10">
+    <section className="container mt-[40px] mb-[100px] flex flex-wrap gap-10">
       <div className="flex-1 flex flex-col gap-4 min-w-[320px] max-w-full">
         <h1 className="text-3xl font-semibold">All Reviews</h1>
         <Image

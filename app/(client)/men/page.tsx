@@ -13,30 +13,30 @@ const Men = async () => {
     where: {
       category: "men",
       isArchived: false,
-      // quantity: {
-      //   OR: [
-      //     {
-      //       sm: {
-      //         gt: 0,
-      //       },
-      //     },
-      //     {
-      //       md: {
-      //         gt: 0,
-      //       },
-      //     },
-      //     {
-      //       lg: {
-      //         gt: 0,
-      //       },
-      //     },
-      //     {
-      //       xl: {
-      //         gt: 0,
-      //       },
-      //     },
-      //   ],
-      // },
+      quantity: {
+        OR: [
+          {
+            sm: {
+              gt: 0,
+            },
+          },
+          {
+            md: {
+              gt: 0,
+            },
+          },
+          {
+            lg: {
+              gt: 0,
+            },
+          },
+          {
+            xl: {
+              gt: 0,
+            },
+          },
+        ],
+      },
     },
     orderBy: {
       createdAt: "desc",
@@ -51,7 +51,7 @@ const Men = async () => {
   //   }, 600)
   // );
   return (
-    <div className="pt-[80px]">
+    <div>
       <ProductGrid products={menProducts} />
     </div>
   );

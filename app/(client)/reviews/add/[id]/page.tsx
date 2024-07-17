@@ -22,7 +22,7 @@ export default async function Page({ params: { id } }: Params) {
   });
   if (product)
     return (
-      <section className="container mt-[100px]">
+      <section className="container mt-[40px]">
         <h1 className="text-2xl font-semibold">
           Add a review for {product?.title}
         </h1>

@@ -65,7 +65,7 @@ const ProductById = async ({ params: { id } }: Params) => {
     const { title, images } = product;
     const OPTIONS: EmblaOptionsType = {};
     return (
-      <section className="md:py-[100px] max-[768px]:pt-[64px]">
+      <section className="md:py-[40px] max-[768px]:pt-[0px]">
         <Breadcrumb className="container hidden md:block">
           <BreadcrumbList>
             <BreadcrumbItem>

@@ -36,7 +36,7 @@ export default function CartCard({ items }: Props) {
               height={200}
               width={200}
               alt="Image"
-              className="object-cover aspect-square"
+              className="object-cover aspect-square rounded-lg"
               priority
             />
           </Link>

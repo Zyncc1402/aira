@@ -14,7 +14,7 @@ export default async function Home() {
     },
   });
   return (
-    <div className="mt-[65px]">
+    <div>
       <Link href={"men"}>
         <div>
           <Image
