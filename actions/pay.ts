@@ -4,6 +4,7 @@ import sha256 from "crypto-js/sha256";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export async function Pay(formData: FormData, id: string) {
   const price = formData.get("totalPrice");
@@ -14,8 +15,8 @@ export async function Pay(formData: FormData, id: string) {
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: totalPrice * 100,
-    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123,
     paymentInstrument: {
@@ -44,6 +45,7 @@ export async function Pay(formData: FormData, id: string) {
 
   const response = await axios.request(options);
   if (response.data.code == "PAYMENT_INITIATED") {
+    console.log("payment initiated");
     try {
       const userCartItems = await prisma.cart.findUnique({
         where: {
@@ -66,7 +68,6 @@ export async function Pay(formData: FormData, id: string) {
             category: true,
           },
         });
-        console.log(getCurrentPriceOfItem);
         await prisma.order.create({
           data: {
             userId: id,
@@ -76,6 +77,8 @@ export async function Pay(formData: FormData, id: string) {
             title: getCurrentPriceOfItem?.title || "",
             category: getCurrentPriceOfItem?.category || "",
             orderId: orderId,
+            size: item.size,
+            quantity: item.quantity,
             transactionId,
           },
         });
@@ -117,29 +120,64 @@ export async function checkPaymentStatus(trID: string) {
           paymentSuccess: true,
         },
       });
-      // const find = await prisma.order.findMany({
-      //   where: {
-      //     transactionId: trID,
-      //     paymentSuccess: true,
-      //   },
-      //   include: {
-      //     product: {
-      //       include: {
-      //         quantity: true,
-      //       },
-      //     },
-      //   },
-      // });
-      // find.map(async (item) => {
-      //   await prisma.quantity.update({
-      //     where: {
-      //       productId: item.id,
-      //     },
-      //     data: {
-
-      //     }
-      //   });
-      // });
+      const find = await prisma.order.findMany({
+        where: {
+          transactionId: trID,
+          paymentSuccess: true,
+        },
+        select: {
+          productId: true,
+          size: true,
+          quantity: true,
+        },
+      });
+      find.map(async (item) => {
+        if (item.size == "sm") {
+          await prisma.quantity.update({
+            where: {
+              productId: item.productId,
+            },
+            data: {
+              sm: {
+                decrement: item.quantity,
+              },
+            },
+          });
+        } else if (item.size == "md") {
+          await prisma.quantity.update({
+            where: {
+              productId: item.productId,
+            },
+            data: {
+              md: {
+                decrement: item.quantity,
+              },
+            },
+          });
+        } else if (item.size == "lg") {
+          await prisma.quantity.update({
+            where: {
+              productId: item.productId,
+            },
+            data: {
+              lg: {
+                decrement: item.quantity,
+              },
+            },
+          });
+        } else {
+          await prisma.quantity.update({
+            where: {
+              productId: item.productId,
+            },
+            data: {
+              xl: {
+                decrement: item.quantity,
+              },
+            },
+          });
+        }
+      });
       return true;
     } else {
       return false;
