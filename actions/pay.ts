@@ -15,8 +15,8 @@ export async function Pay(formData: FormData, id: string) {
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: totalPrice * 100,
-    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123,
     paymentInstrument: {
