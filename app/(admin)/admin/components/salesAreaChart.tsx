@@ -72,7 +72,6 @@ export default function SalesAreaChart() {
         Sales: ordersPerMonth[month],
       }));
       setChartData(groupedData);
-      console.log(groupedData);
     }
     getTransactions();
   }, []);
