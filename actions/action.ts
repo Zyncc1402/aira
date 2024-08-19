@@ -31,7 +31,7 @@ export async function deleteProduct(id: string) {
                     id,
                 },
             });
-            console.log("HELLO")
+            console.log("HELLO ")
             console.log("Product Deleted");
             revalidatePath("/admin/products");
             revalidatePath("/men");
