@@ -1,79 +1,101 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
-  Rectangle,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
+import { getTransactionsCount } from "@/actions/action";
 
-export default function TransactionBarChart() {
-  const data = [
-    {
-      name: "Mon",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Tue",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Wed",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Thu",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Fri",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Sat",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Sun",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
+interface ChartData {
+  month: string;
+  Sales: number;
+}
+
+const chartConfig = {
+  month: {
+    label: "Month",
+    color: "#2563eb",
+  },
+  Sales: {
+    label: "Sales",
+    color: "#60a5fa",
+  },
+} satisfies ChartConfig;
+
+export default function SalesAreaChart() {
+  const [chartData, setChartData] = useState<ChartData[]>();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
+  useEffect(() => {
+    async function getTransactions() {
+      const data = await getTransactionsCount();
+      const ordersPerMonth: Record<string, number> = monthNames.reduce(
+        (acc, month) => {
+          acc[month] = 0;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+      data.forEach((order) => {
+        const date = new Date(order.createdAt);
+        const month = monthNames[date.getUTCMonth()];
+        ordersPerMonth[month]++;
+      });
+      const groupedData: ChartData[] = monthNames.map((month) => ({
+        month,
+        Sales: ordersPerMonth[month],
+      }));
+      setChartData(groupedData);
+      console.log(groupedData);
+    }
+    getTransactions();
+  }, []);
+
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart width={500} height={300} data={data}>
-        <XAxis dataKey="name" />
-        <Legend />
-        <Bar
-          dataKey="pv"
-          fill="#082161"
-          activeBar={<Rectangle fill="pink" stroke="blue" />}
-        />
-        <Bar
-          dataKey="uv"
-          fill="#071536"
-          activeBar={<Rectangle fill="gold" stroke="purple" />}
-        />
-      </BarChart>
+      <ChartContainer
+        config={chartConfig}
+        className="min-h-[500px] w-full pb-10"
+      >
+        <AreaChart accessibilityLayer data={chartData}>
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
+          <YAxis />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <Area type="monotone" dataKey="Sales" />
+        </AreaChart>
+      </ChartContainer>
     </ResponsiveContainer>
   );
 }

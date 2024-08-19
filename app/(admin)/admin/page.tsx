@@ -27,6 +27,7 @@ const Admin = async () => {
   ]);
   return (
     <div className="pt-[100px]">
+      <Charts />
       <div className="flex justify-between w-screen container flex-col">
         <div className="w-full mb-10 flex gap-5 flex-wrap">
           <Link href={"/admin/products"}>
@@ -58,7 +59,6 @@ const Admin = async () => {
           </Link>
         </div>
       </div>
-      <Charts />
     </div>
   );
 };

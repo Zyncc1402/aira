@@ -6,7 +6,7 @@ import { FaPlus } from "react-icons/fa";
 const Loading = () => {
   return (
     <>
-      <div className="pt-[100px]">
+      <div className="pt-[40px]">
         <div className="flex justify-between flex-wrap gap-5 w-screen container">
           <h1 className="font-semibold text-3xl">All Products</h1>
           <div className="flex gap-2">

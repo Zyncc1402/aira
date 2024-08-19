@@ -12,7 +12,7 @@ const loading = async () => {
   const number = [];
   for (let i = 1; i <= products; i++) number.push(i);
   return (
-    <div className="pt-[100px] md:container">
+    <div className="pt-[40px] md:container">
       <div className="flex justify-between container">
         <h1 className="font-semibold text-3xl">Men</h1>
       </div>

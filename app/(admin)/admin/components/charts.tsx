@@ -15,7 +15,7 @@ export default function Charts() {
           Sales
         </Button>
         <Button variant={"outline"} onClick={() => setChart("transactions")}>
-          Transactions
+          Failed Transactions
         </Button>
         <Button variant={"outline"} onClick={() => setChart("newUsers")}>
           New Users

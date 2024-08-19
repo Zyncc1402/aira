@@ -4,7 +4,7 @@ import React from "react";
 const Loading = () => {
   return (
     <section>
-      <div className="pt-[100px]">
+      <div className="pt-[40px]">
         <div className="flex justify-between w-screen container">
           <h1 className="font-semibold text-3xl">All Users</h1>
         </div>
