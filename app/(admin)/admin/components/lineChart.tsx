@@ -19,6 +19,7 @@ import {
   YAxis,
 } from "recharts";
 import { getNewUserCount } from "@/actions/action";
+import Spinner from "@/components/loadingSpinner";
 
 interface ChartData {
   month: string;
@@ -37,7 +38,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function SalesAreaChart() {
-  const [chartData, setChartData] = useState<ChartData[]>();
+  const [chartData, setChartData] = useState<ChartData[] | undefined>(
+    undefined
+  );
   const monthNames = [
     "January",
     "February",
@@ -83,18 +86,24 @@ export default function SalesAreaChart() {
         config={chartConfig}
         className="min-h-[500px] w-full pb-10"
       >
-        <AreaChart accessibilityLayer data={chartData}>
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
-          <YAxis />
-          <ChartTooltip content={<ChartTooltipContent />} />
-          <Area type="monotone" dataKey="NewUsers" />
-        </AreaChart>
+        {chartData == undefined ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <Spinner size={50} />
+          </div>
+        ) : (
+          <AreaChart accessibilityLayer data={chartData}>
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            {/* <YAxis /> */}
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <Area type="monotone" dataKey="NewUsers" />
+          </AreaChart>
+        )}
       </ChartContainer>
     </ResponsiveContainer>
   );

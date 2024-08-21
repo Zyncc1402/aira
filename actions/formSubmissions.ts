@@ -1,11 +1,16 @@
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createProduct(formData: FormData) {
+  const session = await auth();
+  if (session?.user.role !== "Admin") {
+    return null;
+  }
   const images = formData.getAll("images");
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -96,6 +101,10 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(formData: FormData) {
+  const session = await auth();
+  if (session?.user.role !== "Admin") {
+    return null;
+  }
   const id = formData.get("id") as string;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -128,9 +137,9 @@ export async function updateProduct(formData: FormData) {
           },
         },
         color: colors,
-        category: category,
+        category,
         isFeatured: Boolean(featured),
-        isArchived: Boolean(isArchived),
+        isArchived: Boolean(Number(isArchived)),
       },
       include: {
         quantity: true,
@@ -146,6 +155,10 @@ export async function updateProduct(formData: FormData) {
 }
 
 export async function updateProductWithImage(formData: FormData) {
+  const session = await auth();
+  if (session?.user.role !== "Admin") {
+    return null;
+  }
   const images = formData.getAll("images");
   const id = formData.get("id") as string;
   const title = formData.get("title") as string;
@@ -229,6 +242,10 @@ export async function updateProductWithImage(formData: FormData) {
 }
 
 export async function uploadReview(formData: FormData) {
+  const session = await auth();
+  if (!session?.user) {
+    return null;
+  }
   const images = formData.getAll("images");
   const pid = formData.get("pid") as string;
   const uid = formData.get("uid") as string;
@@ -297,6 +314,10 @@ export async function uploadReview(formData: FormData) {
 }
 
 export async function updateUserAddress(formData: FormData) {
+  const session = await auth();
+  if (!session?.user) {
+    return null;
+  }
   const id = formData.get("id") as string;
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
@@ -324,6 +345,10 @@ export async function updateUserAddress(formData: FormData) {
 }
 
 export async function deleteAddress(id: string) {
+  const session = await auth();
+  if (!session?.user) {
+    return null;
+  }
   await prisma.address.delete({
     where: {
       userId: id,

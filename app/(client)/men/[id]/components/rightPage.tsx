@@ -166,6 +166,7 @@ export default function RightPage({ product }: Props) {
       if (result?.exists) {
         toast({
           title: `${title} already in Cart`,
+          variant: "destructive",
         });
       } else {
         toast({

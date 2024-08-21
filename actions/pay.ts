@@ -4,9 +4,13 @@ import sha256 from "crypto-js/sha256";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 export async function Pay(formData: FormData, id: string) {
+  const session = await auth();
+  if (!session?.user) {
+    return null;
+  }
   const price = formData.get("totalPrice");
   const totalPrice = Number(price);
   const transactionId = uuidv4();

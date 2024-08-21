@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
@@ -12,13 +10,13 @@ import {
 import {
   Area,
   AreaChart,
-  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { getSalesCount } from "@/actions/action";
+import Spinner from "@/components/loadingSpinner";
 
 interface ChartData {
   month: string;
@@ -37,7 +35,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function SalesAreaChart() {
-  const [chartData, setChartData] = useState<ChartData[]>();
+  const [chartData, setChartData] = useState<ChartData[] | undefined>(
+    undefined
+  );
   const monthNames = [
     "January",
     "February",
@@ -82,18 +82,24 @@ export default function SalesAreaChart() {
         config={chartConfig}
         className="min-h-[500px] w-full pb-10"
       >
-        <AreaChart accessibilityLayer data={chartData}>
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
-          <YAxis />
-          <ChartTooltip content={<ChartTooltipContent />} />
-          <Area type="monotone" dataKey="Sales" fill="#60a5fa" />
-        </AreaChart>
+        {chartData == undefined ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <Spinner size={50} />
+          </div>
+        ) : (
+          <AreaChart accessibilityLayer data={chartData}>
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            {/* <YAxis /> */}
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <Area type="monotone" dataKey="Sales" />
+          </AreaChart>
+        )}
       </ChartContainer>
     </ResponsiveContainer>
   );

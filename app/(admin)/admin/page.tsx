@@ -31,7 +31,7 @@ const Admin = async () => {
       <div className="flex justify-between w-screen container flex-col">
         <div className="w-full mb-10 flex gap-5 flex-wrap">
           <Link href={"/admin/products"}>
-            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
+            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-muted">
               <IoIosShirt size={22} />
               <div>
                 <h1 className="font-semibold flex gap-2">All Products</h1>
@@ -39,17 +39,8 @@ const Admin = async () => {
               </div>
             </div>
           </Link>
-          {allArchivedProducts > 0 && (
-            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
-              <MdArchive size={22} />
-              <div>
-                <h1 className="font-semibold flex gap-2">Archived Products</h1>
-                <h2>{allArchivedProducts}</h2>
-              </div>
-            </div>
-          )}
           <Link href={"/admin/users"}>
-            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-foreground">
+            <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-muted">
               <FaUsers size={22} />
               <div>
                 <h1 className="font-semibold flex gap-2">All Users</h1>
@@ -57,6 +48,13 @@ const Admin = async () => {
               </div>
             </div>
           </Link>
+          <div className="rounded-lg p-5 w-fit border-2 flex gap-2 border-muted">
+            <MdArchive size={22} />
+            <div>
+              <h1 className="font-semibold flex gap-2">Archived Products</h1>
+              <h2>{allArchivedProducts}</h2>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@ import ProductCard from "@/components/cards/productCard";
 
 import { Products } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -81,7 +80,6 @@ export default function ProductGrid({ products }: Props) {
           <SheetContent side={"left"}>
             <ScrollArea className="h-full">
               <SheetHeader>
-                {/* <SheetTitle className="text-center">Filters</SheetTitle> */}
                 <div className="text-left">
                   <div>
                     <h1 className="font-medium text-lg mb-3 mt-3">Price</h1>

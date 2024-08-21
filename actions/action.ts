@@ -7,85 +7,88 @@ import { v2 as cloudinary } from "cloudinary";
 
 export async function deleteProduct(id: string) {
   const session = await auth();
-  if (session?.user.role === "Admin") {
-    const getProduct = await prisma.product.findUnique({
+  if (session?.user.role !== "Admin") {
+    return null;
+  }
+  const getProduct = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+  let toDeleteImages: string[] = [];
+  getProduct?.images.map((image) => {
+    const imgId: string = String(image.split("/").pop());
+    toDeleteImages.push(imgId.split(".")[0]);
+  });
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+  });
+  cloudinary.api.delete_resources(toDeleteImages);
+  try {
+    await prisma.product.delete({
       where: {
         id,
       },
     });
-    let toDeleteImages: string[] = [];
-    getProduct?.images.map((image) => {
-      const imgId: string = String(image.split("/").pop());
-      toDeleteImages.push(imgId.split(".")[0]);
-    });
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-      secure: true,
-    });
-    cloudinary.api.delete_resources(toDeleteImages);
-    try {
-      await prisma.product.delete({
-        where: {
-          id,
-        },
-      });
-      console.log("HELLO   ");
-      console.log("Product Deleted");
-      revalidatePath("/admin/products");
-      revalidatePath("/men");
-    } catch (error) {
-      return {
-        error: "Something went wrong",
-      };
-    }
+    console.log("HELLO   ");
+    console.log("Product Deleted");
+    revalidatePath("/admin/products");
+    revalidatePath("/men");
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
   }
 }
 
 export async function archiveProduct(id: string) {
   const session = await auth();
-  if (session?.user.role === "Admin") {
-    try {
-      await prisma.product.update({
-        where: {
-          id,
-        },
-        data: {
-          isArchived: true,
-        },
-      });
-      console.log("Product Archived");
-      revalidatePath("/admin/products");
-      revalidatePath("/men");
-    } catch (error) {
-      return {
-        error: "Something went wrong",
-      };
-    }
+  if (session?.user.role !== "Admin") {
+    return null;
+  }
+  try {
+    await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        isArchived: true,
+      },
+    });
+    console.log("Product Archived");
+    revalidatePath("/admin/products");
+    revalidatePath("/men");
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
   }
 }
 
 export async function unarchiveProduct(id: string) {
   const session = await auth();
-  if (session?.user.role === "Admin") {
-    try {
-      await prisma.product.update({
-        where: {
-          id,
-        },
-        data: {
-          isArchived: false,
-        },
-      });
-      console.log("Product UnArchived");
-      revalidatePath("/admin/products");
-      revalidatePath("/men");
-    } catch (error) {
-      return {
-        error: "Something went wrong",
-      };
-    }
+  if (session?.user.role !== "Admin") {
+    return null;
+  }
+  try {
+    await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        isArchived: false,
+      },
+    });
+    console.log("Product UnArchived");
+    revalidatePath("/admin/products");
+    revalidatePath("/men");
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
   }
 }
 
@@ -241,7 +244,6 @@ export async function getTransactionsCount() {
       createdAt: true,
     },
   });
-  console.log(res);
   return res;
 }
 

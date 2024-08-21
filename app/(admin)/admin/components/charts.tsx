@@ -10,15 +10,15 @@ export default function Charts() {
   const [chart, setChart] = useState("sales");
   return (
     <div className="flex justify-between w-screen container flex-col">
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <Button variant={"outline"} onClick={() => setChart("sales")}>
           Sales
         </Button>
-        <Button variant={"outline"} onClick={() => setChart("transactions")}>
-          Failed Transactions
-        </Button>
         <Button variant={"outline"} onClick={() => setChart("newUsers")}>
           New Users
+        </Button>
+        <Button variant={"outline"} onClick={() => setChart("transactions")}>
+          Failed Transactions
         </Button>
       </div>
       {chart == "sales" ? (
