@@ -50,7 +50,7 @@ export async function createProduct(formData: FormData) {
       const buffer = new Uint8Array(arrayBuffer);
       const res = await new Promise((resolve, reject) => {
         cloudinary.uploader
-          .upload_stream({}, (error, result) => {
+          .upload_stream({ folder: "Products" }, (error, result) => {
             if (error) {
               reject(error);
               return;
@@ -327,7 +327,7 @@ export async function updateUserAddress(formData: FormData) {
   const state = formData.get("state") as string;
   const zipcode = formData.get("zipcode") as string;
   const landmark = formData.get("landmark") as string;
-
+  console.log(state);
   await prisma.address.create({
     data: {
       userId: id,
@@ -344,7 +344,7 @@ export async function updateUserAddress(formData: FormData) {
   revalidatePath("/cart");
 }
 
-export async function deleteAddress(id: string) {
+export async function deleteAddress(id: string, addressId: string) {
   const session = await auth();
   if (!session?.user) {
     return null;
@@ -352,6 +352,7 @@ export async function deleteAddress(id: string) {
   await prisma.address.delete({
     where: {
       userId: id,
+      id: addressId,
     },
   });
   revalidatePath("/cart");

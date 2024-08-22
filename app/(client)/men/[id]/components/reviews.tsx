@@ -18,28 +18,35 @@ export default async function Reviews({ id }: { id: string }) {
     },
     take: 3,
   });
-  const alreadyReviewed = await prisma.user.findUnique({
+
+  const checkIfUserHasOrdered = await prisma.order.findFirst({
     where: {
-      id: session?.user.id || id,
-    },
-    include: {
-      reviews: true,
+      userId: session?.user.id,
+      productId: id,
+      paymentSuccess: true,
     },
   });
-  const result = alreadyReviewed?.reviews.find(
-    (review) => review.productId == id
-  );
+
+  const checkIfUserHasReviewed = await prisma.reviews.findFirst({
+    where: {
+      userId: session?.user.id,
+      productId: id,
+    },
+  });
+
   return (
     <div className="container mt-[100px]">
       <h1 className="text-2xl font-semibold">Reviews</h1>
       <div>
-        {session?.user && (
-          <Link href={`/reviews/add/${id}`}>
-            <Button variant="secondary" className="mt-4">
-              Write a review
-            </Button>
-          </Link>
-        )}
+        {session?.user &&
+          checkIfUserHasOrdered !== null &&
+          checkIfUserHasReviewed == null && (
+            <Link href={`/reviews/add/${id}`}>
+              <Button variant="secondary" className="mt-4">
+                Write a review
+              </Button>
+            </Link>
+          )}
         {review.map((review) => (
           <div
             className="mt-5 rounded-lg p-4 bg- max-w-[768px] bg-gray-50"

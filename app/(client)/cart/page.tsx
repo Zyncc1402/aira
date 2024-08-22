@@ -30,7 +30,7 @@ const Cart = async () => {
       address: true,
     },
   });
-
+  console.log(user);
   const getCartInfo = await getCart();
   if (getCartInfo) {
     return (
@@ -85,18 +85,18 @@ const Cart = async () => {
                 variant={"default"}
                 className="w-full"
                 type="submit"
-                disabled={getCartInfo.items.length == 0}
+                disabled={
+                  getCartInfo.items.length == 0 || user?.address.length == 0
+                }
               >
                 Checkout
               </Button>
             </form>
             <div className="my-[50px]">
-              {!user?.address ? (
+              {user != null && user.address.length == 0 ? (
                 <AddressForm />
               ) : (
-                <>
-                  <Address user={user} />
-                </>
+                <Address user={user} />
               )}
             </div>
           </div>

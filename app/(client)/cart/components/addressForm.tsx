@@ -106,7 +106,7 @@ export default function AddressForm() {
         required
         minLength={40}
       />
-      <Select required>
+      <Select required name="state">
         <SelectTrigger>
           <SelectValue placeholder="Select a state" />
         </SelectTrigger>

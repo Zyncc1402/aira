@@ -15,26 +15,27 @@ model User {
   password  String?
   cart      Cart?
   role      String    @default("Client")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
   reviews   reviews[]
   wishlist  Wishlist?
-  address   address?
+  address   address[]
   orders    order[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model address {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String  @unique @db.ObjectId
+  userId   String  @db.ObjectId
   name     String
   email    String
   phone    String
   address1 String
   address2 String
-  state    String?
+  state    String
   zipcode  Int
   landmark String
+  order    order[]
 }
 
 model Wishlist {
@@ -133,6 +134,8 @@ model order {
   category       String
   size           String
   quantity       Int
+  address        address? @relation(fields: [addressId], references: [id])
   paymentSuccess Boolean  @default(false)
   createdAt      DateTime @default(now())
+  addressId      String?  @db.ObjectId
 }

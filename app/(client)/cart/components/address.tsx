@@ -1,40 +1,38 @@
 "use client";
 
-import React from "react";
-import { MdDeleteOutline } from "react-icons/md";
-import { Button } from "@/components/ui/button";
-import { deleteAddress } from "@/actions/formSubmissions";
-import { useSession } from "next-auth/react";
+import React, { useState } from "react";
 import { UserWithAddress } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Props = {
-  user: UserWithAddress;
+  user: UserWithAddress | null;
 };
 
 export default function Address({ user }: Props) {
-  const { data: session } = useSession();
+  const [selectedAddress, setSelectedAddress] = useState("");
   return (
     <>
       <div>
-        <h1 className="text-2xl font-semibold">Your Address</h1>
+        <h1 className="text-2xl font-semibold">Your Addresses</h1>
       </div>
-      <div className="p-5 rounded-md bg-gray-100 w-fit relative flex flex-col gap-2 mt-3">
-        <h1 className="font-semibold text-xl">{user.address?.name}</h1>
-        <p className="font-normal">{user.address?.email}</p>
-        <p className="font-normal">{user.address?.phone}</p>
-        <p className="font-normal">{user.address?.address1}</p>
-        <p className="font-normal">{user.address?.address2}</p>
-        <p className="font-normal">{user.address?.zipcode}</p>
-        <p className="font-normal">{user.address?.landmark}</p>
+      {user?.address.map((address) => (
         <Button
-          className="absolute bottom-3 right-3"
-          size={"icon"}
+          onClick={() => setSelectedAddress(address.id)}
           variant={"secondary"}
-          onClick={() => deleteAddress(session?.user.id as string)}
+          className={`p-5 rounded-md w-full h-fit items-start relative flex flex-col gap-2 mt-3 `}
         >
-          <MdDeleteOutline size={30} />
+          <h1 className="font-semibold text-xl">{address.name}</h1>
+          <p className="font-normal">{address.address1}</p>
+          <p className="font-normal">{address.phone}</p>
+          <p className="font-normal">{address.zipcode}</p>
+          <Input
+            type="radio"
+            className="absolute bottom-3 right-3 w-5"
+            checked={selectedAddress == address.id}
+          />
         </Button>
-      </div>
+      ))}
     </>
   );
 }

@@ -15,10 +15,10 @@ export async function deleteProduct(id: string) {
       id,
     },
   });
-  let toDeleteImages: string[] = [];
-  getProduct?.images.map((image) => {
-    const imgId: string = String(image.split("/").pop());
-    toDeleteImages.push(imgId.split(".")[0]);
+  const formattedLinks = getProduct?.images.map((link) => {
+    const parts = link.split("/");
+    const lastPartWithoutExtension = parts[parts.length - 1].split(".")[0];
+    return `${parts[parts.length - 2]}/${lastPartWithoutExtension}`;
   });
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -26,14 +26,14 @@ export async function deleteProduct(id: string) {
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true,
   });
-  cloudinary.api.delete_resources(toDeleteImages);
+  formattedLinks !== undefined &&
+    cloudinary.api.delete_resources(formattedLinks);
   try {
     await prisma.product.delete({
       where: {
         id,
       },
     });
-    console.log("HELLO   ");
     console.log("Product Deleted");
     revalidatePath("/admin/products");
     revalidatePath("/men");
