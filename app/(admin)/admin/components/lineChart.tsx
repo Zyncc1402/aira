@@ -78,7 +78,7 @@ export default function SalesAreaChart() {
       console.log(groupedUserData);
     }
     getTransactions();
-  }, []);
+  });
 
   return (
     <ResponsiveContainer width="100%" height="100%">

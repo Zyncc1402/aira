@@ -74,7 +74,7 @@ export default function SalesAreaChart() {
       setChartData(groupedData);
     }
     getTransactions();
-  }, []);
+  });
 
   return (
     <ResponsiveContainer width="100%" height="100%">

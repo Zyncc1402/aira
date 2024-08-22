@@ -18,6 +18,7 @@ export default function Address({ user }: Props) {
       </div>
       {user?.address.map((address) => (
         <Button
+          key={address.id}
           onClick={() => setSelectedAddress(address.id)}
           variant={"secondary"}
           className={`p-5 rounded-md w-full h-fit items-start relative flex flex-col gap-2 mt-3 `}
