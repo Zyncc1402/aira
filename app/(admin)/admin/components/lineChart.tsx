@@ -3,21 +3,11 @@
 import React, { useEffect, useState } from "react";
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Area, AreaChart, ResponsiveContainer, XAxis } from "recharts";
 import { getNewUserCount } from "@/actions/action";
 import Spinner from "@/components/loadingSpinner";
 
@@ -75,7 +65,6 @@ export default function SalesAreaChart() {
         NewUsers: ordersPerMonth[month],
       }));
       setChartData(groupedUserData);
-      console.log(groupedUserData);
     }
     getTransactions();
   });
@@ -99,7 +88,6 @@ export default function SalesAreaChart() {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            {/* <YAxis /> */}
             <ChartTooltip content={<ChartTooltipContent />} />
             <Area type="monotone" dataKey="NewUsers" />
           </AreaChart>

@@ -327,7 +327,6 @@ export async function updateUserAddress(formData: FormData) {
   const state = formData.get("state") as string;
   const zipcode = formData.get("zipcode") as string;
   const landmark = formData.get("landmark") as string;
-  console.log(state);
   await prisma.address.create({
     data: {
       userId: id,
