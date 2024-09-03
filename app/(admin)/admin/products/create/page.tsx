@@ -1,10 +1,10 @@
 import React from "react";
 import CreateProductForm from "./components/CreateProductForm";
-import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+import getSession from "@/lib/getSession";
 
 const CreateProducts = async () => {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }

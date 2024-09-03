@@ -3,9 +3,9 @@ import "../globals.css";
 import Providers from "@/lib/authProvider";
 import { Toaster } from "@/components/ui/toaster";
 import AdminNavbar from "@/components/navbar/adminNavbar";
-import { auth } from "@/auth";
 import Navbar from "@/components/navbar/navbar";
 import { ThemeProvider } from "@/lib/themeProvider";
+import getSession from "@/lib/getSession";
 
 export const metadata: Metadata = {
   title: "Aira Admin Panel",
@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const session = await getSession();
   return (
     <html lang="en">
       <Providers>

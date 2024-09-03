@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import UpdateProductForm from "./components/UpdateProductForm";
 import prisma from "@/lib/prisma";
-import { auth } from "@/auth";
+import getSession from "@/lib/getSession";
 
 type Props = {
   params: {
@@ -12,7 +12,7 @@ type Props = {
 
 const CreateProducts = async ({ params }: Props) => {
   const { id } = params;
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }

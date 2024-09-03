@@ -2,13 +2,13 @@ import prisma from "@/lib/prisma";
 import React from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+import getSession from "@/lib/getSession";
 
 export const revalidate = 3600;
 
 const AllUsers = async () => {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }

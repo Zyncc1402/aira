@@ -4,9 +4,10 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
+import getSession from "@/lib/getSession";
 
 export async function deleteProduct(id: string) {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin") {
     return null;
   }
@@ -45,7 +46,7 @@ export async function deleteProduct(id: string) {
 }
 
 export async function archiveProduct(id: string) {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin") {
     return null;
   }
@@ -69,7 +70,7 @@ export async function archiveProduct(id: string) {
 }
 
 export async function unarchiveProduct(id: string) {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin") {
     return null;
   }

@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { trid: string } }) {
             <h1 className="font-semibold text-3xl">Payment Success</h1>
           </div>
           <p>Transaction ID: {params.trid}</p>
-          <Link href={"/orders"}>
+          <Link href={"/account"}>
             <Button variant={"secondary"}>Go to My Orders</Button>
           </Link>
         </>

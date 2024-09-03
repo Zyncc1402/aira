@@ -5,13 +5,13 @@ import { FaPlus } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+import getSession from "@/lib/getSession";
 
 export const revalidate = 600;
 
 const Products = async () => {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }

@@ -1,8 +1,8 @@
 import React from "react";
 import AddReviewPage from "./addReviewPage";
 import prisma from "@/lib/prisma";
-import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+import getSession from "@/lib/getSession";
 
 type Params = {
   params: {
@@ -11,7 +11,7 @@ type Params = {
 };
 
 export default async function Page({ params: { id } }: Params) {
-  const session = await auth();
+  const session = await getSession();
   if (!session?.user) {
     notFound();
   }

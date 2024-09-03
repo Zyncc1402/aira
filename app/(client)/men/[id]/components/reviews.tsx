@@ -1,11 +1,11 @@
 import Image from "next/image";
 import prisma from "@/lib/prisma";
-import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import getSession from "@/lib/getSession";
 
 export default async function Reviews({ id }: { id: string }) {
-  const session = await auth();
+  const session = await getSession();
   const review = await prisma.reviews.findMany({
     where: {
       productId: id,
@@ -54,7 +54,7 @@ export default async function Reviews({ id }: { id: string }) {
           >
             <div className="flex gap-2 items-center justify-start">
               <Image
-                src={review.user.avatar || ""}
+                src={review.user.image || ""}
                 width={30}
                 height={30}
                 alt="Profile Picture"
@@ -84,11 +84,15 @@ export default async function Reviews({ id }: { id: string }) {
           </div>
         ))}
       </div>
-      <Link href={"/reviews/all/" + id}>
-        <Button variant={"link"} className="mt-5 text-black">
-          See all reviews
-        </Button>
-      </Link>
+      {review.length == 0 ? (
+        <h1 className="mt-5 font-medium">This product has no reviews</h1>
+      ) : (
+        <Link href={"/reviews/all/" + id}>
+          <Button variant={"link"} className="mt-5 text-black">
+            See all reviews
+          </Button>
+        </Link>
+      )}
     </div>
   );
 }

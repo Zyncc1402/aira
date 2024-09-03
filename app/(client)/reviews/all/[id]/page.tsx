@@ -40,42 +40,48 @@ export default async function Page({ params: { id } }: Params) {
         <h1 className="font-medium text-xl">{product?.title}</h1>
         <p>{product?.description}</p>
       </div>
-      <div className="flex-1">
-        {reviews.map((review) => (
-          <div
-            className="mt-5 rounded-lg p-4 min-w-[320px] max-w-full bg-gray-50"
-            key={review.userId}
-          >
-            <div className="flex gap-2 items-center justify-start">
-              <Image
-                src={review.user.avatar || ""}
-                width={30}
-                height={30}
-                alt="Profile Picture"
-                className="rounded-full"
-                priority
-              />
-              <h1 className="font-semibold">{review.user.name}</h1>
+      {reviews.length == 0 ? (
+        <div className="flex-1">
+          <h1 className="font-medium text-xl">This product has no reviews</h1>
+        </div>
+      ) : (
+        <div className="flex-1">
+          {reviews.map((review) => (
+            <div
+              className="mt-5 rounded-lg p-4 min-w-[320px] max-w-full bg-gray-50"
+              key={review.userId}
+            >
+              <div className="flex gap-2 items-center justify-start">
+                <Image
+                  src={review.user.avatar || ""}
+                  width={30}
+                  height={30}
+                  alt="Profile Picture"
+                  className="rounded-full"
+                  priority
+                />
+                <h1 className="font-semibold">{review.user.name}</h1>
+              </div>
+              <h1 className="font-medium mt-3">{review.title}</h1>
+              <p className="mt-3 text-[15px]">{review.description}</p>
+              <div className="flex gap-3 mt-5 flex-wrap">
+                {review.images &&
+                  review.images.map((image) => (
+                    <Image
+                      key={image}
+                      src={image}
+                      width={80}
+                      height={80}
+                      alt="review image"
+                      priority
+                      className="rounded-md aspect-square object-cover"
+                    />
+                  ))}
+              </div>
             </div>
-            <h1 className="font-medium mt-3">{review.title}</h1>
-            <p className="mt-3 text-[15px]">{review.description}</p>
-            <div className="flex gap-3 mt-5 flex-wrap">
-              {review.images &&
-                review.images.map((image) => (
-                  <Image
-                    key={image}
-                    src={image}
-                    width={80}
-                    height={80}
-                    alt="review image"
-                    priority
-                    className="rounded-md aspect-square object-cover"
-                  />
-                ))}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

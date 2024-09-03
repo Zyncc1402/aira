@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import React from "react";
 import { FaUsers } from "react-icons/fa";
@@ -7,11 +6,12 @@ import { MdArchive } from "react-icons/md";
 import { IoIosShirt } from "react-icons/io";
 import Charts from "./components/charts";
 import Link from "next/link";
+import getSession from "@/lib/getSession";
 
 export const revalidate = 600;
 
 const Admin = async () => {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin" || !session) {
     notFound();
   }

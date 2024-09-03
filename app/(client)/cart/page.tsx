@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import React from "react";
 import { redirect } from "next/navigation";
 import { getCart } from "@/lib/getCart";
@@ -6,17 +5,18 @@ import prisma from "@/lib/prisma";
 import formatCurrency from "@/lib/formatCurrency";
 import AddressForm from "./components/addressForm";
 import Address from "./components/address";
-import { Button } from "@/components/ui/button";
 import CartCard from "./components/cartCard";
 import { Separator } from "@/components/ui/separator";
-import { Pay } from "@/actions/pay";
+import CheckoutForm from "./components/checkoutForm";
+import Image from "next/image";
+import getSession from "@/lib/getSession";
 
 export const metadata = {
   title: "Aira - Cart",
 };
 
 const Cart = async () => {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user) {
     redirect("/");
@@ -30,7 +30,6 @@ const Cart = async () => {
       address: true,
     },
   });
-  console.log(user);
   const getCartInfo = await getCart();
   if (getCartInfo) {
     return (
@@ -66,32 +65,7 @@ const Cart = async () => {
               </div>
               <Separator className="my-3" />
             </div>
-            <form
-              action={async (formData) => {
-                "use server";
-                formData.append(
-                  "totalPrice",
-                  `${String(Number(getCartInfo?.subtotal))}`
-                );
-                formData.append("items", String(getCartInfo.items));
-                const redirectURL = await Pay(
-                  formData,
-                  session.user.id as string
-                );
-                redirect(redirectURL);
-              }}
-            >
-              <Button
-                variant={"default"}
-                className="w-full"
-                type="submit"
-                disabled={
-                  getCartInfo.items.length == 0 || user?.address.length == 0
-                }
-              >
-                Checkout
-              </Button>
-            </form>
+            <CheckoutForm session={session} getCartInfo={getCartInfo} />
             <div className="my-[50px]">
               {user != null && user.address.length == 0 ? (
                 <AddressForm />
@@ -101,6 +75,18 @@ const Cart = async () => {
             </div>
           </div>
         </div>
+      </section>
+    );
+  } else {
+    return (
+      <section className="container flex flex-col items-center justify-center h-screen">
+        <Image
+          src={"/empty-cart.svg"}
+          width={500}
+          height={500}
+          alt="empty cart"
+        />
+        <h1 className="font-medium text-xl mt-5">Cart is empty</h1>
       </section>
     );
   }

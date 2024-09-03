@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { IoCartOutline, IoSearch } from "react-icons/io5";
 import { LuMenu } from "react-icons/lu";
-import { FaRegHeart, FaSearch } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import Link from "next/link";
 
 import {
@@ -26,10 +26,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import { auth, signIn, signOut } from "@/auth";
+import { signOut } from "@/auth";
+import getSession from "@/lib/getSession";
 
 const Navbar = async () => {
-  const session = await auth();
+  const session = await getSession();
   return (
     <header className="z-10 header pb-4 pt-4 w-full sticky top-0 left-0 right-0 bg-white text-black">
       <nav className="container flex justify-between items-center ">
@@ -217,16 +218,11 @@ const Navbar = async () => {
                     </SheetClose>
                   </form>
                 ) : (
-                  <form
-                    action={async () => {
-                      "use server";
-                      await signIn("google");
-                    }}
-                  >
+                  <Link href={"/signup"}>
                     <SheetClose>
                       <Button variant={"secondary"}>Sign up</Button>
                     </SheetClose>
-                  </form>
+                  </Link>
                 )}
               </div>
             </SheetContent>
@@ -247,16 +243,15 @@ const Navbar = async () => {
               </Button>
             </form>
           ) : (
-            <form
-              action={async () => {
-                "use server";
-                await signIn("google");
-              }}
-            >
-              <Button variant={"secondary"} className="hidden lg:block ml-3">
+            <Link href={"/signup"}>
+              <Button
+                variant={"secondary"}
+                type="submit"
+                className="hidden lg:block ml-3"
+              >
                 Sign up
               </Button>
-            </form>
+            </Link>
           )}
         </div>
       </nav>

@@ -1,13 +1,13 @@
 "use server";
 
-import { auth } from "@/auth";
+import getSession from "@/lib/getSession";
 import prisma from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createProduct(formData: FormData) {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin") {
     return null;
   }
@@ -101,7 +101,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(formData: FormData) {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin") {
     return null;
   }
@@ -155,7 +155,7 @@ export async function updateProduct(formData: FormData) {
 }
 
 export async function updateProductWithImage(formData: FormData) {
-  const session = await auth();
+  const session = await getSession();
   if (session?.user.role !== "Admin") {
     return null;
   }
@@ -242,7 +242,7 @@ export async function updateProductWithImage(formData: FormData) {
 }
 
 export async function uploadReview(formData: FormData) {
-  const session = await auth();
+  const session = await getSession();
   if (!session?.user) {
     return null;
   }
@@ -314,7 +314,7 @@ export async function uploadReview(formData: FormData) {
 }
 
 export async function updateUserAddress(formData: FormData) {
-  const session = await auth();
+  const session = await getSession();
   if (!session?.user) {
     return null;
   }
@@ -344,7 +344,7 @@ export async function updateUserAddress(formData: FormData) {
 }
 
 export async function deleteAddress(id: string, addressId: string) {
-  const session = await auth();
+  const session = await getSession();
   if (!session?.user) {
     return null;
   }

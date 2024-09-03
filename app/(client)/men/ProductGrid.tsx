@@ -533,8 +533,10 @@ export default function ProductGrid({ products }: Props) {
       <div className="flex lg:container md:container lg:flex-row gap-8 items-start">
         <div className="md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-5 lg:gap-7 pb-10">
           {filteredProducts.length == 0 ? (
-            <div className="flex items-center justify-center container">
-              <h1 className="font-medium text-xl">No Products Found...</h1>
+            <div>
+              <h1 className="font-medium text-xl">
+                No Products match your Filter requirements
+              </h1>
             </div>
           ) : (
             filteredProducts?.map((product, key) => (

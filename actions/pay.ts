@@ -4,10 +4,11 @@ import sha256 from "crypto-js/sha256";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import prisma from "@/lib/prisma";
-import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import getSession from "@/lib/getSession";
 
-export async function Pay(formData: FormData, id: string) {
-  const session = await auth();
+export async function Pay(formData: FormData, id: string, addressId: string) {
+  const session = await getSession();
   if (!session?.user) {
     return null;
   }
@@ -19,8 +20,8 @@ export async function Pay(formData: FormData, id: string) {
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: totalPrice * 100,
-    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123,
     paymentInstrument: {
@@ -84,6 +85,7 @@ export async function Pay(formData: FormData, id: string) {
             size: item.size,
             quantity: item.quantity,
             transactionId,
+            addressId,
           },
         });
       });
@@ -92,7 +94,7 @@ export async function Pay(formData: FormData, id: string) {
     }
   }
   const redirectURL = response.data.data.instrumentResponse.redirectInfo.url;
-  return redirectURL;
+  redirect(redirectURL);
 }
 
 export async function checkPaymentStatus(trID: string) {
@@ -133,8 +135,18 @@ export async function checkPaymentStatus(trID: string) {
           productId: true,
           size: true,
           quantity: true,
+          userId: true,
         },
       });
+      try {
+        await prisma.cart.delete({
+          where: {
+            userId: find[0].userId,
+          },
+        });
+      } catch (error) {
+        console.log("FAILED!!!!!");
+      }
       find.map(async (item) => {
         if (item.size == "sm") {
           await prisma.quantity.update({
