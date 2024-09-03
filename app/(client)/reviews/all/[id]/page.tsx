@@ -53,7 +53,7 @@ export default async function Page({ params: { id } }: Params) {
             >
               <div className="flex gap-2 items-center justify-start">
                 <Image
-                  src={review.user.avatar || ""}
+                  src={review.user.image || ""}
                   width={30}
                   height={30}
                   alt="Profile Picture"
