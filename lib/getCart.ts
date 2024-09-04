@@ -24,12 +24,5 @@ export async function getCart() {
   if (!cart) {
     return null;
   }
-  return {
-    ...cart,
-    size: cart?.items.reduce((acc, item) => acc + item.quantity, 0),
-    subtotal: cart?.items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
-      0
-    ),
-  };
+  return cart;
 }

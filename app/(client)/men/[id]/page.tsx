@@ -19,6 +19,7 @@ import formatCurrency from "@/lib/formatCurrency";
 import { Products } from "@/lib/types";
 import Reviews from "./components/reviews";
 import { notFound } from "next/navigation";
+import getSession from "@/lib/getSession";
 
 type Params = {
   params: {
@@ -46,6 +47,7 @@ const ProductById = async ({ params: { id } }: Params) => {
   if (!product?.title) {
     notFound();
   }
+  const session = await getSession();
   if (product?.title) {
     const similarProducts = await prisma.product.findMany({
       where: {
@@ -87,7 +89,7 @@ const ProductById = async ({ params: { id } }: Params) => {
           <div className="md:basis-1/2">
             <ProductSlider slides={images} options={OPTIONS} />
           </div>
-          <RightPage product={product} />
+          <RightPage product={product} session={session} />
         </div>
         <Reviews id={id} />
         {similarProducts.length > 0 && (

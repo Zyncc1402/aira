@@ -52,6 +52,7 @@ export default async function Page() {
             <Label>Phone</Label>
             <Input
               type="text"
+              name="phone"
               placeholder="Enter your Phone"
               required
               minLength={10}

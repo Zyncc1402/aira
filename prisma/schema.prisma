@@ -27,16 +27,6 @@ model Account {
   @@map("accounts")
 }
 
-model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id") @db.ObjectId
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
 model User {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   name             String?
@@ -53,7 +43,6 @@ model User {
   address          address[]
   orders           order[]
   accounts         Account[]
-  sessions         Session[]
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }

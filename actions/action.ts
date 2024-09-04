@@ -190,7 +190,6 @@ export async function updateCartItemQuantity(
   quantity: number,
   id: string
 ) {
-  console.log(id);
   await prisma.cartItems.update({
     where: {
       cart: {

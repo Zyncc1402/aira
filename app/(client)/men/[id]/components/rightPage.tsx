@@ -16,9 +16,11 @@ import { BiTransferAlt } from "react-icons/bi";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { IoMdHeart, IoMdInformationCircleOutline } from "react-icons/io";
 import AddToCartBtn from "./AddToCartBtn";
+import { Session } from "next-auth";
 
 type Props = {
   product: Products;
+  session: Session | null;
 };
 
 type wishlistItemsType = {
@@ -34,11 +36,10 @@ const sizeScheme = z.object({
   quantity: z.number().gt(0),
 });
 
-export default function RightPage({ product }: Props) {
+export default function RightPage({ product, session }: Props) {
   const [heart, setHeart] = useState<boolean>();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { data: session } = useSession();
   const { title, description, price, quantity, id, category, images } = product;
   const formatted = formatCurrency(price);
   const [date, setDate] = useState<Date>();
@@ -372,8 +373,8 @@ export default function RightPage({ product }: Props) {
           </div>
         </div>
         <div className="flex gap-5 items-center">
-          <FaRegMoneyBillAlt size={30} />
-          <div>Pay on delivery is available</div>
+          <VscWorkspaceTrusted size={28} />
+          <div>100% Genuine Product</div>
         </div>
         <div className="flex gap-5 items-center">
           <BiTransferAlt size={30} />
@@ -381,10 +382,6 @@ export default function RightPage({ product }: Props) {
             Hassle free 7 days Exchange <br />
             No Return
           </div>
-        </div>
-        <div className="flex gap-5 items-center">
-          <VscWorkspaceTrusted size={28} />
-          <div>100% Genuine Product</div>
         </div>
       </div>
       <div className="mt-4 flex font-semibold items-center gap-2">

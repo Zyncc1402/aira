@@ -21,15 +21,6 @@ const Cart = async () => {
   if (!session?.user) {
     redirect("/");
   }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id: session.user.id as string,
-    },
-    include: {
-      address: true,
-    },
-  });
   const getCartInfo = await getCart();
   if (getCartInfo) {
     return (
@@ -42,38 +33,7 @@ const Cart = async () => {
               </p>
             </div>
           )}
-          <CartCard items={getCartInfo} />
-          <div className="flex-1">
-            <h1 className="font-semibold text-3xl">Summary</h1>
-            <div className="flex justify-between flex-col gap-x-10 my-5">
-              <div className="flex gap-x-10 mt-3 justify-between">
-                <h1 className="font-medium">Subtotal</h1>
-                <p className="font-medium">
-                  {formatCurrency(Number(getCartInfo?.subtotal)).split(".")[0]}
-                </p>
-              </div>
-              <div className="flex gap-x-10 mt-3 justify-between">
-                <h1 className="font-medium">Estimated Delivery</h1>
-                <p className="font-medium">Free</p>
-              </div>
-              <Separator className="my-3" />
-              <div className="flex gap-x-10 justify-between">
-                <h1 className="font-medium">Total</h1>
-                <p className="font-medium">
-                  {formatCurrency(Number(getCartInfo?.subtotal)).split(".")[0]}
-                </p>
-              </div>
-              <Separator className="my-3" />
-            </div>
-            <CheckoutForm session={session} getCartInfo={getCartInfo} />
-            <div className="my-[50px]">
-              {user != null && user.address.length == 0 ? (
-                <AddressForm />
-              ) : (
-                <Address user={user} />
-              )}
-            </div>
-          </div>
+          <CartCard items={getCartInfo} session={session} />
         </div>
       </section>
     );
