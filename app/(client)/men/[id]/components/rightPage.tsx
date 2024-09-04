@@ -314,6 +314,30 @@ export default function RightPage({ product }: Props) {
                   Out of stock
                 </Button>
               ) : (
+                <Button
+                  aria-label="Button"
+                  className={`rounded-sm w-full py-3 md:py-6`}
+                  variant={"default"}
+                  size={"lg"}
+                  type="button"
+                >
+                  Buy now
+                </Button>
+              )}
+              {quantity?.sm == 0 &&
+              quantity?.md == 0 &&
+              quantity?.lg == 0 &&
+              quantity?.xl == 0 ? (
+                <Button
+                  disabled
+                  aria-label="Button"
+                  className="flex-1 rounded-sm py-3 md:py-6"
+                  variant={"outline"}
+                  size={"lg"}
+                >
+                  Out of stock
+                </Button>
+              ) : (
                 <AddToCartBtn />
               )}
               <Button

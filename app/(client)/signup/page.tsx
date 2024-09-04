@@ -6,8 +6,15 @@ import Link from "next/link";
 import React from "react";
 import { signIn } from "@/auth";
 import signup from "@/actions/signup";
+import getSession from "@/lib/getSession";
+import { redirect } from "next/navigation";
+import { FaFacebook } from "react-icons/fa";
 
-export default function Page() {
+export default async function Page() {
+  const session = await getSession();
+  if (session?.user) {
+    redirect("/");
+  }
   return (
     <section className="container flex items-center justify-center h-screen">
       <div className="p-4 rounded-lg">
@@ -57,6 +64,20 @@ export default function Page() {
         <form
           action={async () => {
             "use server";
+            await signIn("facebook");
+          }}
+        >
+          <button
+            type="submit"
+            className="bg-blue-500 text-white w-full mb-5 h-10 px-4 py-2 rounded-md font-medium flex items-center justify-center"
+          >
+            <FaFacebook className="mr-5" size={25} />
+            Sign up with Facebook
+          </button>
+        </form>
+        <form
+          action={async () => {
+            "use server";
             await signIn("google");
           }}
         >
@@ -68,6 +89,7 @@ export default function Page() {
             Sign up with Google
           </button>
         </form>
+
         <h1>
           Already have an Account?{" "}
           <Link href={"/signin"} className="underline">

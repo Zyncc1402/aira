@@ -6,7 +6,6 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 export default async function Page({ params }: { params: { trid: string } }) {
   const checkPayment = await checkPaymentStatus(params.trid);
-  console.log(checkPayment);
   return (
     <div className="container flex items-center justify-center w-screen h-screen flex-col gap-5">
       {checkPayment == true ? (

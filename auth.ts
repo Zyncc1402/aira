@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
+import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./lib/prisma";
 import NextAuth, { type DefaultSession } from "next-auth";
@@ -11,6 +12,7 @@ const config = {
   trustHost: true,
   providers: [
     Google,
+    Facebook,
     Credentials({
       credentials: {
         email: {},
@@ -30,7 +32,7 @@ const config = {
               user?.password
             );
             if (!comparePassword) {
-              return null;
+              throw new Error("Invalid email or password");
             }
           }
           if (!user) {
@@ -57,18 +59,6 @@ declare module "next-auth" {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma) as Adapter,
   callbacks: {
-    // async signIn({ profile }) {
-    //   const userExists = await prisma.user.findUnique({
-    //     where: {
-    //       email: profile?.email as string,
-    //     },
-    //   });
-    //   if (userExists?.password && userExists?.usingSocialLogin == true) {
-    //     console.log("User Already Exists");
-    //     return true;
-    //   }
-    //   return true;
-    // },
     async session({ session }) {
       const user = await prisma.user.findUnique({
         where: {
@@ -86,6 +76,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session;
     },
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60 * 3, // 3 months
+    updateAge: 24 * 60 * 60, // 24 hours
   },
   ...config,
 });

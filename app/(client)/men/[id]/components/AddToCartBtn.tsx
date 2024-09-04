@@ -13,7 +13,7 @@ export default function FormSubmitButton() {
       className={`rounded-sm w-full py-3 md:py-6 ${
         pending && "hover:cursor-progress font-semibold"
       }`}
-      variant={"default"}
+      variant={"secondary"}
       size={"lg"}
       type="submit"
       disabled={pending}

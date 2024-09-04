@@ -218,9 +218,9 @@ const Navbar = async () => {
                     </SheetClose>
                   </form>
                 ) : (
-                  <Link href={"/signup"}>
+                  <Link href={"/signin"}>
                     <SheetClose>
-                      <Button variant={"secondary"}>Sign up</Button>
+                      <Button variant={"secondary"}>Sign in</Button>
                     </SheetClose>
                   </Link>
                 )}
@@ -243,13 +243,13 @@ const Navbar = async () => {
               </Button>
             </form>
           ) : (
-            <Link href={"/signup"}>
+            <Link href={"/signin"}>
               <Button
                 variant={"secondary"}
                 type="submit"
                 className="hidden lg:block ml-3"
               >
-                Sign up
+                Sign in
               </Button>
             </Link>
           )}
