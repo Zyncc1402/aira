@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Page() {
   const { checkoutItems } = useCheckoutStore();
-  if (checkoutItems?.length == 0) throw new Error();
+  // if (checkoutItems?.length == 0) throw new Error();
   console.log(checkoutItems);
   return <div className="container mt-10">
     {checkoutItems?.map((item, index) => (
