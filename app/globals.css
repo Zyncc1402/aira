@@ -74,6 +74,7 @@ body {
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
   position: relative;
+  min-height: 100vh;
 }
 
 .section {
@@ -109,7 +110,15 @@ body {
 }
 
 .footer {
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  clear: both;
+  position: relative;
+  margin-top: 50px;
+}
+
+.footer-col {
+  padding: 20px 40px;
 }
 
 .embla {
