@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import {redirect} from "next/navigation";
 import React from "react";
 import InfiniteLoader from "./infiniteLoader";
 import Link from "next/link";
@@ -13,7 +13,7 @@ export const revalidate = 0;
 const Account = async () => {
   const session = await getSession();
   if (!session?.user) {
-    notFound();
+    redirect(`/signin?callbackUrl=/account`)
   }
   const orders = await prisma.order.findMany({
     where: {

@@ -3,7 +3,6 @@
 import { useCheckoutStore } from "@/context/checkoutStore";
 import React from "react";
 import Image from "next/image";
-import {notFound} from "next/navigation";
 
 export default function Page() {
   const { checkoutItems } = useCheckoutStore();

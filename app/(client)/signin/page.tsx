@@ -9,12 +9,12 @@ import { redirect } from "next/navigation";
 import getSession from "@/lib/getSession";
 import { FaFacebook } from "react-icons/fa";
 
-export default async function Page() {
+export default async function Page({searchParams} : {searchParams: { [key: string]: string | string[] | undefined }}) {
   const session = await getSession();
   if (session?.user) {
     redirect("/");
   }
-  console.log(session);
+  const callbackUrl = searchParams.callbackUrl
   return (
     <section className="container flex items-center justify-center h-screen">
       <div className="p-4 rounded-lg">
@@ -22,7 +22,13 @@ export default async function Page() {
         <form
           action={async (formData) => {
             "use server";
-            await signIn("credentials", formData);
+            const email = formData.get("email");
+            const password = formData.get("password");
+              await signIn("credentials", {
+                email,
+                password,
+                redirectTo: callbackUrl as string
+              });
           }}
           className="flex flex-col gap-y-4 mt-5"
         >
@@ -51,7 +57,9 @@ export default async function Page() {
         <form
           action={async () => {
             "use server";
-            await signIn("facebook");
+            await signIn("facebook", {
+              redirectTo: `${callbackUrl}`
+            });
           }}
         >
           <button
@@ -65,7 +73,9 @@ export default async function Page() {
         <form
           action={async () => {
             "use server";
-            await signIn("google");
+            await signIn("google", {
+              redirectTo: `${callbackUrl}`
+            });
           }}
         >
           <button
@@ -78,7 +88,7 @@ export default async function Page() {
         </form>
         <h1>
           Don't have an Account?{" "}
-          <Link href={"/signup"} className="underline">
+          <Link href={`/signup?callbackUrl=${callbackUrl}`} className="underline">
             Sign up
           </Link>
         </h1>

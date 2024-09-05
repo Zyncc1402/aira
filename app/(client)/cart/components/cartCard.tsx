@@ -113,6 +113,7 @@ export default function CartCard({ items, session }: Props) {
                   id="quantity"
                   onChange={(e) => handleQuantityChange(e, item.id)}
                   defaultValue={item.quantity}
+                  value={item.quantity}
                 >
                   <option
                     value={1}

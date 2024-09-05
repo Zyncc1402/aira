@@ -29,6 +29,7 @@ import {
 import { signOut } from "@/auth";
 import getSession from "@/lib/getSession";
 import { RiShoppingBag3Line } from "react-icons/ri";
+import  {SignInButton, SignInButtonMobile} from "@/components/navbar/signInButton";
 
 const Navbar = async () => {
   const session = await getSession();
@@ -219,11 +220,7 @@ const Navbar = async () => {
                     </SheetClose>
                   </form>
                 ) : (
-                  <Link href={"/signin"}>
-                    <SheetClose>
-                      <Button variant={"secondary"}>Sign in</Button>
-                    </SheetClose>
-                  </Link>
+                  <SignInButtonMobile/>
                 )}
               </div>
             </SheetContent>
@@ -244,15 +241,7 @@ const Navbar = async () => {
               </Button>
             </form>
           ) : (
-            <Link href={"/signin"}>
-              <Button
-                variant={"secondary"}
-                type="submit"
-                className="hidden lg:block ml-3"
-              >
-                Sign in
-              </Button>
-            </Link>
+            <SignInButton/>
           )}
         </div>
       </nav>

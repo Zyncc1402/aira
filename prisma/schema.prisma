@@ -34,7 +34,7 @@ model User {
   emailVerified    DateTime? @map("email_verified")
   image            String?
   password         String?
-  phone            String?   @unique
+  phone            String?
   cart             Cart?
   usingSocialLogin Boolean   @default(true)
   role             String    @default("Client")
@@ -45,6 +45,8 @@ model User {
   accounts         Account[]
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+
+  @@unique([phone, email])
 }
 
 model address {

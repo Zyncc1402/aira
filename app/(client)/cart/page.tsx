@@ -19,7 +19,7 @@ const Cart = async () => {
   const session = await getSession();
 
   if (!session?.user) {
-    redirect("/");
+    redirect("/signin?callbackUrl=/cart");
   }
   const getCartInfo = await getCart();
   if (getCartInfo) {

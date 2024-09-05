@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 
-export default async function signup(formData: FormData) {
+export default async function signup(formData: FormData, callbackUrl: string | string[] | undefined) {
   const { name, email, password, phone } = Object.fromEntries(formData);
   const saltRounds = 10;
   const hashedPassword = bcrypt.hashSync(password as string, saltRounds);
@@ -18,5 +18,5 @@ export default async function signup(formData: FormData) {
       usingSocialLogin: false,
     },
   });
-  redirect("/signin");
+  redirect(`/signin?callbackUrl=${callbackUrl}`);
 }

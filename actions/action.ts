@@ -177,11 +177,12 @@ export async function deleteCartItem(id: string, userId: string) {
         id,
       },
     });
-    revalidatePath("/cart");
   } catch (error) {
     return {
       error: "Something went wrong",
     };
+  } finally {
+    revalidatePath("/cart");
   }
 }
 
@@ -190,21 +191,26 @@ export async function updateCartItemQuantity(
   quantity: number,
   id: string
 ) {
-  await prisma.cartItems.update({
-    where: {
-      cart: {
-        userId,
+  try {
+    await prisma.cartItems.update({
+      where: {
+        cart: {
+          userId,
+        },
+        id,
       },
-      id,
-    },
-    data: {
-      quantity,
-    },
-    include: {
-      cart: true,
-    },
-  });
-  revalidatePath("/cart");
+      data: {
+        quantity,
+      },
+      include: {
+        cart: true,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    revalidatePath("/cart");
+  }
 }
 
 export async function getSalesCount() {

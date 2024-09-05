@@ -10,16 +10,20 @@ import getSession from "@/lib/getSession";
 import { redirect } from "next/navigation";
 import { FaFacebook } from "react-icons/fa";
 
-export default async function Page() {
+export default async function Page({searchParams} : {searchParams: { [key: string]: string | string[] | undefined }}) {
   const session = await getSession();
   if (session?.user) {
     redirect("/");
   }
+  const callbackUrl = searchParams.callbackUrl;
   return (
     <section className="container flex items-center justify-center h-screen">
       <div className="p-4 rounded-lg">
         <h1 className="text-xl font-medium">Create an Account</h1>
-        <form action={signup} className="flex flex-col gap-y-4 mt-5">
+        <form action={async(formData) => {
+          "use server"
+          await signup(formData, callbackUrl)
+        }} className="flex flex-col gap-y-4 mt-5">
           <div>
             <Label>Name</Label>
             <Input
@@ -65,7 +69,9 @@ export default async function Page() {
         <form
           action={async () => {
             "use server";
-            await signIn("facebook");
+            await signIn("facebook", {
+              redirectTo: `${callbackUrl}`
+            });
           }}
         >
           <button
@@ -79,7 +85,9 @@ export default async function Page() {
         <form
           action={async () => {
             "use server";
-            await signIn("google");
+            await signIn("google", {
+             redirectTo: `${callbackUrl}`
+            });
           }}
         >
           <button
@@ -93,7 +101,7 @@ export default async function Page() {
 
         <h1>
           Already have an Account?{" "}
-          <Link href={"/signin"} className="underline">
+          <Link href={`/signin?callbackUrl=${callbackUrl}`} className="underline">
             Sign in
           </Link>
         </h1>
