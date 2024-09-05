@@ -4,12 +4,14 @@ import React from "react";
 const Footer = () => {
   return (
     <footer className="footer p-4 absolute block bottom-0 right-0 left-0 w-full">
-      <div className="container footer-row flex flex-wrap justify-items-center max-[400px]:justify-center min-[401px]: justify-evenly gap-6">
+      {/* flex flex-wrap justify-items-center max-[400px]:justify-center
+      min-[401px]: justify-evenly gap-6 */}
+      <div className="container footer-row grid grid-cols-2 md:grid-cols-4 max-[420px]:grid-cols-1 justify-items-center">
         <div className="footer-col">
-          <h1 className="font-semibold text-xl max-[500px]:text-center">
+          <h1 className="font-semibold text-xl text-center md:text-left ">
             Company
           </h1>
-          <div className="mt-4 max-[500px]:text-center">
+          <div className="mt-4 text-center md:text-left">
             <Link href={""} className="font-medium">
               <h1 className="mb-3">About us</h1>
             </Link>
@@ -25,10 +27,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-col">
-          <h1 className="font-semibold text-xl max-[500px]:text-center">
+          <h1 className="font-semibold text-xl text-center md:text-left ">
             Get Help
           </h1>
-          <div className="mt-4 max-[500px]:text-center">
+          <div className="mt-4 text-center md:text-left">
             <Link href={""} className="font-medium">
               <h1 className="mb-3">FAQ</h1>
             </Link>
@@ -47,10 +49,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-col">
-          <h1 className="font-semibold text-xl max-[500px]:text-center">
+          <h1 className="font-semibold text-xl text-center md:text-left">
             Online Shop
           </h1>
-          <div className="mt-4 max-[500px]:text-center">
+          <div className="mt-4 text-center md:text-left">
             <Link href={""} className="font-medium">
               <h1 className="mb-3">Tops</h1>
             </Link>
@@ -66,10 +68,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-col">
-          <h1 className="font-semibold text-xl max-[500px]:text-center">
-            Socials
+          <h1 className="font-semibold text-xl text-center md:text-left ">
+            Social Media
           </h1>
-          <div className="mt-4 max-[500px]:text-center">
+          <div className="mt-4 text-center md:text-left">
             <Link href={""} className="font-medium">
               <h1 className="mb-3">Instagram</h1>
             </Link>

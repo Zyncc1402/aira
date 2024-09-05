@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { IoCartOutline, IoSearch } from "react-icons/io5";
+import { IoSearch } from "react-icons/io5";
 import { LuMenu } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa";
 import Link from "next/link";
@@ -28,6 +28,7 @@ import {
 } from "../ui/accordion";
 import { signOut } from "@/auth";
 import getSession from "@/lib/getSession";
+import { RiShoppingBag3Line } from "react-icons/ri";
 
 const Navbar = async () => {
   const session = await getSession();
@@ -118,7 +119,7 @@ const Navbar = async () => {
             <FaRegHeart size={25} className="ml-3" />
           </Link>
           <Link className="font-medium text-[15px]" href={"/cart"}>
-            <IoCartOutline size={30} className="ml-3" />
+            <RiShoppingBag3Line size={27} className="ml-3" />
           </Link>
           <Sheet>
             <SheetTrigger className="lg:hidden">

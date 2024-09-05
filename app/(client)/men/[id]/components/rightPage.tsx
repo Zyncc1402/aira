@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import formatCurrency from "@/lib/formatCurrency";
 import { z } from "zod";
 import { addToCart } from "@/actions/action";
@@ -11,12 +10,13 @@ import { Products } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
-import { FaRegHeart, FaRegMoneyBillAlt } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { IoMdHeart, IoMdInformationCircleOutline } from "react-icons/io";
 import AddToCartBtn from "./AddToCartBtn";
 import { Session } from "next-auth";
+import BuyButton from "./buyButton";
 
 type Props = {
   product: Products;
@@ -315,15 +315,11 @@ export default function RightPage({ product, session }: Props) {
                   Out of stock
                 </Button>
               ) : (
-                <Button
-                  aria-label="Button"
-                  className={`rounded-sm w-full py-3 md:py-6`}
-                  variant={"default"}
-                  size={"lg"}
-                  type="button"
-                >
-                  Buy now
-                </Button>
+                <BuyButton
+                  product={product}
+                  cartItemInfo={{ size: searchParams.get("size"), quantity: 1 }}
+                  session={session}
+                />
               )}
               {quantity?.sm == 0 &&
               quantity?.md == 0 &&

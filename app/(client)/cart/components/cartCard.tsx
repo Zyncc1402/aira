@@ -4,7 +4,7 @@ import { deleteCartItem, updateCartItemQuantity } from "@/actions/action";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { checkoutStore } from "@/context/checkoutStore";
+import { useCheckoutStore } from "@/context/checkoutStore";
 import { capitalizeFirstLetter } from "@/lib/caplitaliseFirstLetter";
 import formatCurrency from "@/lib/formatCurrency";
 import { cartItemWithProduct, CartWithCartItems } from "@/lib/types";
@@ -66,32 +66,49 @@ export default function CartCard({ items, session }: Props) {
     );
   }, [optimisticItems]);
 
-  const { checkoutItems, setCheckoutItems } = checkoutStore();
+  const { checkoutItems, setCheckoutItems } = useCheckoutStore();
 
   return (
     <>
       <div className="flex-1 flex gap-y-5 flex-col w-full relative mr-10">
         {optimisticItems.map((item) => (
-          <div key={item.product.id} className="flex gap-5 w-full">
-            <Link href={`/${item.product.category}/${item.product.id}`}>
+          <div
+            key={item.product.id}
+            className="flex gap-5 w-full border-b-2 border-muted pb-5"
+          >
+            <Link
+              href={`/${item.product.category}/${item.product.id}`}
+              className="flex"
+            >
               <Image
                 src={item.product.images[0]}
                 height={200}
                 width={200}
                 alt="Image"
-                className="object-cover aspect-square rounded-lg"
+                className="object-cover aspect-square rounded-lg flex-shrink-0"
                 priority
               />
             </Link>
-            <div className="relative">
-              <h1>{item.product.title}</h1>
-              <h2>{capitalizeFirstLetter(item.product.category)}</h2>
-              <h2>{capitalizeFirstLetter(item.product.color[0])}</h2>
-              <p>{formatCurrency(item.product.price).split(".")[0]}</p>
+            <div className="w-full">
+              <div className="flex w-full justify-between max-[400px]:flex-col">
+                <h1 className="font-medium">{item.product.title}</h1>
+                <h1 className="font-semibold justify-self-end text-lg">
+                  {formatCurrency(item.product.price).split(".")[0]}
+                </h1>
+              </div>
+              <h2 className="text-muted-foreground">
+                {capitalizeFirstLetter(item.product.color[0])}
+              </h2>
+              <h2 className="text-muted-foreground">
+                {(item.size == "sm" && "Small") ||
+                  (item.size == "md" && "Medium") ||
+                  (item.size == "lg" && "Large") ||
+                  (item.size == "xl" && "XL")}
+              </h2>
               <form>
                 <label htmlFor="quantity">Quantity</label>
                 <select
-                  className="mx-2 p-1 focus:border-0"
+                  className="mx-2 p-1 focus:border-0 bg-transparent"
                   name="quantity"
                   id="quantity"
                   onChange={(e) => handleQuantityChange(e, item.id)}
@@ -167,16 +184,8 @@ export default function CartCard({ items, session }: Props) {
                   deleteCartItem(item.id, session?.user.id as string);
                 }}
               >
-                <AiOutlineDelete size={27} />
+                Delete
               </Button>
-            </div>
-            <div className="flex flex-col justify-between">
-              <Badge variant="secondary">
-                {(item.size == "sm" && "Small") ||
-                  (item.size == "md" && "Medium") ||
-                  (item.size == "lg" && "Large") ||
-                  (item.size == "xl" && "XL")}
-              </Badge>
             </div>
           </div>
         ))}
@@ -184,7 +193,7 @@ export default function CartCard({ items, session }: Props) {
       <div className="flex-1">
         <h1 className="font-semibold text-3xl">Summary</h1>
         <div className="flex justify-between flex-col gap-x-10 my-5">
-          <div className="flex gap-x-10 mt-3 justify-between">
+          <div className="flex mt-3 justify-between">
             <h1 className="font-medium">Subtotal</h1>
             <p className="font-medium">{formatCurrency(price).split(".")[0]}</p>
           </div>
@@ -201,11 +210,13 @@ export default function CartCard({ items, session }: Props) {
           <Link href={"/checkout"}>
             <Button
               className="w-full"
+              variant={"secondary"}
               onClick={() => {
+                setCheckoutItems(undefined);
                 setCheckoutItems(optimisticItems);
               }}
             >
-              Checkout
+              Proceed to Checkout
             </Button>
           </Link>
         </div>
