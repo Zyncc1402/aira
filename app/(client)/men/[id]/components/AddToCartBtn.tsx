@@ -10,6 +10,7 @@ import Image from "next/image";
 import {Product} from "@prisma/client";
 import formatCurrency from "@/lib/formatCurrency";
 import {capitalizeFirstLetter} from "@/lib/caplitaliseFirstLetter";
+import Link from "next/link";
 
 
 export default function FormSubmitButton({product, size, buttonRef}: {
@@ -25,7 +26,7 @@ export default function FormSubmitButton({product, size, buttonRef}: {
                     <button hidden ref={buttonRef}></button>
                 </DrawerTrigger>
                 <DrawerContent className={'h-[50vh]'}>
-                    <div className={'container py-[50px] flex items-center justify-center flex-col'}>
+                    <div className={'container py-[50px] h-full w-full flex items-center justify-center flex-col'}>
                         <DrawerTitle>{product.title}</DrawerTitle>
                         <DrawerDescription>has been added to Cart</DrawerDescription>
                         <Image src={product.images[0]} alt={'Cart Item'} height={200} width={200}
@@ -38,6 +39,7 @@ export default function FormSubmitButton({product, size, buttonRef}: {
                                 (size == "xl" && "XL")}</h1>
                         <h1 className={'font-medium text-muted-foreground mt-1 text-md'}>Color
                             - {capitalizeFirstLetter(product.color[0])}</h1>
+                        <Link className={'mt-3'} href={'/cart'}><Button variant={'secondary'} size={'lg'}>View</Button></Link>
                     </div>
                 </DrawerContent>
             </Drawer>

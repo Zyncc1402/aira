@@ -39,8 +39,8 @@ export async function Pay(
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: price * 100,
-    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123456789,
     paymentInstrument: {
@@ -69,7 +69,6 @@ export async function Pay(
 
   const response = await axios.request(options);
   if (response.data.code == "PAYMENT_INITIATED") {
-    console.log("Payment Initiated");
     try {
       products?.map(async (item) => {
         const orderId = uuidv4();
@@ -81,9 +80,9 @@ export async function Pay(
             image: item.item.images[0],
             title: item.item.title,
             category: item.item.category,
-            orderId: orderId,
             size: item.size,
             quantity: item.quantity,
+            orderId,
             transactionId,
             addressId,
           },
@@ -93,8 +92,7 @@ export async function Pay(
       console.log(error);
     }
   }
-  const redirectURL = response.data.data.instrumentResponse.redirectInfo.url;
-  redirect(redirectURL);
+  redirect(response.data.data.instrumentResponse.redirectInfo.url);
 }
 
 export async function checkPaymentStatus(trID: string) {
@@ -118,87 +116,104 @@ export async function checkPaymentStatus(trID: string) {
     };
     const response = await axios.request(options);
     if (response.data.code == "PAYMENT_SUCCESS") {
-      await prisma.order.updateMany({
-        where: {
-          transactionId: trID,
-        },
-        data: {
-          paymentSuccess: true,
-        },
-      });
-      const find = await prisma.order.findMany({
-        where: {
-          transactionId: trID,
-          paymentSuccess: true,
-        },
-        select: {
-          productId: true,
-          size: true,
-          quantity: true,
-          userId: true,
-        },
-      });
-      try {
-        await prisma.cart.delete({
-          where: {
-            userId: find[0].userId,
-          },
-        });
-      } catch (error) {
-        console.log("FAILED!!!!!");
-      }
-      find.map(async (item) => {
-        if (item.size == "sm") {
-          await prisma.quantity.update({
-            where: {
-              productId: item.productId,
-            },
-            data: {
-              sm: {
-                decrement: item.quantity,
-              },
-            },
-          });
-        } else if (item.size == "md") {
-          await prisma.quantity.update({
-            where: {
-              productId: item.productId,
-            },
-            data: {
-              md: {
-                decrement: item.quantity,
-              },
-            },
-          });
-        } else if (item.size == "lg") {
-          await prisma.quantity.update({
-            where: {
-              productId: item.productId,
-            },
-            data: {
-              lg: {
-                decrement: item.quantity,
-              },
-            },
-          });
-        } else {
-          await prisma.quantity.update({
-            where: {
-              productId: item.productId,
-            },
-            data: {
-              xl: {
-                decrement: item.quantity,
-              },
-            },
-          });
-        }
-      });
+
       return true;
     } else {
       return false;
     }
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function updateProductQuantity(trID: string) {
+  await prisma.order.updateMany({
+    where: {
+      transactionId: trID,
+    },
+    data: {
+      paymentSuccess: true,
+    },
+  });
+  try {
+    const find = await prisma.order.findMany({
+      where: {
+        transactionId: trID,
+        paymentSuccess: true,
+      },
+      select: {
+        productId: true,
+        size: true,
+        quantity: true,
+        userId: true,
+      },
+    });
+    try {
+      await prisma.cart.delete({
+        where: {
+          userId: find[0].userId,
+        },
+      });
+    } catch (error) {
+      console.log("FAILED!!!!!");
+    }
+    console.log(find);
+    find.map(async (item) => {
+      if (item.size == "sm") {
+        await prisma.quantity.update({
+          where: {
+            productId: item.productId,
+          },
+          data: {
+            sm: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      } else if (item.size == "md") {
+        await prisma.quantity.update({
+          where: {
+            productId: item.productId,
+          },
+          data: {
+            md: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      } else if (item.size == "lg") {
+        await prisma.quantity.update({
+          where: {
+            productId: item.productId,
+          },
+          data: {
+            lg: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      } else {
+        await prisma.quantity.update({
+          where: {
+            productId: item.productId,
+          },
+          data: {
+            xl: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      }
+    });
+    await prisma.order.updateMany({
+      where: {
+        transactionId: trID,
+      },
+      data: {
+        updatedProductQuantity: true
+      }
+    })
+  } catch (error) {
+    console.log(error)
   }
 }

@@ -21,10 +21,10 @@ export default function PriceSummary() {
             0
         );
     }, [checkoutItems]);
-    if(checkoutItems?.length == 0) redirect('/cart')
+    if (checkoutItems?.length == 0) redirect('/cart')
     const {selectedAddress} = useAddress()
 
-    async function handlePayButton () {
+    async function handlePayButton() {
         if (!selectedAddress) {
             toast({
                 title: "Select an Address",

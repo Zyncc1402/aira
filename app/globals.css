@@ -5,88 +5,89 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
-    --radius: 1rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 224 71.4% 4.1%;
+        --card: 0 0% 100%;
+        --card-foreground: 224 71.4% 4.1%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 224 71.4% 4.1%;
+        --primary: 220.9 39.3% 11%;
+        --primary-foreground: 210 20% 98%;
+        --secondary: 220 14.3% 95.9%;
+        --secondary-foreground: 220.9 39.3% 11%;
+        --muted: 220 14.3% 95.9%;
+        --muted-foreground: 220 8.9% 46.1%;
+        --accent: 220 14.3% 95.9%;
+        --accent-foreground: 220.9 39.3% 11%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 20% 98%;
+        --border: 220 13% 91%;
+        --input: 220 13% 91%;
+        --ring: 224 71.4% 4.1%;
+        --radius: 1rem;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
 
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+    .dark {
+        --background: 224 71.4% 4.1%;
+        --foreground: 210 20% 98%;
+        --card: 224 71.4% 4.1%;
+        --card-foreground: 210 20% 98%;
+        --popover: 224 71.4% 4.1%;
+        --popover-foreground: 210 20% 98%;
+        --primary: 210 20% 98%;
+        --primary-foreground: 220.9 39.3% 11%;
+        --secondary: 215 27.9% 16.9%;
+        --secondary-foreground: 210 20% 98%;
+        --muted: 215 27.9% 16.9%;
+        --muted-foreground: 217.9 10.6% 64.9%;
+        --accent: 215 27.9% 16.9%;
+        --accent-foreground: 210 20% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 20% 98%;
+        --border: 215 27.9% 16.9%;
+        --input: 215 27.9% 16.9%;
+        --ring: 216 12.2% 83.9%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
 }
 
 .section {
-  padding-top: 70px;
+    padding-top: 70px;
 }
 
 .signInForm {
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .header {
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
 
 /* ::-webkit-scrollbar {
@@ -94,106 +95,112 @@ body {
 } */
 
 .noSelectImage {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 @media (max-width: 768px) {
-  .title {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 15px;
-    padding-left: 15px;
-  }
+    .title {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
 }
 
 .footer {
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-  clear: both;
-  position: relative;
-  margin-top: 50px;
+    clear: both;
+    position: relative;
+    margin-top: 50px;
 }
 
 .footer-col {
-  padding: 20px 0px;
+    padding: 20px 0px;
 }
 
 .embla {
-  max-width: 48rem;
-  margin: auto;
-  --slide-height: 19rem;
-  --slide-spacing: 1rem;
-  --slide-size: 100%;
+    max-width: 48rem;
+    margin: auto;
+    --slide-height: 19rem;
+    --slide-spacing: 1rem;
+    --slide-size: 100%;
 }
+
 .embla__viewport {
-  overflow: hidden;
+    overflow: hidden;
 }
+
 .embla__container {
-  backface-visibility: hidden;
-  display: flex;
-  touch-action: auto;
-  margin-left: calc(var(--slide-spacing) * -1);
+    backface-visibility: hidden;
+    display: flex;
+    touch-action: auto;
+    margin-left: calc(var(--slide-spacing) * -1);
 }
+
 .embla__slide {
-  flex: 0 0 var(--slide-size);
-  min-width: 0;
-  padding-left: var(--slide-spacing);
+    flex: 0 0 var(--slide-size);
+    min-width: 0;
+    padding-left: var(--slide-spacing);
 }
 
 .embla-thumbs {
-  --thumbs-slide-spacing: 0.8rem;
-  --thumbs-slide-height: 6rem;
-  margin-top: var(--thumbs-slide-spacing);
+    --thumbs-slide-spacing: 0.8rem;
+    --thumbs-slide-height: 6rem;
+    margin-top: var(--thumbs-slide-spacing);
 }
+
 /* .embla-thumbs__viewport {
   overflow: hidden;
 } */
 .embla-thumbs__container {
-  display: flex;
-  flex-direction: row;
-  /* margin-left: calc(var(--thumbs-slide-spacing) * -1); */
+    display: flex;
+    flex-direction: row;
+    /* margin-left: calc(var(--thumbs-slide-spacing) * -1); */
 }
+
 .embla-thumbs__slide {
-  flex: 0 0 22%;
-  min-width: 0;
-  padding-left: var(--thumbs-slide-spacing);
+    flex: 0 0 22%;
+    min-width: 0;
+    padding-left: var(--thumbs-slide-spacing);
 }
+
 @media (min-width: 576px) {
-  .embla-thumbs__slide {
-    flex: 0 0 15%;
-  }
+    .embla-thumbs__slide {
+        flex: 0 0 15%;
+    }
 }
 
 .grid3row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 150px);
-  flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    flex-direction: column;
 }
 
 .smlabel {
-  background-color: hsl(var(--secondary) / 0.8);
+    background-color: hsl(var(--secondary) / 0.8);
 }
 
 .similar::-webkit-scrollbar {
-  height: 10px;
+    height: 10px;
 }
 
 .similar::-webkit-scrollbar-thumb {
-  width: 20px;
-  background: #a7a7a7;
-  border-left-color: transparent;
-  padding: 1px;
-  height: 0.625rem /* 10px */;
-  border-radius: 1rem;
+    width: 20px;
+    background: #a7a7a7;
+    border-left-color: transparent;
+    padding: 1px;
+    height: 0.625rem /* 10px */;
+    border-radius: 1rem;
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+    width: 0px;
 }
 
 .noScrollBar::-webkit-scrollbar {
-  width: 0px;
+    width: 0px;
 }

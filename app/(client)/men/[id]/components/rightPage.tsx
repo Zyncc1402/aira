@@ -121,9 +121,7 @@ export default function RightPage({product, session}: Props) {
         }
         if (size) {
             const result = await addToCart(id, size, session?.user.id as string);
-            if (result) {
-                buttonRef.current?.click()
-            }
+            buttonRef.current?.click()
         }
     }
 
