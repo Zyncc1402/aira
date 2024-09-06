@@ -1,13 +1,7 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { getCart } from "@/lib/getCart";
-import prisma from "@/lib/prisma";
-import formatCurrency from "@/lib/formatCurrency";
-import AddressForm from "../checkout/components/addressForm";
-import Address from "./components/address";
 import CartCard from "./components/cartCard";
-import { Separator } from "@/components/ui/separator";
-import CheckoutForm from "./components/checkoutForm";
 import Image from "next/image";
 import getSession from "@/lib/getSession";
 
