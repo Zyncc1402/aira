@@ -3,11 +3,11 @@
 import { create } from "zustand";
 
 type address = {
-  address: string;
+  selectedAddress: string | undefined;
   setAddress: (id: string) => void;
 };
 
 export const useAddress = create<address>((set) => ({
-  address: "",
-  setAddress: (id: string) => set({ address: id }),
+  selectedAddress: undefined,
+  setAddress: (id: string) => set({ selectedAddress: id }),
 }));

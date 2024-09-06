@@ -41,7 +41,7 @@ export default function BuyButton({
     if (!session?.user) {
       toast({
         variant: "destructive",
-        title: "Must be logged in to add to cart",
+        title: "Must be logged in",
       });
       return null;
     }

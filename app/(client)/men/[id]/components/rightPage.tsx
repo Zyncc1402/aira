@@ -37,7 +37,6 @@ const sizeScheme = z.object({
 });
 
 export default function RightPage({ product, session }: Props) {
-  const [heart, setHeart] = useState<boolean>();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { title, description, price, quantity, id, category, images } = product;
@@ -49,49 +48,6 @@ export default function RightPage({ product, session }: Props) {
     currentDate.setDate(currentDate.getDate() + 3);
     setDate(currentDate);
   }, []);
-
-  useEffect(() => {
-    const wishlistExists = localStorage.getItem("wishlist");
-    if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
-      const index = existingItems.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        setHeart(true);
-      } else {
-        setHeart(false);
-      }
-    }
-  }, [id]);
-
-  function handleAddToWishlist(id: string) {
-    const wishlistExists = localStorage.getItem("wishlist");
-    const image = images[0];
-    if (wishlistExists) {
-      const existingItems: wishlistItemsType = JSON.parse(wishlistExists);
-
-      const index = existingItems.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        setHeart(false);
-        existingItems.splice(index, 1);
-      } else {
-        setHeart(true);
-        toast({
-          title: `Added ${title} to wishlist`,
-        });
-        existingItems.push({ id, title, image, price, category });
-      }
-      localStorage.setItem("wishlist", JSON.stringify(existingItems));
-    } else {
-      setHeart(true);
-      toast({
-        title: `Added ${title} to wishlist`,
-      });
-      localStorage.setItem(
-        "wishlist",
-        JSON.stringify([{ id, title, price, image }])
-      );
-    }
-  }
 
   async function handleAddToCart() {
     if (!session?.user) {
@@ -337,21 +293,6 @@ export default function RightPage({ product, session }: Props) {
               ) : (
                 <AddToCartBtn />
               )}
-              <Button
-                aria-label="Button"
-                className={`rounded-sm w-full py-3 md:py-6`}
-                variant={"secondary"}
-                size={"lg"}
-                type="button"
-                onClick={() => handleAddToWishlist(id)}
-              >
-                {heart ? (
-                  <IoMdHeart color={"#dc6e73"} className="mr-3" size={23} />
-                ) : (
-                  <FaRegHeart color={"black"} size={22} className="mr-3" />
-                )}
-                {heart ? "Remove from wishlist" : "Add to Wishlist"}
-              </Button>
             </div>
           </form>
         </div>

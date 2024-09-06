@@ -21,7 +21,7 @@ export default function CheckoutForm({
           `${String(Number(getCartInfo?.subtotal))}`
         );
         formData.append("items", String(getCartInfo.items));
-        Pay(formData, session.user.id as string, address);
+        Pay(formData, session.user.id as string);
       }}
     >
       <Button

@@ -1,35 +1,18 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { IoSearch } from "react-icons/io5";
-import { LuMenu } from "react-icons/lu";
-import { FaRegHeart } from "react-icons/fa";
+import {Button} from "../ui/button";
+import {IoSearch} from "react-icons/io5";
+import {LuMenu} from "react-icons/lu";
 import Link from "next/link";
 
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+import {Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger,} from "@/components/ui/menubar";
 
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import {Sheet, SheetClose, SheetContent, SheetTrigger,} from "@/components/ui/sheet";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
-import { signOut } from "@/auth";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger,} from "../ui/accordion";
+import {signOut} from "@/auth";
 import getSession from "@/lib/getSession";
-import { RiShoppingBag3Line } from "react-icons/ri";
-import  {SignInButton, SignInButtonMobile} from "@/components/navbar/signInButton";
+import {RiShoppingBag3Line} from "react-icons/ri";
+import {SignInButton, SignInButtonMobile} from "@/components/navbar/signInButton";
 
 const Navbar = async () => {
   const session = await getSession();
@@ -115,9 +98,6 @@ const Navbar = async () => {
         <div className="flex items-center justify-between">
           <Link className="font-medium text-[15px]" href={"/search"}>
             <IoSearch size={28} className="ml-3" />
-          </Link>
-          <Link className="font-medium text-[15px]" href={"/wishlist"}>
-            <FaRegHeart size={25} className="ml-3" />
           </Link>
           <Link className="font-medium text-[15px]" href={"/cart"}>
             <RiShoppingBag3Line size={27} className="ml-3" />

@@ -9,16 +9,16 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import prisma from "@/lib/prisma";
-import { EmblaOptionsType } from "embla-carousel";
-import { Metadata } from "next";
+import {EmblaOptionsType} from "embla-carousel";
+import {Metadata} from "next";
 import ProductSlider from "@/components/carousel/productSlider";
 import RightPage from "./components/rightPage";
 import Image from "next/image";
 import Link from "next/link";
 import formatCurrency from "@/lib/formatCurrency";
-import { Products } from "@/lib/types";
+import {Products} from "@/lib/types";
 import Reviews from "./components/reviews";
-import { notFound } from "next/navigation";
+import {notFound} from "next/navigation";
 import getSession from "@/lib/getSession";
 import Footer from "@/components/footer/footer";
 
@@ -34,7 +34,7 @@ const ProductById = async ({ params: { id } }: Params) => {
   const product = await prisma.product.findUnique({
     where: {
       id,
-      isArchived: false,
+      // isArchived: false,
     },
     include: {
       quantity: true,

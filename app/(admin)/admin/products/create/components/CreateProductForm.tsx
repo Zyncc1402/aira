@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { createProduct } from "@/actions/formSubmissions";
-import Dropzone, { FileRejection } from "react-dropzone";
-import { toast } from "@/components/ui/use-toast";
-import { IoCloudUploadOutline } from "react-icons/io5";
+import React, {useRef, useState} from "react";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {Label} from "@/components/ui/label";
+import {createProduct} from "@/actions/formSubmissions";
+import Dropzone, {FileRejection} from "react-dropzone";
+import {toast} from "@/components/ui/use-toast";
+import {IoCloudUploadOutline} from "react-icons/io5";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import {Button} from "@/components/ui/button";
+import {RiDeleteBin6Line} from "react-icons/ri";
 import FormSubmitButton from "@/components/FormSubmitButton";
 
 const CreateProductForm = () => {

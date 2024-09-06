@@ -2,28 +2,42 @@
 
 import sha256 from "crypto-js/sha256";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import {redirect} from "next/navigation";
 import getSession from "@/lib/getSession";
+import {Product} from "@prisma/client";
 
-export async function Pay(formData: FormData, id: string, addressId: string) {
+type prod = {
+  item: Product,
+  quantity: number;
+  size: string;
+}[] | undefined;
+
+export async function Pay(products:prod | undefined, addressId: string | undefined) {
   const session = await getSession();
   if (!session?.user) {
     return null;
   }
-  const price = formData.get("totalPrice");
-  const totalPrice = Number(price);
+  let price = 0;
+  if (products) {
+    for (const pd of products) {
+      const getProduct = await prisma.product.findUnique({
+        where: { id: pd.item.id },
+      });
+      price += getProduct?.price ?? 0;
+    }
+  }
   const transactionId = uuidv4();
   const payload = {
     merchantId: process.env.NEXT_PUBLIC_MERCHANT_ID,
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
-    amount: totalPrice * 100,
+    amount: price * 100,
     redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
     // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
-    mobileNumber: 123,
+    mobileNumber: 123456789,
     paymentInstrument: {
       type: "PAY_PAGE",
     },
@@ -50,37 +64,18 @@ export async function Pay(formData: FormData, id: string, addressId: string) {
 
   const response = await axios.request(options);
   if (response.data.code == "PAYMENT_INITIATED") {
-    console.log("payment initiated");
+    console.log("Payment Initiated");
     try {
-      const userCartItems = await prisma.cart.findUnique({
-        where: {
-          userId: id,
-        },
-        include: {
-          items: true,
-        },
-      });
-      userCartItems?.items.map(async (item) => {
+      products?.map(async (item) => {
         const orderId = uuidv4();
-        const getCurrentPriceOfItem = await prisma.product.findUnique({
-          where: {
-            id: item.productId,
-          },
-          select: {
-            price: true,
-            images: true,
-            title: true,
-            category: true,
-          },
-        });
         await prisma.order.create({
           data: {
-            userId: id,
-            productId: item.productId,
-            price: getCurrentPriceOfItem?.price || 2000,
-            image: getCurrentPriceOfItem?.images[0] || "",
-            title: getCurrentPriceOfItem?.title || "",
-            category: getCurrentPriceOfItem?.category || "",
+            userId: session.user.id as string,
+            productId: item.item.id,
+            price: item.item.price,
+            image: item.item.images[0],
+            title: item.item.title,
+            category: item.item.category,
             orderId: orderId,
             size: item.size,
             quantity: item.quantity,

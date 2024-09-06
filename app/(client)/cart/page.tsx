@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getCart } from "@/lib/getCart";
 import prisma from "@/lib/prisma";
 import formatCurrency from "@/lib/formatCurrency";
-import AddressForm from "./components/addressForm";
+import AddressForm from "../checkout/components/addressForm";
 import Address from "./components/address";
 import CartCard from "./components/cartCard";
 import { Separator } from "@/components/ui/separator";
