@@ -2,19 +2,24 @@
 
 import sha256 from "crypto-js/sha256";
 import axios from "axios";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import prisma from "@/lib/prisma";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 import getSession from "@/lib/getSession";
-import {Product} from "@prisma/client";
+import { Product } from "@prisma/client";
 
-type prod = {
-  item: Product,
-  quantity: number;
-  size: string;
-}[] | undefined;
+type prod =
+  | {
+      item: Product;
+      quantity: number;
+      size: string;
+    }[]
+  | undefined;
 
-export async function Pay(products:prod | undefined, addressId: string | undefined) {
+export async function Pay(
+  products: prod | undefined,
+  addressId: string | undefined
+) {
   const session = await getSession();
   if (!session?.user) {
     return null;
@@ -34,8 +39,8 @@ export async function Pay(products:prod | undefined, addressId: string | undefin
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: price * 100,
-    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123456789,
     paymentInstrument: {

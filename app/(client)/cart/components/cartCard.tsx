@@ -198,10 +198,6 @@ export default function CartCard({ items, session }: Props) {
             <h1 className="font-medium">Subtotal</h1>
             <p className="font-medium">{formatCurrency(price).split(".")[0]}</p>
           </div>
-          <div className="flex gap-x-10 mt-3 justify-between">
-            <h1 className="font-medium">Estimated Delivery</h1>
-            <p className="font-medium">Free</p>
-          </div>
           <Separator className="my-3" />
           <div className="flex gap-x-10 justify-between">
             <h1 className="font-medium">Total</h1>

@@ -39,7 +39,7 @@ export default async function Page() {
       updateUserAddress(formData);
     }
   };
-  return <section className="container my-10 flex gap-x-10">
+  return <section className="container my-10 gap-x-10 flex flex-col md:flex-row gap-y-[70px]">
     <CheckoutBlock getAddresses={getAddresses}/>
     <PriceSummary/>
   </section>;
