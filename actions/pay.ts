@@ -39,8 +39,8 @@ export async function Pay(
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: price * 100,
-    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123456789,
     paymentInstrument: {
