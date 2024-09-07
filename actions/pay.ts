@@ -21,6 +21,94 @@ export async function Pay(
   addressId: string | undefined
 ) {
   const session = await getSession();
+  if (products) {
+    for (const item of products) {
+      const checkQuantity = await prisma.product.findUnique({
+        where: {
+          id: item.item.id,
+        },
+        include: {
+          quantity: true,
+        },
+      });
+      if (checkQuantity) {
+        switch (item.size) {
+          case "sm":
+            if (
+              checkQuantity.quantity !== null &&
+              item.quantity > checkQuantity.quantity.sm
+            ) {
+              console.log(
+                `${item.item.title} of size ${item.size} is out of stock`
+              );
+              await prisma.cart.delete({
+                where: {
+                  userId: session?.user.id as string,
+                },
+              });
+              throw new Error(
+                "One of the Products in your Cart is out of Stock."
+              );
+            }
+            break;
+          case "md":
+            if (
+              checkQuantity.quantity !== null &&
+              item.quantity > checkQuantity.quantity.md
+            ) {
+              console.log(
+                `${item.item.title} of size ${item.size} is out of stock`
+              );
+              await prisma.cart.delete({
+                where: {
+                  userId: session?.user.id as string,
+                },
+              });
+              throw new Error(
+                "One of the Products in your Cart is out of Stock."
+              );
+            }
+            break;
+          case "lg":
+            if (
+              checkQuantity.quantity !== null &&
+              item.quantity > checkQuantity.quantity.lg
+            ) {
+              console.log(
+                `${item.item.title} of size ${item.size} is out of stock`
+              );
+              await prisma.cart.delete({
+                where: {
+                  userId: session?.user.id as string,
+                },
+              });
+              throw new Error(
+                "One of the Products in your Cart is out of Stock."
+              );
+            }
+            break;
+          case "xl":
+            if (
+              checkQuantity.quantity !== null &&
+              item.quantity > checkQuantity.quantity.xl
+            ) {
+              console.log(
+                `${item.item.title} of size ${item.size} is out of stock`
+              );
+              await prisma.cart.delete({
+                where: {
+                  userId: session?.user.id as string,
+                },
+              });
+              throw new Error(
+                "One of the Products in your Cart is out of Stock."
+              );
+            }
+            break;
+        }
+      }
+    }
+  }
   if (!session?.user) {
     return null;
   }
@@ -39,8 +127,8 @@ export async function Pay(
     merchantTransactionId: transactionId,
     merchantUserId: "MUID123",
     amount: price * 100,
-    // redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
-    redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
+    redirectUrl: `http://localhost:3000/paymentstatus/${transactionId}`,
+    // redirectUrl: `https://airaa.vercel.app/paymentstatus/${transactionId}`,
     redirectMode: "REDIRECT",
     mobileNumber: 123456789,
     paymentInstrument: {
@@ -115,7 +203,7 @@ export async function checkPaymentStatus(trID: string) {
       },
     };
     const response = await axios.request(options);
-    console.log(response)
+    console.log(response);
     return response.data.code == "PAYMENT_SUCCESS";
   } catch (error) {
     console.log(error);
@@ -206,10 +294,10 @@ export async function updateProductQuantity(trID: string) {
         transactionId: trID,
       },
       data: {
-        updatedProductQuantity: true
-      }
-    })
+        updatedProductQuantity: true,
+      },
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }

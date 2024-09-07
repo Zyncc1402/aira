@@ -1,8 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import {revalidatePath} from "next/cache";
-import {v2 as cloudinary} from "cloudinary";
+import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from "cloudinary";
 import getSession from "@/lib/getSession";
 
 export async function deleteProduct(id: string) {
@@ -185,6 +185,25 @@ export async function deleteCartItem(id: string, userId: string) {
   }
 }
 
+export async function deleteSavedItem(id: string, userId: string) {
+  try {
+    await prisma.saveforlaterItems.delete({
+      where: {
+        saveforlater: {
+          userId,
+        },
+        id,
+      },
+    });
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
+  } finally {
+    revalidatePath("/cart");
+  }
+}
+
 export async function updateCartItemQuantity(
   userId: string,
   quantity: number,
@@ -217,7 +236,7 @@ export async function getSalesCount() {
   const year = date.getUTCFullYear();
   const startOfYear = new Date(year, 0, 1);
   const startOfNextYear = new Date(year + 1, 0, 1);
-  const res = await prisma.order.findMany({
+  return await prisma.order.findMany({
     where: {
       paymentSuccess: true,
       createdAt: {
@@ -229,7 +248,6 @@ export async function getSalesCount() {
       createdAt: true,
     },
   });
-  return res;
 }
 
 export async function getTransactionsCount() {
@@ -237,7 +255,7 @@ export async function getTransactionsCount() {
   const year = date.getUTCFullYear();
   const startOfYear = new Date(year, 0, 1);
   const startOfNextYear = new Date(year + 1, 0, 1);
-  const res = await prisma.order.findMany({
+  return await prisma.order.findMany({
     where: {
       paymentSuccess: false,
       createdAt: {
@@ -249,7 +267,6 @@ export async function getTransactionsCount() {
       createdAt: true,
     },
   });
-  return res;
 }
 
 export async function getNewUserCount() {
@@ -257,7 +274,7 @@ export async function getNewUserCount() {
   const year = date.getUTCFullYear();
   const startOfYear = new Date(year, 0, 1);
   const startOfNextYear = new Date(year + 1, 0, 1);
-  const res = await prisma.user.findMany({
+  return await prisma.user.findMany({
     where: {
       createdAt: {
         gte: startOfYear,
@@ -268,5 +285,102 @@ export async function getNewUserCount() {
       createdAt: true,
     },
   });
-  return res;
+}
+
+export async function saveForLater(
+  id: string,
+  productId: string,
+  quantity: number,
+  size: string
+) {
+  const session = await getSession();
+  try {
+    const findSaved = await prisma.saveforlater.findUnique({
+      where: {
+        userId: session?.user.id as string,
+      },
+    });
+    if (!findSaved) {
+      const findSaved = await prisma.saveforlater.create({
+        data: {
+          userId: session?.user.id as string,
+        },
+      });
+      await prisma.saveforlaterItems.create({
+        data: {
+          saveforlaterId: findSaved.id,
+          productId,
+          quantity,
+          size,
+        },
+      });
+    } else {
+      await prisma.saveforlaterItems.create({
+        data: {
+          saveforlaterId: findSaved.id,
+          productId,
+          quantity,
+          size,
+        },
+      });
+    }
+    await prisma.cartItems.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    revalidatePath("/cart");
+  }
+}
+
+export async function movetocart(
+  id: string,
+  productId: string,
+  quantity: number,
+  size: string
+) {
+  const session = await getSession();
+  try {
+    const findCart = await prisma.cart.findUnique({
+      where: {
+        userId: session?.user.id as string,
+      },
+    });
+    if (!findCart) {
+      const findCart = await prisma.cart.create({
+        data: {
+          userId: session?.user.id as string,
+        },
+      });
+      await prisma.cartItems.create({
+        data: {
+          cartId: findCart.id,
+          productId,
+          quantity,
+          size,
+        },
+      });
+    } else {
+      await prisma.cartItems.create({
+        data: {
+          cartId: findCart.id,
+          productId,
+          quantity: 1,
+          size,
+        },
+      });
+    }
+    await prisma.saveforlaterItems.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    revalidatePath("/cart");
+  }
 }

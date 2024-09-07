@@ -12,7 +12,7 @@ import formatCurrency from "@/lib/formatCurrency";
 import {capitalizeFirstLetter} from "@/lib/caplitaliseFirstLetter";
 import Link from "next/link";
 import {Session} from "next-auth";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -33,6 +33,7 @@ export default function FormSubmitButton({product, size, buttonRef, session}: {
 }) {
     const {pending, data} = useFormStatus();
     const pathname = usePathname()
+    const router = useRouter()
     return (
         <>
             <Drawer>
@@ -91,7 +92,7 @@ export default function FormSubmitButton({product, size, buttonRef, session}: {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <Link href={`/signin?callbackUrl=${pathname}`}><AlertDialogAction>Sign in</AlertDialogAction></Link>
+                            <AlertDialogAction onClick={() => router.push(`/signin?callbackUrl=${pathname}`)}>Sign in</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>

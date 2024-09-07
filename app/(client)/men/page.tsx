@@ -4,7 +4,7 @@ import ProductGrid from "./ProductGrid";
 import {Skeleton} from "@/components/ui/skeleton";
 import Footer from "@/components/footer/footer";
 
-export const revalidate = 6000;
+export const revalidate = 3600;
 
 export const metadata = {
     title: "Men - AIRA",
@@ -15,30 +15,30 @@ const Men = async () => {
         where: {
             category: "men",
             isArchived: false,
-            // quantity: {
-            //   OR: [
-            //     {
-            //       sm: {
-            //         gt: 0,
-            //       },
-            //     },
-            //     {
-            //       md: {
-            //         gt: 0,
-            //       },
-            //     },
-            //     {
-            //       lg: {
-            //         gt: 0,
-            //       },
-            //     },
-            //     {
-            //       xl: {
-            //         gt: 0,
-            //       },
-            //     },
-            //   ],
-            // },
+            quantity: {
+              OR: [
+                {
+                  sm: {
+                    gt: 0,
+                  },
+                },
+                {
+                  md: {
+                    gt: 0,
+                  },
+                },
+                {
+                  lg: {
+                    gt: 0,
+                  },
+                },
+                {
+                  xl: {
+                    gt: 0,
+                  },
+                },
+              ],
+            },
         },
         orderBy: {
             createdAt: "desc",

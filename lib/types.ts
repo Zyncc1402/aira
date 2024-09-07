@@ -16,6 +16,14 @@ export type cartItemWithProduct = Prisma.CartItemsGetPayload<{
   include: { product: true };
 }>;
 
+export type saveforlaterWithItems = Prisma.saveforlaterGetPayload<{
+  include: {
+    items: {
+      include: { product: true };
+    };
+  };
+}>;
+
 export type CartWithCartItems = Prisma.CartGetPayload<{
   include: {
     items: {
