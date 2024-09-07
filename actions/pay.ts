@@ -115,12 +115,8 @@ export async function checkPaymentStatus(trID: string) {
       },
     };
     const response = await axios.request(options);
-    if (response.data.code == "PAYMENT_SUCCESS") {
-
-      return true;
-    } else {
-      return false;
-    }
+    console.log(response)
+    return response.data.code == "PAYMENT_SUCCESS";
   } catch (error) {
     console.log(error);
   }

@@ -11,22 +11,36 @@ import {Product} from "@prisma/client";
 import formatCurrency from "@/lib/formatCurrency";
 import {capitalizeFirstLetter} from "@/lib/caplitaliseFirstLetter";
 import Link from "next/link";
+import {Session} from "next-auth";
+import {usePathname} from "next/navigation";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
-
-export default function FormSubmitButton({product, size, buttonRef}: {
+export default function FormSubmitButton({product, size, buttonRef, session}: {
     product: Product,
     size: string | null,
     buttonRef: RefObject<HTMLButtonElement>
+    session: Session | null,
 }) {
     const {pending, data} = useFormStatus();
+    const pathname = usePathname()
     return (
         <>
             <Drawer>
                 <DrawerTrigger asChild>
                     <button hidden ref={buttonRef}></button>
                 </DrawerTrigger>
-                <DrawerContent className={'h-[50vh]'}>
-                    <div className={'container py-[50px] h-full w-full flex items-center justify-center flex-col'}>
+                <DrawerContent className={'h-[60vh]'}>
+                    <div className={'container h-full w-full flex items-center justify-center flex-col gap-2'}>
                         <DrawerTitle>{product.title}</DrawerTitle>
                         <DrawerDescription>has been added to Cart</DrawerDescription>
                         <Image src={product.images[0]} alt={'Cart Item'} height={200} width={200}
@@ -43,7 +57,7 @@ export default function FormSubmitButton({product, size, buttonRef}: {
                     </div>
                 </DrawerContent>
             </Drawer>
-            <Button
+            {session?.user ? (<Button
                 aria-label="Button"
                 className={`rounded-sm w-full py-3 md:py-6 ${
                     pending && "hover:cursor-progress font-semibold"
@@ -55,7 +69,33 @@ export default function FormSubmitButton({product, size, buttonRef}: {
             >
                 <IoCartOutline className={`mr-3 ${pending && "hidden"}`} size={27}/>
                 {pending ? <Spinner size={30}/> : `Add to cart`}
-            </Button>
+            </Button>) : (
+                <AlertDialog>
+                    <AlertDialogTrigger asChild><Button
+                        aria-label="Button"
+                        className={`rounded-sm w-full py-3 md:py-6 ${
+                            pending && "hover:cursor-progress font-semibold"
+                        }`}
+                        variant={"secondary"}
+                        size={"lg"}
+                        type="button">
+                        <IoCartOutline className={`mr-3 ${pending && "hidden"}`} size={27}/>
+                        Add to cart
+                    </Button></AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>You need to be Logged in</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                To add Products to the Cart, you must be logged in first
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <Link href={`/signin?callbackUrl=${pathname}`}><AlertDialogAction>Sign in</AlertDialogAction></Link>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            )}
         </>
     );
 }

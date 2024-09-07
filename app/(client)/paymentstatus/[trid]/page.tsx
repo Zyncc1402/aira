@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import {RiVerifiedBadgeFill} from "react-icons/ri";
 import prisma from "@/lib/prisma";
+import {notFound} from "next/navigation";
 
 export default async function Page({params}: { params: { trid: string } }) {
     const checkPayment = await checkPaymentStatus(params.trid);
@@ -12,6 +13,7 @@ export default async function Page({params}: { params: { trid: string } }) {
             transactionId: params.trid
         }
     })
+    if(!orders) return notFound()
     if (checkPayment) {
         if (!orders?.updatedProductQuantity) {
             console.log("UPDATE STARTED");
@@ -20,7 +22,7 @@ export default async function Page({params}: { params: { trid: string } }) {
     }
     return (
         <div className="container flex items-center justify-center w-screen h-screen flex-col gap-5">
-            {checkPayment == true ? (
+            {checkPayment ? (
                 <>
                     <div className="flex items-center gap-2">
                         <RiVerifiedBadgeFill color="green" size={40}/>

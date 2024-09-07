@@ -5,9 +5,13 @@ import {toast} from "@/components/ui/use-toast";
 import {updateUserAddress} from "@/actions/formSubmissions";
 import CheckoutBlock from "@/app/(client)/checkout/components/checkoutBlock";
 import PriceSummary from "@/app/(client)/checkout/components/priceSummary";
+import {notFound} from "next/navigation";
 
 export default async function Page() {
     const session = await getSession()
+    if(!session?.user) {
+        return notFound();
+    }
     const getAddresses = await prisma.user.findUnique({
         where: {
             id: session?.user.id

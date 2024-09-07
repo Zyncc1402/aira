@@ -52,13 +52,6 @@ export default function RightPage({product, session}: Props) {
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     async function handleAddToCart() {
-        if (!session?.user) {
-            toast({
-                variant: "destructive",
-                title: "Must be logged in to add to cart",
-            });
-            return null;
-        }
         if (searchParams.get("size") == "sm") {
             const validation = sizeScheme.safeParse({
                 size: searchParams.get("size"),
@@ -120,7 +113,9 @@ export default function RightPage({product, session}: Props) {
             }
         }
         if (size) {
+            if(session?.user) {
             const result = await addToCart(id, size, session?.user.id as string);
+            }
             buttonRef.current?.click()
         }
     }
@@ -284,7 +279,7 @@ export default function RightPage({product, session}: Props) {
                                     Out of stock
                                 </Button>
                             ) : (
-                                <AddToCartBtn product={product} size={size} buttonRef={buttonRef}/>
+                                <AddToCartBtn session={session} product={product} size={size} buttonRef={buttonRef}/>
                             )}
                         </div>
                     </form>
@@ -322,23 +317,19 @@ export default function RightPage({product, session}: Props) {
                 <div className="grid grid-cols-2 gap-y-5">
                     <div>
                         <h1 className="font-semibold">Fabric</h1>
-                        <p className="text-muted-foreground">{"Cotton"}</p>
+                        <p className="text-muted-foreground">{product.fabric}</p>
                     </div>
                     <div>
                         <h1 className="font-semibold">Transparency</h1>
-                        <p className="text-muted-foreground">{"Opaque"}</p>
+                        <p className="text-muted-foreground">{product.transparency}</p>
                     </div>
                     <div>
                         <h1 className="font-semibold">Weave Pattern</h1>
-                        <p className="text-muted-foreground">{"Regular"}</p>
-                    </div>
-                    <div>
-                        <h1 className="font-semibold">Sustainable</h1>
-                        <p className="text-muted-foreground">{"Sustainable"}</p>
+                        <p className="text-muted-foreground">{product.weavePattern}</p>
                     </div>
                     <div>
                         <h1 className="font-semibold">Fit</h1>
-                        <p className="text-muted-foreground">{"Regular fit"}</p>
+                        <p className="text-muted-foreground">{product.fit}</p>
                     </div>
                 </div>
                 <div className="mt-5">
