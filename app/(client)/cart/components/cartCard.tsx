@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 import React, { useMemo, useOptimistic } from "react";
 
 type Props = {
-  items: CartWithCartItems;
+  items: CartWithCartItems | null;
   session: Session;
   saved: saveforlaterWithItems | null;
 };
@@ -72,7 +72,7 @@ export default function CartCard({ items, session, saved }: Props) {
   }
 
   const [optimisticItems, cartDispatch] = useOptimistic(
-    items.items,
+    items?.items,
     cartReducer
   );
   const [optimisticSavedItems, savedDispatch] = useOptimistic(
@@ -94,9 +94,11 @@ export default function CartCard({ items, session, saved }: Props) {
   }
 
   const price = useMemo(() => {
-    return optimisticItems.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
-      0
+    return (
+      optimisticItems?.reduce(
+        (acc, item) => acc + item.product.price * item.quantity,
+        0
+      ) ?? 0
     );
   }, [optimisticItems]);
 
@@ -106,14 +108,12 @@ export default function CartCard({ items, session, saved }: Props) {
     <>
       <div className="flex-1 flex gap-y-5 flex-col w-full relative mr-10">
         <h1 className="text-xl font-medium">Cart</h1>
-        {optimisticItems.length == 0 && (
-          <>
-            <h1 className="text-lg font-medium text-muted-foreground">
-              Your Cart is Empty
-            </h1>
-          </>
+        {(optimisticItems?.length == 0 || !optimisticItems) && (
+          <h1 className="text-lg font-medium text-muted-foreground">
+            Your Cart is Empty
+          </h1>
         )}
-        {optimisticItems.map((item) => (
+        {optimisticItems?.map((item) => (
           <div
             key={item.product.id}
             className="flex gap-5 w-full border-b-2 border-muted pb-5"
@@ -246,7 +246,7 @@ export default function CartCard({ items, session, saved }: Props) {
             </div>
           </div>
         ))}
-        {optimisticSavedItems.length > 0 && (
+        {optimisticSavedItems?.length > 0 && (
           <div className="mt-5">
             <h1 className="text-xl font-medium">Saved for Later</h1>
             {optimisticSavedItems?.map((item) => (
@@ -321,14 +321,14 @@ export default function CartCard({ items, session, saved }: Props) {
         <div className="flex justify-between flex-col gap-x-10 my-5">
           <div className="flex mt-3 justify-between">
             <h1 className="font-medium">
-              Subtotal {`(${optimisticItems.length} items)`}
+              Subtotal {`(${optimisticItems?.length ?? 0} items)`}
             </h1>
             <p className="font-medium">{formatCurrency(price).split(".")[0]}</p>
           </div>
           <Button
             className="w-full mt-5"
             variant={"secondary"}
-            disabled={optimisticItems.length == 0}
+            disabled={optimisticItems?.length == 0 || !optimisticItems}
             onClick={() => {
               router.push("/checkout");
               setCheckoutItems(undefined);

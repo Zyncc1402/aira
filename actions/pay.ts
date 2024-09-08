@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import getSession from "@/lib/getSession";
-import { Product } from "@prisma/client";
+import { address, Product } from "@prisma/client";
 
 type prod =
   | {
@@ -18,7 +18,7 @@ type prod =
 
 export async function Pay(
   products: prod | undefined,
-  addressId: string | undefined
+  selectedAddress: address | undefined
 ) {
   const session = await getSession();
   if (products) {
@@ -113,12 +113,15 @@ export async function Pay(
     return null;
   }
   let price = 0;
+  console.log(products);
   if (products) {
     for (const pd of products) {
       const getProduct = await prisma.product.findUnique({
         where: { id: pd.item.id },
       });
-      price += getProduct?.price ?? 0;
+      if (getProduct?.price) {
+        price += getProduct?.price * pd.quantity;
+      }
     }
   }
   const transactionId = uuidv4();
@@ -172,7 +175,7 @@ export async function Pay(
             quantity: item.quantity,
             orderId,
             transactionId,
-            addressId,
+            addressId: selectedAddress?.id,
           },
         });
       });
@@ -203,7 +206,6 @@ export async function checkPaymentStatus(trID: string) {
       },
     };
     const response = await axios.request(options);
-    console.log(response);
     return response.data.code == "PAYMENT_SUCCESS";
   } catch (error) {
     console.log(error);
@@ -241,7 +243,6 @@ export async function updateProductQuantity(trID: string) {
     } catch (error) {
       console.log("FAILED!!!!!");
     }
-    console.log(find);
     find.map(async (item) => {
       if (item.size == "sm") {
         await prisma.quantity.update({

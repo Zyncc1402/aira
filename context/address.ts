@@ -1,13 +1,14 @@
 "use client";
 
+import { address } from "@prisma/client";
 import { create } from "zustand";
 
-type address = {
-  selectedAddress: string | undefined;
-  setAddress: (id: string) => void;
+type AddressType = {
+  selectedAddress: address | undefined;
+  setAddress: (address: address) => void;
 };
 
-export const useAddress = create<address>((set) => ({
+export const useAddress = create<AddressType>((set) => ({
   selectedAddress: undefined,
-  setAddress: (id: string) => set({ selectedAddress: id }),
+  setAddress: (address) => set({ selectedAddress: address }),
 }));

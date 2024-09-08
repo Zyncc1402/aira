@@ -20,7 +20,7 @@ export default async function Page() {
   });
   return (
     <section className="container my-10 gap-x-10 flex flex-col md:flex-row gap-y-[70px]">
-      <CheckoutBlock getAddresses={getAddresses} />
+      <CheckoutBlock getAddresses={getAddresses} session={session} />
       <PriceSummary />
     </section>
   );

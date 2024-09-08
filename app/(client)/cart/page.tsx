@@ -1,7 +1,6 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import CartCard from "./components/cartCard";
-import Image from "next/image";
 import getSession from "@/lib/getSession";
 import prisma from "@/lib/prisma";
 
@@ -43,19 +42,17 @@ const Cart = async () => {
       },
     },
   });
-  if (getCartInfo) {
-    return (
-      <section className="pt-[40px] container">
-        <div className="flex flex-col md:flex-row gap-y-52 md:gap-y-0">
-          <CartCard
-            items={getCartInfo}
-            saved={getSavedProducts}
-            session={session}
-          />
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section className="pt-[40px] container">
+      <div className="flex flex-col md:flex-row gap-y-52 md:gap-y-0">
+        <CartCard
+          items={getCartInfo}
+          saved={getSavedProducts}
+          session={session}
+        />
+      </div>
+    </section>
+  );
 };
 
 export default Cart;

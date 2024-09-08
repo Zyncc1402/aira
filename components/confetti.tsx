@@ -15,6 +15,7 @@ export default function ConfettiDecor() {
           width={window.innerWidth}
           height={window.innerHeight}
           numberOfPieces={300}
+          recycle={false}
         />
       )}
     </>

@@ -6,12 +6,21 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import ConfettiDecor from "@/components/confetti";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Badge } from "@/components/ui/badge";
 
 export default async function Page({ params }: { params: { trid: string } }) {
   const checkPayment = await checkPaymentStatus(params.trid);
   const orders = await prisma.order.findFirst({
     where: {
       transactionId: params.trid,
+    },
+    include: {
+      address: true,
     },
   });
   if (!orders) return notFound();
@@ -22,7 +31,7 @@ export default async function Page({ params }: { params: { trid: string } }) {
     }
   }
   return (
-    <div className="container flex items-center justify-center w-screen h-screen flex-col gap-5">
+    <div className="container text-center flex items-center justify-center w-screen h-screen flex-col gap-5">
       {checkPayment ? (
         <>
           <div className="flex items-center gap-2">
@@ -31,10 +40,38 @@ export default async function Page({ params }: { params: { trid: string } }) {
               Payment Success
             </h1>
           </div>
-          <p className="text-center">Transaction ID: {params.trid}</p>
-          <Link href={"/account"}>
-            <Button variant={"secondary"}>Go to My Account</Button>
-          </Link>
+          <p>Transaction ID - {params.trid.split("-").pop()}</p>
+          <HoverCard>
+            <h1>
+              Shipping Address -{" "}
+              <HoverCardTrigger>
+                <Badge
+                  variant="secondary"
+                  className="cursor-pointer hover:bg-secondary"
+                >
+                  {orders.address?.name}
+                </Badge>
+              </HoverCardTrigger>
+            </h1>
+            <HoverCardContent className="text-left font-medium">
+              <p className="line-clamp-1">{orders.address?.address1}</p>
+              <p className="line-clamp-1">{orders.address?.address2}</p>
+              <p>{orders.address?.phone}</p>
+              <p>{orders.address?.landmark}</p>
+              <p>{orders.address?.zipcode}</p>
+            </HoverCardContent>
+          </HoverCard>
+          <h1 className="font-semibold text-muted-foreground">
+            A Copy of this has been sent to your Mail
+          </h1>
+          <div className="flex gap-x-5">
+            <Link href={"/account"}>
+              <Button variant={"secondary"}>View Order Details</Button>
+            </Link>
+            <Link href={"/account"}>
+              <Button variant={"secondary"}>Go to My Account</Button>
+            </Link>
+          </div>
         </>
       ) : (
         <>
