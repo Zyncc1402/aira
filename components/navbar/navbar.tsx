@@ -132,7 +132,7 @@ const Navbar = async () => {
               <Link className="font-medium text-[15px]" href={"/about"}>
                 <SheetClose>About</SheetClose>
               </Link>
-              {session?.user.role === "Admin" && (
+              {session?.user && (
                 <Link className="font-medium text-[15px]" href={"/account"}>
                   <SheetClose>Account</SheetClose>
                 </Link>

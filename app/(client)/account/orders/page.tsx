@@ -44,7 +44,7 @@ export default async function Page() {
               <Link href={`/account/orders/${order.id}`}>
                 <Image
                   src={order.image}
-                  className="object-cover aspect-square lg:rounded-l-lg"
+                  className="object-cover aspect-square rounded-lg lg:rounded-l-lg"
                   width={200}
                   height={200}
                   alt="Order Image"
