@@ -22,7 +22,7 @@ export default async function Page() {
     where: {
       userId: session?.user.id as string,
     },
-    take: 5,
+    // take: 5,
     include: {
       address: true,
       product: true,

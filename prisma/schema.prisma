@@ -122,6 +122,7 @@ model Product {
   description       String
   price             Int
   images            String[]
+  placeholderImages String[]
   salePrice         Int?
   category          String
   isArchived        Boolean             @default(false)

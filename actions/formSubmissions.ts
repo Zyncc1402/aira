@@ -1,5 +1,6 @@
 "use server";
 
+import getPlaceholder from "@/lib/getPlaceholder";
 import getSession from "@/lib/getSession";
 import prisma from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
@@ -63,7 +64,7 @@ export async function createProduct(formData: FormData) {
     }
 
   try {
-    await prisma.product.create({
+    const newProduct = await prisma.product.create({
       data: {
         title,
         description,
@@ -90,7 +91,16 @@ export async function createProduct(formData: FormData) {
         quantity: true,
       },
     });
-    console.log("Success");
+    let placeholderImages: string[] = [];
+    for (const image of newProduct.images) {
+      const place = await getPlaceholder(image);
+      placeholderImages.push(place ?? "");
+      console.log(place);
+    }
+    await prisma.product.update({
+      where: { id: newProduct.id },
+      data: { placeholderImages },
+    });
   } catch (error) {
     console.log(error);
     throw Error("Failed to create product");

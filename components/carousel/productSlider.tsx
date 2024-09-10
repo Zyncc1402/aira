@@ -4,13 +4,14 @@ import React, { useCallback, useEffect } from "react";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
+import { Product } from "@prisma/client";
 
 type PropType = {
-  slides: string[];
+  product: Product;
   options?: EmblaOptionsType;
 };
 const ProductSlider: React.FC<PropType> = (props) => {
-  const { slides, options } = props;
+  const { product, options } = props;
 
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -37,18 +38,26 @@ const ProductSlider: React.FC<PropType> = (props) => {
     emblaMainApi.on("reInit", onSelect);
   }, [emblaMainApi, onSelect]);
 
+  const images = product.images;
+  const placeholderImages = product.placeholderImages;
+
   return (
     <div className="embla ">
       <div className="embla__viewport" ref={emblaMainRef}>
         <div className="embla__container">
-          {slides.map((image, index) => (
+          {images.map((image, index) => (
             <div className="embla__slide" key={index}>
               <Image
                 src={image}
                 height={1350}
                 width={1080}
                 alt="Carousel Image"
-                priority={true}
+                priority
+                placeholder="blur"
+                blurDataURL={
+                  placeholderImages[index] ??
+                  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/ALGzrLi+t7a+tgDOzsiViYOaioYAyZ6bNAAApVZXAPbx8PTz8/39+9MaGEV/cIIyAAAAAElFTkSuQmCC"
+                }
                 className="md:rounded-lg object-cover aspect-[9-16] cursor-grab"
               />
             </div>
@@ -59,7 +68,7 @@ const ProductSlider: React.FC<PropType> = (props) => {
       <div className="embla-thumbs container md:p-0 overflow-hidden">
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container flex gap-4">
-            {slides.map((image, index) => (
+            {images.map((image, index) => (
               <Image
                 key={index}
                 onClick={() => onThumbClick(index)}
@@ -67,7 +76,12 @@ const ProductSlider: React.FC<PropType> = (props) => {
                 height={100}
                 width={100}
                 alt="Carousel Image"
-                priority={true}
+                priority
+                placeholder="blur"
+                blurDataURL={
+                  placeholderImages[index] ??
+                  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/ALGzrLi+t7a+tgDOzsiViYOaioYAyZ6bNAAApVZXAPbx8PTz8/39+9MaGEV/cIIyAAAAAElFTkSuQmCC"
+                }
                 className="rounded-sm object-cover aspect-square cursor-pointer"
               />
             ))}
