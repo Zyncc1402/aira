@@ -86,6 +86,7 @@ export default async function Search({ searchParams: { q } }: Props) {
             title={product.title}
             price={product.price}
             category={product.category}
+            placeholder={product.placeholderImages[0]}
             id={product.id}
           />
         ))}
