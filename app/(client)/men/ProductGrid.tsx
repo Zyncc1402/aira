@@ -24,12 +24,11 @@ type Props = {
   products: Products[];
 };
 
-let skip = 24;
-
 export default function ProductGrid({ products }: Props) {
   const searchParams = useSearchParams();
   const { ref, inView } = useInView();
   const [disableLoader, setDisableLoader] = useState(false);
+  const [skip, setSkip] = useState(24);
   const [data, setData] = useState<Product[]>([]);
   const min = Number(searchParams.get("min"));
   const max = Number(searchParams.get("max"));
@@ -38,11 +37,9 @@ export default function ProductGrid({ products }: Props) {
 
   useEffect(() => {
     if (inView) {
-      console.log("in view", skip);
-      console.log(data.length);
       InfiniteProducts(skip).then((res) => {
         setData([...data, ...res]);
-        skip += 24;
+        setSkip((prev) => prev + 24);
         if (res.length == 0) {
           setDisableLoader(true);
         }
@@ -559,10 +556,11 @@ export default function ProductGrid({ products }: Props) {
               </h1>
             </div>
           ) : (
-            filteredProducts?.map((product, key) => (
+            filteredProducts?.map((product) => (
               <ProductCard
                 key={product.id}
                 image={product.images[0]}
+                placeholder={product.placeholderImages[0]}
                 title={product.title}
                 price={product.price}
                 category={product.category}
@@ -579,6 +577,7 @@ export default function ProductGrid({ products }: Props) {
               <ProductCard
                 key={product.id}
                 image={product.images[0]}
+                placeholder={product.placeholderImages[0]}
                 title={product.title}
                 price={product.price}
                 category={product.category}

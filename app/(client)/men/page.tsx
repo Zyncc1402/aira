@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import React, { Suspense } from "react";
 import ProductGrid from "./ProductGrid";
 import { Skeleton } from "@/components/ui/skeleton";
-import Footer from "@/components/footer/footer";
 
 export const revalidate = 3600;
 

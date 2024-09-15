@@ -327,7 +327,7 @@ export async function uploadReview(formData: FormData) {
   }
 }
 
-export async function updateUserAddress(formData: FormData) {
+export async function createNewAddress(formData: FormData) {
   const session = await getSession();
   if (!session?.user) {
     return null;
@@ -354,19 +354,58 @@ export async function updateUserAddress(formData: FormData) {
       zipcode: Number(zipcode),
     },
   });
-  revalidatePath("/cart");
+  revalidatePath("/checkout");
+  revalidatePath("/account/addresses");
 }
 
-export async function deleteAddress(id: string, addressId: string) {
+export async function updateUserAddress(formData: FormData) {
+  const session = await getSession();
+  if (!session?.user) {
+    return null;
+  }
+  try {
+    const addressId = formData.get("addressId") as string;
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const address1 = formData.get("address1") as string;
+    const address2 = formData.get("address2") as string;
+    const state = formData.get("state") as string;
+    const zipcode = formData.get("zipcode") as string;
+    const landmark = formData.get("landmark") as string;
+    await prisma.address.update({
+      where: {
+        id: addressId,
+        userId: session.user.id,
+      },
+      data: {
+        name,
+        email,
+        phone,
+        address1,
+        address2,
+        landmark,
+        state,
+        zipcode: Number(zipcode),
+      },
+    });
+    revalidatePath("/account/addresses");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to edit Address");
+  }
+}
+
+export async function deleteAddress(addressId: string) {
   const session = await getSession();
   if (!session?.user) {
     return null;
   }
   await prisma.address.delete({
     where: {
-      userId: id,
+      userId: session.user.id,
       id: addressId,
     },
   });
-  revalidatePath("/cart");
+  revalidatePath("/account/addresses");
 }

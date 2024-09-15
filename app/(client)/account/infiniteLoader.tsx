@@ -17,23 +17,22 @@ import React, { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { useInView } from "react-intersection-observer";
 
-let skip = 5;
-
 export default function InfiniteLoader() {
   const { ref, inView } = useInView();
   const [data, setData] = useState<orderWithAddressProduct[]>([]);
+  const [skip, setSkip] = useState(10);
   const [disableLoader, setDisableLoader] = useState(false);
   useEffect(() => {
     if (inView) {
       InfiniteAccountOrders(skip).then((res) => {
         if (data != undefined) {
           setData([...data, ...res]);
+          setSkip((prev) => prev + 10);
         }
         if (res.length == 0) {
           setDisableLoader(true);
         }
       });
-      skip += 5;
     }
   }, [inView]);
 

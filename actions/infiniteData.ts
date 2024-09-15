@@ -10,7 +10,7 @@ export async function InfiniteAccountOrders(skip: number) {
       userId: session?.user.id as string,
     },
     skip,
-    take: 5,
+    take: 10,
     include: {
       address: true,
       product: true,
@@ -31,6 +31,9 @@ export async function InfiniteProducts(skip: number) {
     take: 24,
     orderBy: {
       createdAt: "desc",
+    },
+    include: {
+      quantity: true,
     },
   });
   return products;

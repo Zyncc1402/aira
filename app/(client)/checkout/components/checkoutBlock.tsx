@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { updateUserAddress } from "@/actions/formSubmissions";
+import { createNewAddress } from "@/actions/formSubmissions";
 import { toast } from "@/components/ui/use-toast";
 import { Session } from "next-auth";
 
@@ -78,7 +78,7 @@ export default function CheckoutBlock({
         title: "Invalid Phone Number",
       });
     } else {
-      updateUserAddress(formData);
+      createNewAddress(formData);
       setShowAddress(false);
       formRef?.current?.reset();
     }
@@ -102,6 +102,9 @@ export default function CheckoutBlock({
         >
           <h1 className={"font-medium line-clamp-1"}>{address.name}</h1>
           <h1 className={"line-clamp-1"}>{address.address1}</h1>
+          <h1 className={"line-clamp-1"}>{address.address2}</h1>
+          <h1 className={"line-clamp-1"}>{address.landmark}</h1>
+          <h1 className={"line-clamp-1"}>{address.state}</h1>
           <h1 className={"line-clamp-1"}>{address.phone}</h1>
         </div>
       ))}

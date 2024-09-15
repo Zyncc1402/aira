@@ -10,6 +10,7 @@ type CardProps = {
   image: string;
   title: string;
   category: string;
+  placeholder: string;
   id: string;
   price: number;
 };
@@ -22,7 +23,14 @@ export type wishlistItemsType = {
   category: string;
 }[];
 
-const ProductCard = ({ image, title, price, id, category }: CardProps) => {
+const ProductCard = ({
+  image,
+  title,
+  price,
+  placeholder,
+  id,
+  category,
+}: CardProps) => {
   const formatted = formatCurrency(price);
 
   return (
@@ -35,6 +43,11 @@ const ProductCard = ({ image, title, price, id, category }: CardProps) => {
           alt="product image"
           priority={true}
           className=" object-cover aspect-square"
+          placeholder="blur"
+          blurDataURL={
+            placeholder ??
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/ALGzrLi+t7a+tgDOzsiViYOaioYAyZ6bNAAApVZXAPbx8PTz8/39+9MaGEV/cIIyAAAAAElFTkSuQmCC"
+          }
         />
       </Link>
       <div className="p-2 gap-4 flex justify-between w-[100%]">

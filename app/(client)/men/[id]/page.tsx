@@ -34,7 +34,7 @@ const ProductById = async ({ params: { id } }: Params) => {
   const product = await prisma.product.findUnique({
     where: {
       id,
-      // isArchived: false,
+      isArchived: false,
     },
     include: {
       quantity: true,
