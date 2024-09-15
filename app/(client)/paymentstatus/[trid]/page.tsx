@@ -64,14 +64,9 @@ export default async function Page({ params }: { params: { trid: string } }) {
           <h1 className="font-semibold text-muted-foreground">
             A Copy of this has been sent to your Mail
           </h1>
-          <div className="flex gap-x-5">
-            <Link href={"/account"}>
-              <Button variant={"secondary"}>View Order Details</Button>
-            </Link>
-            <Link href={"/account"}>
-              <Button variant={"secondary"}>Go to My Account</Button>
-            </Link>
-          </div>
+          <Link href={"/account/orders"}>
+            <Button variant={"secondary"}>Go to My Orders</Button>
+          </Link>
         </>
       ) : (
         <>

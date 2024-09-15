@@ -24,6 +24,13 @@ export type saveforlaterWithItems = Prisma.saveforlaterGetPayload<{
   };
 }>;
 
+export type orderWithAddressProduct = Prisma.orderGetPayload<{
+  include: {
+    address: true;
+    product: true;
+  };
+}>;
+
 export type CartWithCartItems = Prisma.CartGetPayload<{
   include: {
     items: {

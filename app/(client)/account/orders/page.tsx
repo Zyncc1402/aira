@@ -22,7 +22,7 @@ export default async function Page() {
     where: {
       userId: session?.user.id as string,
     },
-    // take: 5,
+    take: 5,
     include: {
       address: true,
       product: true,
@@ -44,11 +44,16 @@ export default async function Page() {
               <Link href={`/account/orders/${order.id}`}>
                 <Image
                   src={order.image}
-                  className="object-cover aspect-square rounded-lg lg:rounded-l-lg"
+                  className="object-cover aspect-square rounded-lg lg:rounded-l-lg lg:rounded-r-none"
                   width={200}
                   height={200}
                   alt="Order Image"
                   priority
+                  placeholder="blur"
+                  blurDataURL={
+                    order.product.placeholderImages[0] ??
+                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/ALGzrLi+t7a+tgDOzsiViYOaioYAyZ6bNAAApVZXAPbx8PTz8/39+9MaGEV/cIIyAAAAAElFTkSuQmCC"
+                  }
                 />
               </Link>
               <div className="flex flex-col w-full">
@@ -128,7 +133,7 @@ export default async function Page() {
               </div>
             </div>
           ))}
-          {/* <InfiniteLoader id={session?.user.id as string} /> */}
+          <InfiniteLoader />
         </div>
       </div>
     </div>

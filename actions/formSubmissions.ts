@@ -37,19 +37,19 @@ export async function createProduct(formData: FormData) {
     secure: true,
   });
 
-  let arrayOfImages = [];
-
-  if (images.length == 0) {
+  let arrayOfImages: string[] = [];
+  if (images.length === 0) {
     return {
       noImage: true,
     };
   }
-  if (images)
-    for (const image of images) {
+  if (images) {
+    const uploadPromises = images.map(async (image) => {
       const file = image as File;
       const arrayBuffer = await file?.arrayBuffer();
       const buffer = new Uint8Array(arrayBuffer);
-      const res = await new Promise((resolve, reject) => {
+
+      return new Promise((resolve, reject) => {
         cloudinary.uploader
           .upload_stream({ folder: "Products" }, (error, result) => {
             if (error) {
@@ -60,9 +60,16 @@ export async function createProduct(formData: FormData) {
           })
           .end(buffer);
       });
-      arrayOfImages.push(res);
-    }
-
+    });
+    const results = await Promise.allSettled(uploadPromises);
+    results.forEach((result) => {
+      if (result.status === "fulfilled") {
+        arrayOfImages.push(result.value as string);
+      } else {
+        console.error("Failed to upload an image:", result.reason);
+      }
+    });
+  }
   try {
     const newProduct = await prisma.product.create({
       data: {
@@ -92,11 +99,8 @@ export async function createProduct(formData: FormData) {
       },
     });
     let placeholderImages: string[] = [];
-    for (const image of newProduct.images) {
-      const place = await getPlaceholder(image);
-      placeholderImages.push(place ?? "");
-      console.log(place);
-    }
+    const place = await getPlaceholder(newProduct.images);
+    placeholderImages = place as string[];
     await prisma.product.update({
       where: { id: newProduct.id },
       data: { placeholderImages },

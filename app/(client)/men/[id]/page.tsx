@@ -52,6 +52,7 @@ const ProductById = async ({ params: { id } }: Params) => {
   if (product?.title) {
     const similarProducts = await prisma.product.findMany({
       where: {
+        isArchived: false,
         color: {
           hasSome: [product.color[0]],
         },
@@ -67,6 +68,7 @@ const ProductById = async ({ params: { id } }: Params) => {
     });
     const productsInCategory = await prisma.product.findMany({
       where: {
+        isArchived: false,
         category: product.category,
         id: {
           not: product.id,
@@ -74,7 +76,7 @@ const ProductById = async ({ params: { id } }: Params) => {
       },
       take: 6,
     });
-    const { title, images, placeholderImages } = product;
+    const { title } = product;
     const OPTIONS: EmblaOptionsType = {};
     return (
       <>
