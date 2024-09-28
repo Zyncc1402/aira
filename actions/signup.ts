@@ -1,22 +1,55 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { signUpFormSchema } from "@/lib/zodSchemas";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 
-export default async function signup(formData: FormData, callbackUrl: string | string[] | undefined) {
-  const { name, email, password, phone } = Object.fromEntries(formData);
-  const saltRounds = 10;
-  const hashedPassword = bcrypt.hashSync(password as string, saltRounds);
-
-  await prisma.user.create({
-    data: {
-      name: name as string,
-      email: email as string,
-      password: hashedPassword as string,
-      phone: phone as string,
-      usingSocialLogin: false,
-    },
+export async function createUser(
+  {
+    name,
+    email,
+    password,
+    phone,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+  },
+  callbackUrl: string | string[] | undefined
+) {
+  const { error } = signUpFormSchema.safeParse({
+    name,
+    email,
+    password,
+    phone,
   });
-  redirect(`/signin?callbackUrl=${callbackUrl}`);
+  if (error) {
+    return null;
+  }
+  const userExists = await prisma.user.findUnique({ where: { email } });
+  if (userExists?.usingSocialLogin) {
+    return "Account exists, Try using Social login";
+  }
+  if (userExists) {
+    return "Account already exists";
+  }
+  const saltRounds = 10;
+  const hash = bcrypt.hashSync(password, saltRounds);
+  try {
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hash,
+        phone,
+        usingSocialLogin: false,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong while creating user");
+  }
+  redirect("/signin?callbackUrl=" + callbackUrl);
 }

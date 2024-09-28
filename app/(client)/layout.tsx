@@ -20,7 +20,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-B07TPNLBKT"
@@ -43,7 +42,6 @@ export default async function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         {/* Favicon */}
         <link rel="icon" href="/logo-330x330.png" />
-
         {/* Additional meta tags */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
