@@ -1,4 +1,5 @@
 import withPlaiceholder from "@plaiceholder/next";
+import withPWA from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -12,4 +13,8 @@ const nextConfig = {
   },
 };
 
-export default withPlaiceholder(nextConfig);
+export default withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+})(withPlaiceholder(nextConfig));

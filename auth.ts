@@ -1,6 +1,5 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
-import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./lib/prisma";
 import NextAuth, { type DefaultSession } from "next-auth";
@@ -12,7 +11,6 @@ const config = {
   trustHost: true,
   providers: [
     Google,
-    Facebook,
     Credentials({
       credentials: {
         email: {},

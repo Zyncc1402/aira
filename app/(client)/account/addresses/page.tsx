@@ -63,9 +63,9 @@ export default async function Page() {
   });
 
   return (
-    <div className="container mt-10">
+    <div className="container my-10">
       <h1 className="text-xl font-medium">Your Addresses</h1>
-      <div className="mt-5 flex gap-6 flex-wrap">
+      <div className="mt-5 flex gap-6 flex-wrap items-stretch h-fit">
         {addresses.map((address) => (
           <div
             key={address.id}
