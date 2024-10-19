@@ -10,6 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import formatCurrency from "@/lib/formatCurrency";
 import { capitalizeFirstLetter } from "@/lib/caplitaliseFirstLetter";
+import { SheetClose } from "../ui/sheet";
 
 export default function CartQuantityForm({
   item,
@@ -32,14 +33,16 @@ export default function CartQuantityForm({
         href={`/${item.product.category}/${item.product.id}`}
         className="flex"
       >
-        <Image
-          src={item.product.images[0]}
-          height={200}
-          width={200}
-          alt="Image"
-          className="object-cover aspect-square rounded-lg flex-shrink-0"
-          priority
-        />
+        <SheetClose>
+          <Image
+            src={item.product.images[0]}
+            height={200}
+            width={200}
+            alt="Image"
+            className="object-cover aspect-square rounded-lg flex-shrink-0"
+            priority
+          />
+        </SheetClose>
       </Link>
       <div className="w-full">
         <div className="flex w-full justify-between max-[400px]:flex-col">

@@ -167,11 +167,11 @@ const Navbar = async () => {
                 <SheetHeader>
                   <SheetTitle>Bag</SheetTitle>
                 </SheetHeader>
-                <div className="mt-10 flex flex-col gap-y-5">
+                <div className="mt-10 flex flex-col gap-y-5 pb-[101px]">
                   {CartItems?.items.map((item) => (
                     <div
                       key={item.product.id}
-                      className="flex gap-5 w-full border-b-2 border-muted pb-5"
+                      className="flex gap-5 w-full border-b-2 last:border-0 border-muted pb-5"
                     >
                       <CartQuantityForm session={session} item={item} />
                     </div>
