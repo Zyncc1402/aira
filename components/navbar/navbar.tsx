@@ -16,6 +16,9 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 
@@ -32,9 +35,38 @@ import {
   SignInButton,
   SignInButtonMobile,
 } from "@/components/navbar/signInButton";
+import { CartItems } from "@prisma/client";
+import prisma from "@/lib/prisma";
+import Image from "next/image";
+import formatCurrency from "@/lib/formatCurrency";
+import { capitalizeFirstLetter } from "@/lib/caplitaliseFirstLetter";
+import { deleteCartItem, updateCartItemQuantity } from "@/actions/action";
+import CartQuantityForm from "./cartQuantityForm";
+import { ScrollArea } from "../ui/scroll-area";
 
 const Navbar = async () => {
   const session = await getSession();
+  let CartItems;
+  if (session?.user) {
+    CartItems = await prisma.cart.findUnique({
+      where: {
+        userId: session?.user.id,
+      },
+      include: {
+        items: {
+          include: {
+            product: {
+              include: {
+                quantity: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  const count = CartItems?.items.length;
   return (
     <header className="z-10 header pb-4 pt-4 w-full sticky top-0 left-0 right-0 bg-white text-black">
       <nav className="container flex justify-between items-center ">
@@ -118,14 +150,56 @@ const Navbar = async () => {
           <Link className="font-medium text-[15px]" href={"/search"}>
             <IoSearch size={28} className="ml-3" />
           </Link>
-          <Link className="font-medium text-[15px]" href={"/cart"}>
-            <RiShoppingBag3Line size={27} className="ml-3" />
-          </Link>
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="relative">
+                <span className="text-black text-sm absolute -top-4 -right-0">
+                  {count}
+                </span>
+                <RiShoppingBag3Line
+                  size={27}
+                  className="ml-3 font-medium text-[15px]"
+                />
+              </button>
+            </SheetTrigger>
+            <SheetContent className="max-md:min-w-[100%] min-w-[500px]">
+              <ScrollArea className="h-full w-full">
+                <SheetHeader>
+                  <SheetTitle>Bag</SheetTitle>
+                </SheetHeader>
+                <div className="mt-10 flex flex-col gap-y-5">
+                  {CartItems?.items.map((item) => (
+                    <div
+                      key={item.product.id}
+                      className="flex gap-5 w-full border-b-2 border-muted pb-5"
+                    >
+                      <CartQuantityForm session={session} item={item} />
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+              <div className="border-t border-muted bg-white py-4 px-6 text-left absolute bottom-0 left-0 right-0 w-full">
+                <div className="flex justify-between">
+                  <h1 className="font-medium">Subtotal:</h1>
+                  <h1 className="font-medium">
+                    {formatCurrency(5000).split(".")[0]}
+                  </h1>
+                </div>
+                <Button
+                  variant={"secondary"}
+                  className="mt-2 w-full"
+                  size={"sm"}
+                >
+                  Checkout
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
           <Sheet>
             <SheetTrigger className="lg:hidden">
               <LuMenu size={30} className="ml-3" />
             </SheetTrigger>
-            <SheetContent className="flex flex-col text-left">
+            <SheetContent className="flex flex-col text-left" side="left">
               <Link className="font-medium text-[15px]" href={"/"}>
                 <SheetClose>Home</SheetClose>
               </Link>

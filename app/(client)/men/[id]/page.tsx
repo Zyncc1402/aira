@@ -26,8 +26,6 @@ type Params = {
   };
 };
 
-export const revalidate = 600;
-
 const getProduct = cache(async (id: string) => {
   try {
     const product = await prisma.product.findUnique({
@@ -51,35 +49,45 @@ const ProductById = async ({ params: { id } }: Params) => {
     notFound();
   }
   const session = await getSession();
-  if (!product?.title) {
-    return notFound();
-  }
-  // const similarProducts = await prisma.product.findMany({
-  //   where: {
-  //     isArchived: false,
-  //     color: {
-  //       hasSome: [product.color[0]],
-  //     },
-  //     category: product.category,
-  //     id: {
-  //       not: product.id,
-  //     },
-  //   },
-  //   take: 5,
-  //   orderBy: {
-  //     createdAt: "desc",
-  //   },
-  // });
-  // const productsInCategory = await prisma.product.findMany({
-  //   where: {
-  //     isArchived: false,
-  //     category: product.category,
-  //     id: {
-  //       not: product.id,
-  //     },
-  //   },
-  //   take: 6,
-  // });
+  const [similarProductsResult, productsInCategoryResult] =
+    await Promise.allSettled([
+      prisma.product.findMany({
+        where: {
+          isArchived: false,
+          color: {
+            hasSome: [product.color[0]],
+          },
+          category: product.category,
+          id: {
+            not: product.id,
+          },
+        },
+        take: 5,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.product.findMany({
+        where: {
+          isArchived: false,
+          category: product.category,
+          id: {
+            not: product.id,
+          },
+        },
+        take: 6,
+      }),
+    ]);
+
+  const similarProducts =
+    similarProductsResult.status === "fulfilled"
+      ? similarProductsResult.value
+      : [];
+  const productsInCategory =
+    productsInCategoryResult.status === "fulfilled"
+      ? productsInCategoryResult.value
+      : [];
+
   const { title } = product;
   const OPTIONS: EmblaOptionsType = {};
   return (
@@ -108,47 +116,12 @@ const ProductById = async ({ params: { id } }: Params) => {
           </div>
           <RightPage product={product} session={session} />
         </div>
-        {/* <Reviews id={id} /> */}
-        {/* {similarProducts.length > 0 && (
-            <div className="container mt-[80px]">
-              <h1 className="text-2xl font-semibold">Similar Products</h1>
-              <div className="similar gap-2 mt-6 overflow-x-auto flex">
-                {similarProducts.map((similarProduct) => (
-                  <div
-                    className="w-[400px] flex-shrink-0 pb-4"
-                    key={similarProduct.id}
-                  >
-                    <Link
-                      href={`/${similarProduct.category}/${similarProduct.id}`}
-                    >
-                      <Image
-                        key={similarProduct.id}
-                        src={similarProduct.images[0]}
-                        height={400}
-                        width={400}
-                        alt="similar products"
-                        className="cursor-pointer object-cover aspect-square"
-                      />
-                    </Link>
-                    <Link
-                      href={`/${similarProduct.category}/${similarProduct.id}`}
-                    >
-                      <h1 className="mt-1 font-medium">
-                        {similarProduct.title}
-                      </h1>
-                    </Link>
-                    <h2 className="font-medium">
-                      {formatCurrency(similarProduct.price).split(".")[0]}
-                    </h2>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )} */}
-        <div className="container mt-[80px]">
-          <h1 className="text-2xl font-semibold">You might like these</h1>
-          {/* <div className="similar gap-2 mt-6 overflow-x-auto flex">
-              {productsInCategory.map((similarProduct) => (
+        <Reviews id={id} />
+        {similarProducts.length > 0 && (
+          <div className="container mt-[80px]">
+            <h1 className="text-2xl font-semibold">Similar Products</h1>
+            <div className="similar gap-2 mt-6 overflow-x-auto flex">
+              {similarProducts.map((similarProduct) => (
                 <div
                   className="w-[400px] flex-shrink-0 pb-4"
                   key={similarProduct.id}
@@ -175,7 +148,36 @@ const ProductById = async ({ params: { id } }: Params) => {
                   </h2>
                 </div>
               ))}
-            </div> */}
+            </div>
+          </div>
+        )}
+        <div className="container mt-[80px]">
+          <h1 className="text-2xl font-semibold">You might like these</h1>
+          <div className="similar gap-2 mt-6 overflow-x-auto flex">
+            {productsInCategory.map((similarProduct) => (
+              <div
+                className="w-[400px] flex-shrink-0 pb-4"
+                key={similarProduct.id}
+              >
+                <Link href={`/${similarProduct.category}/${similarProduct.id}`}>
+                  <Image
+                    key={similarProduct.id}
+                    src={similarProduct.images[0]}
+                    height={400}
+                    width={400}
+                    alt="similar products"
+                    className="cursor-pointer object-cover aspect-square"
+                  />
+                </Link>
+                <Link href={`/${similarProduct.category}/${similarProduct.id}`}>
+                  <h1 className="mt-1 font-medium">{similarProduct.title}</h1>
+                </Link>
+                <h2 className="font-medium">
+                  {formatCurrency(similarProduct.price).split(".")[0]}
+                </h2>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       <Footer />
@@ -206,7 +208,7 @@ export async function generateMetadata({
   const product = await getProduct(id);
   if (!product?.title) {
     return {
-      title: "No Product Not Found",
+      title: "Product does not Exist",
     };
   }
   return {
