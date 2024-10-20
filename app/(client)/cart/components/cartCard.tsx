@@ -4,7 +4,6 @@ import {
   deleteCartItem,
   deleteSavedItem,
   movetocart,
-  saveForLater,
   updateCartItemQuantity,
 } from "@/actions/action";
 import { Button } from "@/components/ui/button";
@@ -12,12 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { useCheckoutStore } from "@/context/checkoutStore";
 import { capitalizeFirstLetter } from "@/lib/caplitaliseFirstLetter";
 import formatCurrency from "@/lib/formatCurrency";
-import {
-  cartItemWithProduct,
-  CartWithCartItems,
-  saveforlaterWithItems,
-} from "@/lib/types";
-import { saveforlater } from "@prisma/client";
+import { cartItemWithProduct, CartWithCartItems } from "@/lib/types";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +21,6 @@ import React, { useMemo, useOptimistic } from "react";
 type Props = {
   items: CartWithCartItems | null;
   session: Session;
-  saved: saveforlaterWithItems | null;
 };
 
 type CartItem = {
@@ -36,7 +29,7 @@ type CartItem = {
   newQuantity: number;
 };
 
-export default function CartCard({ items, session, saved }: Props) {
+export default function CartCard({ items, session }: Props) {
   const router = useRouter();
   function cartReducer(
     state: cartItemWithProduct[],
@@ -55,19 +48,6 @@ export default function CartCard({ items, session, saved }: Props) {
         return [...state, action.payload];
       default:
         return state;
-    }
-  }
-
-  function savedReducer(
-    state: saveforlaterWithItems[] | undefined,
-    action: { type: string; payload: saveforlater }
-  ) {
-    switch (action.type) {
-      case "DELETE":
-        console.log(action.payload.id);
-        return state.filter((item) => item.id !== action.payload.id);
-      default:
-        return [];
     }
   }
 
@@ -219,20 +199,6 @@ export default function CartCard({ items, session, saved }: Props) {
                   </option>
                 </select>
               </form>
-              <Button
-                variant={"link"}
-                size={"sm"}
-                onClick={() => {
-                  saveForLater(
-                    item.id,
-                    item.productId,
-                    item.quantity,
-                    item.size
-                  );
-                }}
-              >
-                Save for Later
-              </Button>
               <Button
                 variant={"link"}
                 size={"sm"}
