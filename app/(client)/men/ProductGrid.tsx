@@ -590,17 +590,8 @@ export default function ProductGrid({ products }: Props) {
           </div>
         </div>
         {hasNextPage && (
-          <div
-            ref={ref}
-            className="md:m-2 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-[2px] md:gap-5 lg:gap-7"
-          >
-            {[1, 2, 3, 4].map((key) => (
-              <div key={key} className="w-[100%] my-2">
-                <Skeleton className="w-full aspect-square rounded-none" />
-                <Skeleton className="w-[80%] h-[20px] mt-2 max-w-[768px]:ml-2" />
-                <Skeleton className="w-[65%] h-[20px] mt-2 max-w-[768px]:ml-2 max-w-[768px]:mb-2" />
-              </div>
-            ))}
+          <div ref={ref} className="w-full flex items-center justify-center">
+            <CgSpinner className="animate-spin my-10" size={40} />
           </div>
         )}
       </div>

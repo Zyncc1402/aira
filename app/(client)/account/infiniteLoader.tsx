@@ -33,7 +33,7 @@ export default function InfiniteLoader() {
     if (inView) {
       fetchNextPage();
     }
-  }, [inView]);
+  });
 
   return (
     <div className="w-full">
