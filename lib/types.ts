@@ -12,10 +12,6 @@ export type UserWithAddress = Prisma.UserGetPayload<{
   include: { address: true };
 }>;
 
-export type cartItemWithProduct = Prisma.CartItemsGetPayload<{
-  include: { product: true };
-}>;
-
 export type saveforlaterWithItems = Prisma.saveforlaterGetPayload<{
   include: {
     items: {
@@ -29,6 +25,10 @@ export type orderWithAddressProduct = Prisma.orderGetPayload<{
     address: true;
     product: true;
   };
+}>;
+
+export type cartItemWithProduct = Prisma.CartItemsGetPayload<{
+  include: { product: { include: { quantity: true } } };
 }>;
 
 export type CartWithCartItems = Prisma.CartGetPayload<{

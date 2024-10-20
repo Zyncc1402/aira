@@ -83,11 +83,6 @@ export default function FormSubmitButton({
             <h1 className={"font-semibold mt-3 text-xl"}>
               {formatCurrency(product.price).split(".")[0]}
             </h1>
-            <Link className={"mt-3"} href={"/cart"}>
-              <Button variant={"secondary"} size={"lg"}>
-                View
-              </Button>
-            </Link>
           </div>
         </DrawerContent>
       </Drawer>

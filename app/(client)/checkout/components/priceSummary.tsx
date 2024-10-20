@@ -22,7 +22,7 @@ export default function PriceSummary() {
       0
     );
   }, [checkoutItems]);
-  if (checkoutItems?.length == 0) redirect("/cart");
+  if (checkoutItems?.length == 0) redirect("/");
   const { selectedAddress } = useAddress();
 
   async function handlePayButton() {

@@ -6,6 +6,7 @@ import Providers from "@/lib/authProvider";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
+import TanstackProvider from "@/lib/TanstackProvider";
 
 export const metadata: Metadata = {
   title: "Aira",
@@ -51,10 +52,12 @@ export default function RootLayout({
           crawlSpeed={200}
         />
         <Providers>
-          <Navbar />
-          <Toaster />
-          <SpeedInsights />
-          {children}
+          <TanstackProvider>
+            <Navbar />
+            <Toaster />
+            <SpeedInsights />
+            {children}
+          </TanstackProvider>
         </Providers>
       </body>
     </html>

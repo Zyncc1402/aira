@@ -2,7 +2,7 @@ import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./lib/prisma";
-import NextAuth, { type DefaultSession } from "next-auth";
+import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcrypt";
@@ -30,11 +30,11 @@ const config = {
               user?.password
             );
             if (!comparePassword) {
-              throw new Error("Invalid email or password");
+              throw new CredentialsSignin("Invalid email or password");
             }
           }
           if (!user) {
-            throw new Error("User not found.");
+            throw new CredentialsSignin("Invalid email or password");
           }
           return user;
         } catch (error) {

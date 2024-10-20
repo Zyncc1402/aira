@@ -26,7 +26,6 @@ export default async function Page({ params }: { params: { trid: string } }) {
   if (!orders) return notFound();
   if (checkPayment) {
     if (!orders?.updatedProductQuantity) {
-      console.log("UPDATE STARTED");
       await updateProductQuantity(params.trid);
     }
   }

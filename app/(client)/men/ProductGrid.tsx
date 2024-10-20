@@ -17,8 +17,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
-import { Product } from "@prisma/client";
 import { InfiniteProducts } from "@/actions/infiniteData";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   products: Products[];
@@ -27,25 +28,25 @@ type Props = {
 export default function ProductGrid({ products }: Props) {
   const searchParams = useSearchParams();
   const { ref, inView } = useInView();
-  const [disableLoader, setDisableLoader] = useState(false);
-  const [skip, setSkip] = useState(24);
-  const [data, setData] = useState<Product[]>([]);
   const min = Number(searchParams.get("min"));
   const max = Number(searchParams.get("max"));
   const size = searchParams.get("size");
   const color = searchParams.get("color");
 
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["infiniteProducts"],
+    queryFn: ({ pageParam = 1 }) => InfiniteProducts(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = lastPage.length ? allPages.length + 1 : undefined;
+      return nextPage;
+    },
+  });
+
   useEffect(() => {
     if (inView) {
-      InfiniteProducts(skip).then((res) => {
-        setData([...data, ...res]);
-        setSkip((prev) => prev + 24);
-        if (res.length == 0) {
-          setDisableLoader(true);
-        }
-      });
+      fetchNextPage();
     }
-  }, [inView]);
+  });
 
   let filteredProducts: Products[] = products;
 
@@ -570,25 +571,36 @@ export default function ProductGrid({ products }: Props) {
           )}
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full container">
         <div className="flex lg:container md:container lg:flex-row gap-8 items-start">
-          <div className="md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-5 lg:gap-7 pb-10">
-            {data.map((product) => (
-              <ProductCard
-                key={product.id}
-                image={product.images[0]}
-                placeholder={product.placeholderImages[0]}
-                title={product.title}
-                price={product.price}
-                category={product.category}
-                id={product.id}
-              />
-            ))}
+          <div className="md:m-0 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2  md:gap-5 lg:gap-7 md:pb-5 lg:pb-7">
+            {data?.pages.map((page) => {
+              return page.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  image={product.images[0]}
+                  placeholder={product.placeholderImages[0]}
+                  title={product.title}
+                  price={product.price}
+                  category={product.category}
+                  id={product.id}
+                />
+              ));
+            })}
           </div>
         </div>
-        {disableLoader !== true && (
-          <div ref={ref} className="w-full flex items-center justify-center">
-            <CgSpinner className="animate-spin my-10" size={40} />
+        {hasNextPage && (
+          <div
+            ref={ref}
+            className="md:m-2 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-[2px] md:gap-5 lg:gap-7"
+          >
+            {[1, 2, 3, 4].map((key) => (
+              <div key={key} className="w-[100%] my-2">
+                <Skeleton className="w-full aspect-square rounded-none" />
+                <Skeleton className="w-[80%] h-[20px] mt-2 max-w-[768px]:ml-2" />
+                <Skeleton className="w-[65%] h-[20px] mt-2 max-w-[768px]:ml-2 max-w-[768px]:mb-2" />
+              </div>
+            ))}
           </div>
         )}
       </div>
