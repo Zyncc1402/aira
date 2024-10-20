@@ -113,7 +113,7 @@ model Product {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   CartItems         CartItems[]
-  quantity          quantity        @relation(fields: [quantityId], references: [id])
+  quantity          quantity?
   color             String[]
   fabric            String
   transparency      String
@@ -123,7 +123,6 @@ model Product {
   WishlistItems     WishlistItems[]
   Wishlist          Wishlist[]
   order             order[]
-  quantityId        String          @unique @db.ObjectId
 }
 
 model reviews {
@@ -140,12 +139,13 @@ model reviews {
 }
 
 model quantity {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  sm      Int      @default(0)
-  md      Int      @default(0)
-  lg      Int      @default(0)
-  xl      Int      @default(0)
-  Product Product?
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  productId String  @unique @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sm        Int     @default(0)
+  md        Int     @default(0)
+  lg        Int     @default(0)
+  xl        Int     @default(0)
 }
 
 model order {
